@@ -16,24 +16,25 @@ public final class Text {
     public static String wordWrap(String text,
             Function<? super CharSequence, ? extends Number> stringWidth, Number maxWidth) {
         try (StringReader r = new StringReader(text); StringWriter w = new StringWriter()) {
-            wordWrap(r, w, stringWidth, maxWidth);
+            wordWrap(r, w, "\n", stringWidth, maxWidth);
             return w.toString();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public static void wordWrap(Reader text, Writer out,
+    public static void wordWrap(Reader text, Writer out, String newLine,
             Function<? super CharSequence, ? extends Number> stringWidth, Number maxWidth)
             throws IOException {
         StringBuilder line = new StringBuilder();
         StringBuilder word = new StringBuilder();
         double maxWidthDouble = maxWidth.doubleValue();
         while (true) {
-            char ch = (char) text.read();
-            if (ch == -1) {
+            int c = text.read();
+            if (c == -1) {
                 break;
             }
+            char ch = (char) c;
             boolean alphanumeric = Character.isAlphabetic(ch);
             if (ch == '\n') {
                 line.append(word);
@@ -58,6 +59,7 @@ public final class Text {
                         } else {
                             // overflows line so write whole line and reset
                             out.write(line.toString().trim());
+                            out.write(newLine);
                             line.setLength(0);
                         }
                         word.append(ch);
@@ -67,9 +69,11 @@ public final class Text {
                                 .doubleValue() >= maxWidthDouble) {
                             if (line.length() > 0) {
                                 out.write(line.toString());
+                                out.write(newLine);
                                 line.setLength(0);
                             } else {
                                 out.write(word.substring(1, word.length() - 1));
+                                out.write(newLine);
                                 word.delete(0, word.length() - 1);
                             }
                         }
@@ -83,6 +87,7 @@ public final class Text {
             if (line.length() > 0) {
                 out.write(line.toString());
                 if (word.length() > 0) {
+                    out.write(newLine);
                     out.write(word.toString());
                 }
             } else {
