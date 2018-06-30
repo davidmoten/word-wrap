@@ -88,7 +88,7 @@ public final class Text {
                 out.write(line.toString());
                 if (word.length() > 0) {
                     out.write(newLine);
-                    out.write(word.toString());
+                    out.write(word.toString().trim());
                 }
             } else {
                 if (word.length() > 0) {
