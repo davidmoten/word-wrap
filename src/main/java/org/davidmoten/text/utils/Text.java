@@ -10,20 +10,25 @@ import java.util.function.Function;
 public final class Text {
 
     public static String wordWrap(String text, int maxWidth) {
-        StringReader r = new StringReader(text);
-        StringWriter w = new StringWriter();
-        try {
-            wordWrap(r, w, s -> (float) s.length(), maxWidth);
+        return wordWrap(text, s -> s.length(), maxWidth);
+    }
+
+    public static String wordWrap(String text,
+            Function<? super CharSequence, ? extends Number> stringWidth, Number maxWidth) {
+        try (StringReader r = new StringReader(text); StringWriter w = new StringWriter()) {
+            wordWrap(r, w, stringWidth, maxWidth);
+            return w.toString();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        return w.toString();
     }
 
     public static void wordWrap(Reader text, Writer out,
-            Function<? super CharSequence, Float> stringWidth, float maxWidth) throws IOException {
+            Function<? super CharSequence, ? extends Number> stringWidth, Number maxWidth)
+            throws IOException {
         StringBuilder line = new StringBuilder();
         StringBuilder word = new StringBuilder();
+        double maxWidthDouble = maxWidth.doubleValue();
         while (true) {
             char ch = (char) text.read();
             if (ch == -1) {
@@ -42,7 +47,8 @@ public final class Text {
                     if (word.length() > 0) {
                         // word boundary found
                         // try to add word to current line
-                        if (stringWidth.apply(line.toString() + word.toString()) < maxWidth) {
+                        if (stringWidth.apply(line.toString() + word.toString())
+                                .doubleValue() < maxWidthDouble) {
                             if (line.length() == 0) {
                                 line.append(word.toString().trim());
                             } else {
@@ -57,7 +63,8 @@ public final class Text {
                         word.append(ch);
                     } else {
                         word.append(ch);
-                        if (stringWidth.apply(line.toString() + word.toString()) >= maxWidth) {
+                        if (stringWidth.apply(line.toString() + word.toString())
+                                .doubleValue() >= maxWidthDouble) {
                             if (line.length() > 0) {
                                 out.write(line.toString());
                                 line.setLength(0);
@@ -72,7 +79,7 @@ public final class Text {
                 }
             }
         }
-        if (stringWidth.apply(line.toString() + word.toString()) >= maxWidth) {
+        if (stringWidth.apply(line.toString() + word.toString()).doubleValue() >= maxWidthDouble) {
             if (line.length() > 0) {
                 out.write(line.toString());
                 if (word.length() > 0) {
