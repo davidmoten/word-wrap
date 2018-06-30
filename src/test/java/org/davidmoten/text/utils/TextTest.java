@@ -8,9 +8,53 @@ public class TextTest {
 
     @Test
     public void test() {
-        String s = Text.wordWrap("hello there", 6);
+        checkWrap("hello there", "hello\nthere");
+    }
+    
+    @Test
+    public void test2() {
+        checkWrap("hello", "hello");
+    }
+    
+    @Test
+    public void testEmpty() {
+        checkWrap("", "");
+    }
+    
+    @Test
+    public void testOneLetter() {
+        checkWrap("a", "a");
+    }
+    
+    @Test
+    public void testSpaceThenOneLetter() {
+        checkWrap(" a", " a");
+    }
+    
+    @Test
+    public void testNewLine() {
+        checkWrap("hello\nthere", "hello\nthere");
+    }
+    
+    @Test
+    public void testCarriageReturnNewLine() {
+        checkWrap("hello\r\nthere", "hello\nthere");
+    }
+    
+    @Test
+    public void testWhitespaceConservedAfterNewLine() {
+        checkWrap("hello\n there", "hello\n there");
+    }
+    
+    @Test
+    public void testLongWordForcesBreak() {
+        checkWrap("hellothere", "helloth\nere");
+    }
+
+    private void checkWrap(String text, String expected) {
+        String s = Text.wordWrap(text, 6);
         System.out.println(s);
-        assertEquals("hello\nthere", s);
+        assertEquals(expected, s);
     }
 
 }

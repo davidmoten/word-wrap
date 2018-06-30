@@ -39,6 +39,7 @@ public final class Text {
             if (ch == '\n') {
                 line.append(word);
                 out.write(line.toString());
+                out.write(newLine);
                 word.setLength(0);
                 line.setLength(0);
             } else if (ch == '\r') {
