@@ -63,6 +63,10 @@ public final class Text {
                     if (word.length() > 0) {
                         appendWordToLine(line, word);
                     }
+                    word.append(ch);
+                    if (stringWidth.apply(line.toString() + word.toString()).doubleValue() > maxWidth.doubleValue()) {
+                        
+                    }
                 }
             }
         }
