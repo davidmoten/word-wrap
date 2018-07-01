@@ -45,6 +45,70 @@ public final class Text {
             } else if (ch == '\r') {
                 // ignore carriage return
             } else {
+                if (alphanumeric) {
+                    word.append(ch);
+                    if (stringWidth.apply(line.toString() + word.toString())
+                            .doubleValue() > maxWidth.doubleValue()) {
+                        if (line.length() > 0) {
+                            writeLine(out, line, newLine);
+                            if (stringWidth.apply(word.toString()).doubleValue() > maxWidth
+                                    .doubleValue()) {
+                                writeBrokenWord(out, word, newLine);
+                            }
+                        } else {
+                            writeBrokenWord(out, word, newLine);
+                        }
+                    }
+                } else {
+                    if (word.length() > 0) {
+                        appendWordToLine(line, word);
+                    }
+                }
+            }
+        }
+    }
+
+    private static void appendWordToLine(StringBuilder line, StringBuilder word) {
+        line.append(word.toString());
+        word.setLength(0);
+    }
+
+    private static void writeBrokenWord(Writer out, StringBuilder word, String newLine)
+            throws IOException {
+        out.write(word.substring(0, word.length() - 1));
+        out.write(newLine);
+        word.delete(0, word.length() - 1);
+    }
+
+    private static void writeLine(Writer out, StringBuilder line, String newLine)
+            throws IOException {
+        out.write(line.toString());
+        out.write(newLine);
+        line.setLength(0);
+    }
+
+    public static void wordWrap2(Reader text, Writer out, String newLine,
+            Function<? super CharSequence, ? extends Number> stringWidth, Number maxWidth)
+            throws IOException {
+        StringBuilder line = new StringBuilder();
+        StringBuilder word = new StringBuilder();
+        double maxWidthDouble = maxWidth.doubleValue();
+        while (true) {
+            int c = text.read();
+            if (c == -1) {
+                break;
+            }
+            char ch = (char) c;
+            boolean alphanumeric = Character.isAlphabetic(ch);
+            if (ch == '\n') {
+                line.append(word);
+                out.write(line.toString());
+                out.write(newLine);
+                word.setLength(0);
+                line.setLength(0);
+            } else if (ch == '\r') {
+                // ignore carriage return
+            } else {
                 if (!alphanumeric) {
                     if (word.length() > 0) {
                         // word boundary found
