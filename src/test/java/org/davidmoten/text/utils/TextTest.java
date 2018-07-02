@@ -20,7 +20,12 @@ public class TextTest {
 
     @Test
     public void testLongLineALotOfWhiteSpace() {
-        checkWrap("hello  there", "hello\nthere");
+        checkWrap("hello          there", "hello\nthere");
+    }
+
+    @Test
+    public void testWhitespacePreservedAfterNewLine() {
+        checkWrap("hello\n  the", "hello\n  the");
     }
 
     @Test
