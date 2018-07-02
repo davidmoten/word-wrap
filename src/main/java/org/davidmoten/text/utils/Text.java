@@ -65,6 +65,10 @@ public final class Text {
                     }
                 } else {
                     if (word.length() > 0) {
+                        if (collapseLeadingWhitespace) {
+                            trimLeadingSpaces(word);
+                            collapseLeadingWhitespace = false;
+                        }
                         appendWordToLine(line, word);
                     }
                     word.append(ch);
@@ -75,13 +79,15 @@ public final class Text {
                             collapseLeadingWhitespace = true;
                         } else {
                             String w = word.substring(0, word.length() - 1);
+                            word.delete(0, word.length() - 1);
                             if (collapseLeadingWhitespace) {
                                 w = trimLeadingSpaces(w);
                                 collapseLeadingWhitespace = false;
                             }
-                            out.write(w);
-                            out.write(newLine);
-                            word.delete(0, word.length() - 1);
+                            if (w.length() > 0) {
+                                out.write(w);
+                                out.write(newLine);
+                            }
                             collapseLeadingWhitespace = true;
                         }
                     }

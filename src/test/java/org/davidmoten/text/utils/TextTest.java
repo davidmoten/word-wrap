@@ -7,8 +7,22 @@ import org.junit.Test;
 public class TextTest {
 
     @Test
-    public void testTrimLeadingSpaces() {
+    public void testTrimLeadingSpaces0() {
+        StringBuilder s = new StringBuilder("abc");
+        Text.trimLeadingSpaces(s);
+        assertEquals("abc", s.toString());
+    }
+    
+    @Test
+    public void testTrimLeadingSpaces1() {
         StringBuilder s = new StringBuilder(" abc");
+        Text.trimLeadingSpaces(s);
+        assertEquals("abc", s.toString());
+    }
+    
+    @Test
+    public void testTrimLeadingSpaces3() {
+        StringBuilder s = new StringBuilder("   abc");
         Text.trimLeadingSpaces(s);
         assertEquals("abc", s.toString());
     }
@@ -23,6 +37,16 @@ public class TextTest {
         checkWrap("hello          there", "hello\nthere");
     }
 
+    @Test
+    public void testPrecedingWhitespace() {
+        checkWrap("  he", "  he");
+    }
+    
+    @Test
+    public void testPrecedingWhitespaceLongWord() {
+        checkWrap("  helloyou", "\n hello\nyou");
+    }
+    
     @Test
     public void testWhitespacePreservedAfterNewLine() {
         checkWrap("hello\n  the", "hello\n  the");
