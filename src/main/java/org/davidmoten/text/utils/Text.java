@@ -7,6 +7,8 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.util.function.Function;
 
+import com.github.davidmoten.guavamini.annotations.VisibleForTesting;
+
 public final class Text {
 
     public static String wordWrap(String text, int maxWidth) {
@@ -51,6 +53,7 @@ public final class Text {
                             .doubleValue() > maxWidthDouble) {
                         if (line.length() > 0) {
                             writeLine(out, line, newLine);
+                            trimLeadingSpaces(word);
                             if (stringWidth.apply(word.toString()).doubleValue() > maxWidthDouble) {
                                 writeBrokenWord(out, word, newLine);
                             }
@@ -67,12 +70,34 @@ public final class Text {
                             .doubleValue() > maxWidthDouble) {
                         if (line.length() > 0) {
                             writeLine(out, line, newLine);
-                            //trim leading spaces on the word
-                            
+                            trimLeadingSpaces(word);
+                        } else {
+                            out.write(word.substring(0, word.length() - 1));
+                            out.write(newLine);
+                            word.delete(0, word.length() - 1);
+                            trimLeadingSpaces(word);
                         }
                     }
                 }
             }
+        }
+        if (line.length() > 0 || word.length() > 0) {
+            out.write(line.toString() + word.toString());
+        }
+    }
+
+    @VisibleForTesting
+    static void trimLeadingSpaces(StringBuilder word) {
+        // trim leading spaces on the word
+        // because we have inserted a new line
+        int i;
+        for (i = 0; i < word.length(); i++) {
+            if (!Character.isWhitespace(word.charAt(i))) {
+                break;
+            }
+        }
+        if (i < word.length() && i > 0) {
+            word.delete(0, i);
         }
     }
 

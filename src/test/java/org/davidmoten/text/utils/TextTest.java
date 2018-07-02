@@ -5,6 +5,13 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
 public class TextTest {
+    
+    @Test
+    public void testTrimLeadingSpaces() {
+        StringBuilder s = new StringBuilder(" abc");
+        Text.trimLeadingSpaces(s);
+        assertEquals("abc", s.toString());
+    }
 
     @Test
     public void testLongLineSplitsOnWhiteSpace() {
@@ -53,7 +60,7 @@ public class TextTest {
 
     @Test
     public void testLongWordForcesBreak() {
-        checkWrap("hellothere", "helloth\nere");
+        checkWrap("hellothere", "hellot\nhere");
     }
 
     private void checkWrap(String text, String expected) {
