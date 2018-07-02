@@ -5,7 +5,7 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
 public class TextTest {
-    
+
     @Test
     public void testTrimLeadingSpaces() {
         StringBuilder s = new StringBuilder(" abc");
@@ -19,6 +19,11 @@ public class TextTest {
     }
 
     @Test
+    public void testLongLineALotOfWhiteSpace() {
+        checkWrap("hello  there", "hello\nthere");
+    }
+
+    @Test
     public void testShortLineNoWhitespace() {
         checkWrap("hello", "hello");
     }
@@ -27,7 +32,7 @@ public class TextTest {
     public void testShortLineHasWhitespace() {
         checkWrap("hi bo", "hi bo");
     }
-    
+
     @Test
     public void testEmpty() {
         checkWrap("", "");
