@@ -48,11 +48,10 @@ public final class Text {
                 if (alphanumeric) {
                     word.append(ch);
                     if (stringWidth.apply(line.toString() + word.toString())
-                            .doubleValue() > maxWidth.doubleValue()) {
+                            .doubleValue() > maxWidthDouble) {
                         if (line.length() > 0) {
                             writeLine(out, line, newLine);
-                            if (stringWidth.apply(word.toString()).doubleValue() > maxWidth
-                                    .doubleValue()) {
+                            if (stringWidth.apply(word.toString()).doubleValue() > maxWidthDouble) {
                                 writeBrokenWord(out, word, newLine);
                             }
                         } else {
@@ -64,8 +63,13 @@ public final class Text {
                         appendWordToLine(line, word);
                     }
                     word.append(ch);
-                    if (stringWidth.apply(line.toString() + word.toString()).doubleValue() > maxWidth.doubleValue()) {
-                        
+                    if (stringWidth.apply(line.toString() + word.toString())
+                            .doubleValue() > maxWidthDouble) {
+                        if (line.length() > 0) {
+                            writeLine(out, line, newLine);
+                            //trim leading spaces on the word
+                            
+                        }
                     }
                 }
             }
