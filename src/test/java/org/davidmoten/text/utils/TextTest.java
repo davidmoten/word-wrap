@@ -128,6 +128,11 @@ public class TextTest {
     }
     
     @Test
+    public void breakOnCommas() {
+        checkWrap("1,2,3,4,5,6,7,8,9","1,2,3,\n4,5,6,\n7,8,9");
+    }
+    
+    @Test
     public void spaceAndQuestionMark() {
         checkWrap("  ?", "  ?");
     }
