@@ -133,6 +133,21 @@ public class TextTest {
     }
     
     @Test
+    public void longThenShort() {
+        checkWrap("hellothere\n  boo", "hellot\nhere\n  boo");
+    }
+    
+    @Test
+    public void longThenShortWithMoreLines() {
+        checkWrap("hellothere\n  boo\n  hi", "hellot\nhere\n  boo\n  hi");
+    }
+    
+    @Test
+    public void testEndWithNewLine() {
+        checkWrap("a\n", "a\n");
+    }
+    
+    @Test
     public void spaceAndQuestionMark() {
         checkWrap("  ?", "  ?");
     }
