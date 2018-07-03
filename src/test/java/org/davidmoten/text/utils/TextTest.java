@@ -44,7 +44,7 @@ public class TextTest {
     
     @Test
     public void testPrecedingWhitespaceLongWord() {
-        checkWrap("  helloyou", "\n hello\nyou");
+        checkWrap("  helloyou", "  hell\noyou");
     }
     
     @Test

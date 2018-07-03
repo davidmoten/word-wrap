@@ -15,8 +15,8 @@ public final class Text {
         return wordWrap(text, s -> s.length(), maxWidth);
     }
 
-    public static String wordWrap(String text,
-            Function<? super CharSequence, ? extends Number> stringWidth, Number maxWidth) {
+    public static String wordWrap(String text, Function<? super CharSequence, ? extends Number> stringWidth,
+            Number maxWidth) {
         try (StringReader r = new StringReader(text); StringWriter w = new StringWriter()) {
             wordWrap(r, w, "\n", stringWidth, maxWidth);
             return w.toString();
@@ -26,12 +26,11 @@ public final class Text {
     }
 
     public static void wordWrap(Reader text, Writer out, String newLine,
-            Function<? super CharSequence, ? extends Number> stringWidth, Number maxWidth)
-            throws IOException {
+            Function<? super CharSequence, ? extends Number> stringWidth, Number maxWidth) throws IOException {
         StringBuilder line = new StringBuilder();
         StringBuilder word = new StringBuilder();
         double maxWidthDouble = maxWidth.doubleValue();
-        boolean collapseLeadingWhitespace = false;
+        boolean broken = false;
         while (true) {
             int c = text.read();
             if (c == -1) {
@@ -45,17 +44,15 @@ public final class Text {
                 out.write(newLine);
                 word.setLength(0);
                 line.setLength(0);
-                collapseLeadingWhitespace = false;
+                broken = false;
             } else if (ch == '\r') {
                 // ignore carriage return
             } else {
                 if (alphanumeric) {
                     word.append(ch);
-                    if (stringWidth.apply(line.toString() + word.toString())
-                            .doubleValue() > maxWidthDouble) {
+                    if (stringWidth.apply(line.toString() + word.toString()).doubleValue() > maxWidthDouble) {
                         if (line.length() > 0) {
                             writeLine(out, line, newLine);
-                            collapseLeadingWhitespace = true;
                             if (stringWidth.apply(word.toString()).doubleValue() > maxWidthDouble) {
                                 writeBrokenWord(out, word, newLine);
                             }
@@ -64,40 +61,41 @@ public final class Text {
                         }
                     }
                 } else {
-                    if (word.length() > 0) {
-                        if (collapseLeadingWhitespace) {
-                            trimLeadingSpaces(word);
-                            collapseLeadingWhitespace = false;
-                        }
+                    if (word.length() > 0 && !isWhitespace(word)) {
                         appendWordToLine(line, word);
+                        if (broken) {
+                            trimLeadingSpaces(line);
+                        }
                     }
                     word.append(ch);
-                    if (stringWidth.apply(line.toString() + word.toString())
-                            .doubleValue() > maxWidthDouble) {
+                    if (stringWidth.apply(line.toString() + word.toString()).doubleValue() > maxWidthDouble) {
                         if (line.length() > 0) {
                             writeLine(out, line, newLine);
-                            collapseLeadingWhitespace = true;
+                            broken = true;
                         } else {
                             String w = word.substring(0, word.length() - 1);
                             word.delete(0, word.length() - 1);
-                            if (collapseLeadingWhitespace) {
-                                w = trimLeadingSpaces(w);
-                                collapseLeadingWhitespace = false;
+                            if (broken) {
+                                trimLeadingSpaces(w);
                             }
                             if (w.length() > 0) {
                                 out.write(w);
                                 out.write(newLine);
+                                broken = false;
                             }
-                            collapseLeadingWhitespace = true;
                         }
                     }
                 }
             }
         }
         if (line.length() > 0) {
-            out.write(line.toString() + word.toString());
+            String s = line.toString() + word.toString();
+            if (broken) {
+                s = trimLeadingSpaces(s);
+            }
+            out.write(s);
         } else {
-            if (collapseLeadingWhitespace) {
+            if (broken) {
                 trimLeadingSpaces(word);
             }
             out.write(word.toString());
@@ -112,7 +110,7 @@ public final class Text {
         }
         return true;
     }
-    
+
     @VisibleForTesting
     static void trimLeadingSpaces(StringBuilder word) {
         // trim leading spaces on the word
@@ -139,15 +137,13 @@ public final class Text {
         word.setLength(0);
     }
 
-    private static void writeBrokenWord(Writer out, StringBuilder word, String newLine)
-            throws IOException {
+    private static void writeBrokenWord(Writer out, StringBuilder word, String newLine) throws IOException {
         out.write(word.substring(0, word.length() - 1));
         out.write(newLine);
         word.delete(0, word.length() - 1);
     }
 
-    private static void writeLine(Writer out, StringBuilder line, String newLine)
-            throws IOException {
+    private static void writeLine(Writer out, StringBuilder line, String newLine) throws IOException {
         out.write(line.toString());
         out.write(newLine);
         line.setLength(0);
