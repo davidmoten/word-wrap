@@ -21,6 +21,26 @@ public class TextTest {
     }
 
     @Test
+    public void testRightTrim() {
+        assertEquals("abc", Text.rtrim("abc  "));
+    }
+    
+    @Test
+    public void testRightTrimNoSpace() {
+        assertEquals("abc", Text.rtrim("abc"));
+    }
+    
+    @Test
+    public void testRightTrimEmpty() {
+        assertEquals("", Text.rtrim(""));
+    }
+    
+    @Test
+    public void testRightTrimOnlySpace() {
+        assertEquals("", Text.rtrim("  "));
+    }
+
+    @Test
     public void testTrimLeadingSpaces3() {
         StringBuilder s = new StringBuilder("   abc");
         Text.trimLeadingSpaces(s);

@@ -53,10 +53,10 @@ public final class Text {
                     if (broken && line.length() == 0) {
                         trimLeadingSpaces(word);
                     }
-                    if (stringWidth.apply(line.toString() + word.toString()).doubleValue() > maxWidthDouble) {
+                    if (tooLong(stringWidth, line.toString() + word.toString(), maxWidthDouble)) {
                         if (line.length() > 0) {
                             writeLine(out, line, newLine);
-                            if (stringWidth.apply(word.toString()).doubleValue() > maxWidthDouble) {
+                            if (tooLong(stringWidth, word.toString(), maxWidthDouble)) {
                                 writeBrokenWord(out, word, newLine);
                             } else {
                                 broken = true;
@@ -73,7 +73,7 @@ public final class Text {
                         }
                     }
                     word.append(ch);
-                    if (stringWidth.apply(line.toString() + word.toString()).doubleValue() > maxWidthDouble) {
+                    if (tooLong(stringWidth, line.toString() + word.toString(), maxWidthDouble)) {
                         if (line.length() > 0) {
                             if (!isWhitespace(line)) {
                                 writeLine(out, line, newLine);
@@ -108,6 +108,27 @@ public final class Text {
                 trimLeadingSpaces(word);
             }
             out.write(word.toString());
+        }
+    }
+
+    private static boolean tooLong(Function<? super CharSequence, ? extends Number> stringWidth, String s, double maxWidthDouble) {
+        return stringWidth.apply(rtrim(s)).doubleValue() > maxWidthDouble;
+    }
+    
+    @VisibleForTesting
+    static String rtrim(String s) {
+        int i = s.length();
+        while (i > 0) {
+            if (Character.isWhitespace(s.charAt(i-1))) {
+                i--;
+            }  else {
+                break;
+            }
+        }
+        if (i != s.length()) {
+            return s.substring(0, i);
+        } else {
+            return s;
         }
     }
 
