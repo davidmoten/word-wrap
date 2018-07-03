@@ -104,6 +104,15 @@ public final class Text {
         }
     }
 
+    static boolean isWhitespace(CharSequence s) {
+        for (int i = 0; i < s.length(); i++) {
+            if (!Character.isWhitespace(s.charAt(i))) {
+                return false;
+            }
+        }
+        return true;
+    }
+    
     @VisibleForTesting
     static void trimLeadingSpaces(StringBuilder word) {
         // trim leading spaces on the word
