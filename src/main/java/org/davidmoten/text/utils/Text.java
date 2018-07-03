@@ -33,6 +33,7 @@ public final class Text {
         double maxWidthDouble = maxWidth.doubleValue();
         boolean broken = false;
         boolean alphanumeric = false;
+        boolean previousWasPunctuation = false;
         while (true) {
             int c = text.read();
             if (c == -1) {
@@ -50,7 +51,7 @@ public final class Text {
             } else if (ch == '\r') {
                 // ignore carriage return
             } else {
-                if (alphanumeric) {
+                if (alphanumeric && !previousWasPunctuation) {
                     word.append(ch);
                     if (broken && line.length() == 0) {
                         trimLeadingSpaces(word);
@@ -99,6 +100,7 @@ public final class Text {
                     }
                 }
             }
+            previousWasPunctuation = isPunctuation(ch);
         }
         if (line.length() > 0) {
             String s = line.toString() + word.toString();
