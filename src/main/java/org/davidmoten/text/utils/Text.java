@@ -39,7 +39,7 @@ public final class Text {
                 break;
             }
             char ch = (char) c;
-            alphanumeric = Character.isAlphabetic(ch));
+            alphanumeric = Character.isAlphabetic(ch);
             if (ch == '\n') {
                 line.append(word);
                 out.write(line.toString());
