@@ -56,6 +56,7 @@ public final class Text {
                     if (tooLong(stringWidth, line.toString() + word.toString(), maxWidthDouble)) {
                         if (line.length() > 0) {
                             writeLine(out, line, newLine);
+                            trimLeadingSpaces(word);
                             if (tooLong(stringWidth, word.toString(), maxWidthDouble)) {
                                 writeBrokenWord(out, word, newLine);
                             } else {
