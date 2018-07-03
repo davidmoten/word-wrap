@@ -50,6 +50,9 @@ public final class Text {
             } else {
                 if (alphanumeric) {
                     word.append(ch);
+                    if (broken && line.length() == 0) {
+                        trimLeadingSpaces(word);
+                    }
                     if (stringWidth.apply(line.toString() + word.toString()).doubleValue() > maxWidthDouble) {
                         if (line.length() > 0) {
                             writeLine(out, line, newLine);

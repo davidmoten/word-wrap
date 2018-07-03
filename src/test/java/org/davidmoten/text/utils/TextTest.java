@@ -12,14 +12,14 @@ public class TextTest {
         Text.trimLeadingSpaces(s);
         assertEquals("abc", s.toString());
     }
-    
+
     @Test
     public void testTrimLeadingSpaces1() {
         StringBuilder s = new StringBuilder(" abc");
         Text.trimLeadingSpaces(s);
         assertEquals("abc", s.toString());
     }
-    
+
     @Test
     public void testTrimLeadingSpaces3() {
         StringBuilder s = new StringBuilder("   abc");
@@ -33,6 +33,11 @@ public class TextTest {
     }
 
     @Test
+    public void testLongLineTwoSpaces() {
+        checkWrap("hello  there", "hello\nthere");
+    }
+
+    @Test
     public void testLongLineALotOfWhiteSpace() {
         checkWrap("hello          there", "hello\nthere");
     }
@@ -41,12 +46,12 @@ public class TextTest {
     public void testPrecedingWhitespace() {
         checkWrap("  he", "  he");
     }
-    
+
     @Test
     public void testPrecedingWhitespaceLongWord() {
         checkWrap("  helloyou", "  hell\noyou");
     }
-    
+
     @Test
     public void testWhitespacePreservedAfterNewLine() {
         checkWrap("hello\n  the", "hello\n  the");
