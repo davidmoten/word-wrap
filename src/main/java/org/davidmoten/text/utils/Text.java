@@ -6,6 +6,7 @@ import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.function.Function;
+import java.util.regex.Pattern;
 
 import com.github.davidmoten.guavamini.annotations.VisibleForTesting;
 
@@ -31,13 +32,14 @@ public final class Text {
         StringBuilder word = new StringBuilder();
         double maxWidthDouble = maxWidth.doubleValue();
         boolean broken = false;
+        boolean alphanumeric = false;
         while (true) {
             int c = text.read();
             if (c == -1) {
                 break;
             }
             char ch = (char) c;
-            boolean alphanumeric = Character.isAlphabetic(ch);
+            alphanumeric = Character.isAlphabetic(ch));
             if (ch == '\n') {
                 line.append(word);
                 out.write(line.toString());
@@ -112,17 +114,22 @@ public final class Text {
         }
     }
 
-    private static boolean tooLong(Function<? super CharSequence, ? extends Number> stringWidth, String s, double maxWidthDouble) {
+    private static boolean isPunctuation(char ch) {
+        return Pattern.matches("\\p{Punct}", ch + "");
+    }
+
+    private static boolean tooLong(Function<? super CharSequence, ? extends Number> stringWidth, String s,
+            double maxWidthDouble) {
         return stringWidth.apply(rtrim(s)).doubleValue() > maxWidthDouble;
     }
-    
+
     @VisibleForTesting
     static String rtrim(String s) {
         int i = s.length();
         while (i > 0) {
-            if (Character.isWhitespace(s.charAt(i-1))) {
+            if (Character.isWhitespace(s.charAt(i - 1))) {
                 i--;
-            }  else {
+            } else {
                 break;
             }
         }

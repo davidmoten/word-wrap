@@ -121,6 +121,11 @@ public class TextTest {
     public void testLongWordForcesBreak() {
         checkWrap("hellothere", "hellot\nhere");
     }
+    
+    @Test
+    public void breakOnComma() {
+        checkWrap("hi,there", "hi,\nthere");
+    }
 
     private void checkWrap(String text, String expected) {
         String s = Text.wordWrap(text, 6);
