@@ -126,6 +126,11 @@ public class TextTest {
     public void breakOnComma() {
         checkWrap("hi,there", "hi,\nthere");
     }
+    
+    @Test
+    public void spaceAndQuestionMark() {
+        checkWrap("  ?", "  ?");
+    }
 
     private void checkWrap(String text, String expected) {
         String s = Text.wordWrap(text, 6);
