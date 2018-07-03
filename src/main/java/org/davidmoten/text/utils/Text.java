@@ -55,6 +55,8 @@ public final class Text {
                             writeLine(out, line, newLine);
                             if (stringWidth.apply(word.toString()).doubleValue() > maxWidthDouble) {
                                 writeBrokenWord(out, word, newLine);
+                            } else {
+                                broken = true;
                             }
                         } else {
                             writeBrokenWord(out, word, newLine);
@@ -70,13 +72,17 @@ public final class Text {
                     word.append(ch);
                     if (stringWidth.apply(line.toString() + word.toString()).doubleValue() > maxWidthDouble) {
                         if (line.length() > 0) {
-                            writeLine(out, line, newLine);
+                            if (!isWhitespace(line)) {
+                                writeLine(out, line, newLine);
+                            } else {
+                                line.setLength(0);
+                            }
                             broken = true;
                         } else {
                             String w = word.substring(0, word.length() - 1);
                             word.delete(0, word.length() - 1);
                             if (broken) {
-                                trimLeadingSpaces(w);
+                                w = trimLeadingSpaces(w);
                             }
                             if (w.length() > 0) {
                                 out.write(w);
