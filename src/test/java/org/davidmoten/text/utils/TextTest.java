@@ -9,41 +9,41 @@ public class TextTest {
     @Test
     public void testTrimLeadingSpaces0() {
         StringBuilder s = new StringBuilder("abc");
-        Text.trimLeadingSpaces(s);
+        Text.leftTrim(s);
         assertEquals("abc", s.toString());
     }
 
     @Test
     public void testTrimLeadingSpaces1() {
         StringBuilder s = new StringBuilder(" abc");
-        Text.trimLeadingSpaces(s);
+        Text.leftTrim(s);
         assertEquals("abc", s.toString());
     }
 
     @Test
     public void testRightTrim() {
-        assertEquals("abc", Text.rtrim("abc  "));
+        assertEquals("abc", Text.rightTrim("abc  "));
     }
     
     @Test
     public void testRightTrimNoSpace() {
-        assertEquals("abc", Text.rtrim("abc"));
+        assertEquals("abc", Text.rightTrim("abc"));
     }
     
     @Test
     public void testRightTrimEmpty() {
-        assertEquals("", Text.rtrim(""));
+        assertEquals("", Text.rightTrim(""));
     }
     
     @Test
     public void testRightTrimOnlySpace() {
-        assertEquals("", Text.rtrim("  "));
+        assertEquals("", Text.rightTrim("  "));
     }
 
     @Test
     public void testTrimLeadingSpaces3() {
         StringBuilder s = new StringBuilder("   abc");
-        Text.trimLeadingSpaces(s);
+        Text.leftTrim(s);
         assertEquals("abc", s.toString());
     }
 

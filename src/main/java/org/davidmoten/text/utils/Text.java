@@ -54,12 +54,12 @@ public final class Text {
                 if (alphanumeric && !previousWasPunctuation) {
                     word.append(ch);
                     if (broken && line.length() == 0) {
-                        trimLeadingSpaces(word);
+                        leftTrim(word);
                     }
                     if (tooLong(stringWidth, line.toString() + word.toString(), maxWidthDouble)) {
                         if (line.length() > 0) {
                             writeLine(out, line, newLine);
-                            trimLeadingSpaces(word);
+                            leftTrim(word);
                             if (tooLong(stringWidth, word.toString(), maxWidthDouble)) {
                                 writeBrokenWord(out, word, newLine);
                             } else {
@@ -73,7 +73,7 @@ public final class Text {
                     if (word.length() > 0 && !isWhitespace(word)) {
                         appendWordToLine(line, word);
                         if (broken) {
-                            trimLeadingSpaces(line);
+                            leftTrim(line);
                         }
                     }
                     word.append(ch);
@@ -89,7 +89,7 @@ public final class Text {
                             String w = word.substring(0, word.length() - 1);
                             word.delete(0, word.length() - 1);
                             if (broken) {
-                                w = trimLeadingSpaces(w);
+                                w = leftTrim(w);
                             }
                             if (w.length() > 0) {
                                 out.write(w);
@@ -105,12 +105,12 @@ public final class Text {
         if (line.length() > 0) {
             String s = line.toString() + word.toString();
             if (broken) {
-                s = trimLeadingSpaces(s);
+                s = leftTrim(s);
             }
             out.write(s);
         } else {
             if (broken) {
-                trimLeadingSpaces(word);
+                leftTrim(word);
             }
             out.write(word.toString());
         }
@@ -122,11 +122,11 @@ public final class Text {
 
     private static boolean tooLong(Function<? super CharSequence, ? extends Number> stringWidth, String s,
             double maxWidthDouble) {
-        return stringWidth.apply(rtrim(s)).doubleValue() > maxWidthDouble;
+        return stringWidth.apply(rightTrim(s)).doubleValue() > maxWidthDouble;
     }
 
     @VisibleForTesting
-    static String rtrim(String s) {
+    static String rightTrim(String s) {
         int i = s.length();
         while (i > 0) {
             if (Character.isWhitespace(s.charAt(i - 1))) {
@@ -152,7 +152,7 @@ public final class Text {
     }
 
     @VisibleForTesting
-    static void trimLeadingSpaces(StringBuilder word) {
+    static void leftTrim(StringBuilder word) {
         // trim leading spaces on the word
         // because we have inserted a new line
         int i;
@@ -166,9 +166,9 @@ public final class Text {
         }
     }
 
-    private static String trimLeadingSpaces(String s) {
+    private static String leftTrim(String s) {
         StringBuilder b = new StringBuilder(s);
-        trimLeadingSpaces(b);
+        leftTrim(b);
         return b.toString();
     }
 
