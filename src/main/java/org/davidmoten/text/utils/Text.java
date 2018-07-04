@@ -2,7 +2,6 @@ package org.davidmoten.text.utils;
 
 import java.io.IOException;
 import java.io.Reader;
-import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.Set;
@@ -25,9 +24,9 @@ public final class Text {
         return wordWrap(text, maxWidth, s -> s.length());
     }
 
-    public static String wordWrap(String text, Number maxWidth,
+    public static String wordWrap(CharSequence text, Number maxWidth,
             Function<? super CharSequence, ? extends Number> stringWidth) {
-        try (StringReader r = new StringReader(text); StringWriter w = new StringWriter()) {
+        try (Reader r = new CharSequenceReader(text); StringWriter w = new StringWriter()) {
             wordWrap(r, w, "\n", maxWidth, stringWidth);
             return w.toString();
         } catch (IOException e) {
