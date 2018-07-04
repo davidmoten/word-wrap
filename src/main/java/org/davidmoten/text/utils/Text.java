@@ -62,52 +62,50 @@ public final class Text {
                 broken = false;
             } else if (ch == '\r') {
                 // ignore carriage return
-            } else {
-                if (alphanumeric && !previousWasPunctuation) {
-                    word.append(ch);
-                    if (broken && line.length() == 0) {
+            } else if (alphanumeric && !previousWasPunctuation) {
+                word.append(ch);
+                if (broken && line.length() == 0) {
+                    leftTrim(word);
+                }
+                if (tooLong(stringWidth, line.toString() + word.toString(), maxWidthDouble)) {
+                    if (line.length() > 0) {
+                        writeLine(out, line, newLine);
                         leftTrim(word);
-                    }
-                    if (tooLong(stringWidth, line.toString() + word.toString(), maxWidthDouble)) {
-                        if (line.length() > 0) {
-                            writeLine(out, line, newLine);
-                            leftTrim(word);
-                            if (tooLong(stringWidth, word.toString(), maxWidthDouble)) {
-                                writeBrokenWord(out, word, newLine);
-                            } else {
-                                broken = true;
-                            }
-                        } else {
+                        if (tooLong(stringWidth, word.toString(), maxWidthDouble)) {
                             writeBrokenWord(out, word, newLine);
-                        }
-                    }
-                } else {
-                    if (word.length() > 0 && !isWhitespace(word)) {
-                        appendWordToLine(line, word);
-                        if (broken) {
-                            leftTrim(line);
-                        }
-                    }
-                    word.append(ch);
-                    if (tooLong(stringWidth, line.toString() + word.toString(), maxWidthDouble)) {
-                        if (line.length() > 0) {
-                            if (!isWhitespace(line)) {
-                                writeLine(out, line, newLine);
-                            } else {
-                                line.setLength(0);
-                            }
-                            broken = true;
                         } else {
-                            String w = word.substring(0, word.length() - 1);
-                            word.delete(0, word.length() - 1);
-                            if (broken) {
-                                w = leftTrim(w);
-                            }
-                            if (w.length() > 0) {
-                                out.write(w);
-                                out.write(newLine);
-                                broken = false;
-                            }
+                            broken = true;
+                        }
+                    } else {
+                        writeBrokenWord(out, word, newLine);
+                    }
+                }
+            } else {
+                if (word.length() > 0 && !isWhitespace(word)) {
+                    appendWordToLine(line, word);
+                    if (broken) {
+                        leftTrim(line);
+                    }
+                }
+                word.append(ch);
+                if (tooLong(stringWidth, line.toString() + word.toString(), maxWidthDouble)) {
+                    if (line.length() > 0) {
+                        if (!isWhitespace(line)) {
+                            writeLine(out, line, newLine);
+                        } else {
+                            line.setLength(0);
+                        }
+                        broken = true;
+                    } else {
+                        String w = word.substring(0, word.length() - 1);
+                        word.delete(0, word.length() - 1);
+                        if (broken) {
+                            w = leftTrim(w);
+                        }
+                        if (w.length() > 0) {
+                            out.write(w);
+                            out.write(newLine);
+                            broken = false;
                         }
                     }
                 }
