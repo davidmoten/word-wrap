@@ -14,6 +14,15 @@ Java library for wrapping text.
 Add this to your pom:
 
 ```xml
+<dependency>
+  <groupId>com.github.davidmoten</groupId>
+  <artifactId>word-wrap</artifactId>
+  <version>VERSION_HERE</version>
+</dependency>
+```
+
+## Usage
+```java
 String text="hi there how are you going?";
 System.out.println(Text.wordWrap(text, 10));
 ```
@@ -22,5 +31,10 @@ Output:
 hi there
 how are
 you going?
+```
+## Build
+Use maven:
+```bash
+maven clean install
 ```
 
