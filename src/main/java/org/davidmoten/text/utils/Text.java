@@ -13,6 +13,10 @@ import com.github.davidmoten.guavamini.annotations.VisibleForTesting;
 
 public final class Text {
 
+    private Text() {
+        // prevent instantiation
+    }
+
     /**
      * If previous character is word character then this is part of the word,
      * otherwise can break.
