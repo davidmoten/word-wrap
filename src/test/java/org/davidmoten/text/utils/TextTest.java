@@ -152,6 +152,16 @@ public class TextTest {
         checkWrap("  ?", "  ?");
     }
 
+    @Test
+    public void testBreakOnQuote() {
+        checkWrap("says 'helo'", "says\n'helo'");
+    }
+    
+    @Test
+    public void testBreakQuoteInMiddle() {
+        checkWrap("why he's nasty" , "why\nhe's\nnasty");
+    }
+    
     private void checkWrap(String text, String expected) {
         String s = Text.wordWrap(text, 6);
         System.out.println(s);

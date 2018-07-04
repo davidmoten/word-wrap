@@ -5,9 +5,11 @@ import java.io.Reader;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.regex.Pattern;
 
+import com.github.davidmoten.guavamini.Sets;
 import com.github.davidmoten.guavamini.annotations.VisibleForTesting;
 
 public final class Text {
@@ -16,8 +18,8 @@ public final class Text {
         return wordWrap(text, s -> s.length(), maxWidth);
     }
 
-    public static String wordWrap(String text, Function<? super CharSequence, ? extends Number> stringWidth,
-            Number maxWidth) {
+    public static String wordWrap(String text,
+            Function<? super CharSequence, ? extends Number> stringWidth, Number maxWidth) {
         try (StringReader r = new StringReader(text); StringWriter w = new StringWriter()) {
             wordWrap(r, w, "\n", stringWidth, maxWidth);
             return w.toString();
@@ -26,8 +28,11 @@ public final class Text {
         }
     }
 
+    private static final Set<Character> WORD_CHARS = Sets.newHashSet('\'', '"');
+
     public static void wordWrap(Reader text, Writer out, String newLine,
-            Function<? super CharSequence, ? extends Number> stringWidth, Number maxWidth) throws IOException {
+            Function<? super CharSequence, ? extends Number> stringWidth, Number maxWidth)
+            throws IOException {
         StringBuilder line = new StringBuilder();
         StringBuilder word = new StringBuilder();
         double maxWidthDouble = maxWidth.doubleValue();
@@ -40,7 +45,7 @@ public final class Text {
                 break;
             }
             char ch = (char) c;
-            alphanumeric = Character.isAlphabetic(ch);
+            alphanumeric = Character.isAlphabetic(ch) || WORD_CHARS.contains(ch);
             if (ch == '\n') {
                 line.append(word);
                 out.write(line.toString());
@@ -117,11 +122,11 @@ public final class Text {
     }
 
     private static boolean isPunctuation(char ch) {
-        return Pattern.matches("\\p{Punct}", ch + "");
+        return Pattern.matches("\\p{Punct}", ch + "") && !WORD_CHARS.contains(ch);
     }
 
-    private static boolean tooLong(Function<? super CharSequence, ? extends Number> stringWidth, String s,
-            double maxWidthDouble) {
+    private static boolean tooLong(Function<? super CharSequence, ? extends Number> stringWidth,
+            String s, double maxWidthDouble) {
         return stringWidth.apply(rightTrim(s)).doubleValue() > maxWidthDouble;
     }
 
@@ -177,13 +182,15 @@ public final class Text {
         word.setLength(0);
     }
 
-    private static void writeBrokenWord(Writer out, StringBuilder word, String newLine) throws IOException {
+    private static void writeBrokenWord(Writer out, StringBuilder word, String newLine)
+            throws IOException {
         out.write(word.substring(0, word.length() - 1));
         out.write(newLine);
         word.delete(0, word.length() - 1);
     }
 
-    private static void writeLine(Writer out, StringBuilder line, String newLine) throws IOException {
+    private static void writeLine(Writer out, StringBuilder line, String newLine)
+            throws IOException {
         out.write(line.toString());
         out.write(newLine);
         line.setLength(0);
