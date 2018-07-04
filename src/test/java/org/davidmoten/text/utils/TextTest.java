@@ -2,6 +2,14 @@ package org.davidmoten.text.utils;
 
 import static org.junit.Assert.assertEquals;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.Reader;
+import java.io.Writer;
+
 import org.junit.Test;
 
 public class TextTest {
@@ -24,17 +32,17 @@ public class TextTest {
     public void testRightTrim() {
         assertEquals("abc", Text.rightTrim("abc  "));
     }
-    
+
     @Test
     public void testRightTrimNoSpace() {
         assertEquals("abc", Text.rightTrim("abc"));
     }
-    
+
     @Test
     public void testRightTrimEmpty() {
         assertEquals("", Text.rightTrim(""));
     }
-    
+
     @Test
     public void testRightTrimOnlySpace() {
         assertEquals("", Text.rightTrim("  "));
@@ -121,51 +129,65 @@ public class TextTest {
     public void testLongWordForcesBreak() {
         checkWrap("hellothere", "hellot\nhere");
     }
-    
+
     @Test
     public void breakOnComma() {
-        checkWrap("hi,there", "hi,\nthere");
+        checkWrap("hi,there", "hi,the\nre");
     }
-    
+
     @Test
     public void breakOnCommas() {
-        checkWrap("1,2,3,4,5,6,7,8,9","1,2,3,\n4,5,6,\n7,8,9");
+        checkWrap("1,2,3,4,5,6,7,8,9", "1,2,3,\n4,5,6,\n7,8,9");
     }
-    
+
     @Test
     public void longThenShort() {
         checkWrap("hellothere\n  boo", "hellot\nhere\n  boo");
     }
-    
+
     @Test
     public void longThenShortWithMoreLines() {
         checkWrap("hellothere\n  boo\n  hi", "hellot\nhere\n  boo\n  hi");
     }
-    
+
     @Test
     public void testEndWithNewLine() {
         checkWrap("a\n", "a\n");
     }
-    
+
     @Test
     public void spaceAndQuestionMark() {
         checkWrap("  ?", "  ?");
+    }
+    
+    @Test
+    public void dontBreakOnQuestionMark() {
+        checkWrap("ab cde?", "ab\ncde?");
     }
 
     @Test
     public void testBreakOnQuote() {
         checkWrap("says 'helo'", "says\n'helo'");
     }
-    
+
     @Test
     public void testBreakQuoteInMiddle() {
-        checkWrap("why he's nasty" , "why\nhe's\nnasty");
+        checkWrap("why he's nasty", "why\nhe's\nnasty");
     }
-    
+
     private void checkWrap(String text, String expected) {
         String s = Text.wordWrap(text, 6);
         System.out.println(s);
         assertEquals(expected, s);
+    }
+
+    @Test
+    public void testImportanceOfBeingEarnest() throws IOException {
+        try (Reader in = new InputStreamReader(
+                TextTest.class.getResourceAsStream("/the-importance-of-being-earnest.txt"));
+                Writer out = new OutputStreamWriter(new FileOutputStream("target/book.txt"))) {
+            Text.wordWrap(in, out, 20);
+        }
     }
 
 }

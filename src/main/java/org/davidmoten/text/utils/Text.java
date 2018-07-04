@@ -14,25 +14,33 @@ import com.github.davidmoten.guavamini.annotations.VisibleForTesting;
 
 public final class Text {
 
+    /**
+     * If previous character is word character then this is part of the word,
+     * otherwise can break.
+     */
+    private static final Set<Character> SPECIAL_WORD_CHARS = Sets.newHashSet('\'', '"','\'','\u2018','\u2019','\u201C','\u201D', '?', '.',
+            '/', '!', ',');
+
     public static String wordWrap(String text, int maxWidth) {
-        return wordWrap(text, s -> s.length(), maxWidth);
+        return wordWrap(text, maxWidth, s -> s.length());
     }
 
-    public static String wordWrap(String text,
-            Function<? super CharSequence, ? extends Number> stringWidth, Number maxWidth) {
+    public static String wordWrap(String text, Number maxWidth,
+            Function<? super CharSequence, ? extends Number> stringWidth) {
         try (StringReader r = new StringReader(text); StringWriter w = new StringWriter()) {
-            wordWrap(r, w, "\n", stringWidth, maxWidth);
+            wordWrap(r, w, "\n", maxWidth, stringWidth);
             return w.toString();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
-    private static final Set<Character> WORD_CHARS = Sets.newHashSet('\'', '"');
+    public static void wordWrap(Reader text, Writer out, Number maxWidth) throws IOException {
+        wordWrap(text, out, "\n", maxWidth, s -> s.length());
+    }
 
-    public static void wordWrap(Reader text, Writer out, String newLine,
-            Function<? super CharSequence, ? extends Number> stringWidth, Number maxWidth)
-            throws IOException {
+    public static void wordWrap(Reader text, Writer out, String newLine, Number maxWidth,
+            Function<? super CharSequence, ? extends Number> stringWidth) throws IOException {
         StringBuilder line = new StringBuilder();
         StringBuilder word = new StringBuilder();
         double maxWidthDouble = maxWidth.doubleValue();
@@ -45,7 +53,8 @@ public final class Text {
                 break;
             }
             char ch = (char) c;
-            alphanumeric = Character.isAlphabetic(ch) || WORD_CHARS.contains(ch);
+            alphanumeric = Character.isAlphabetic(ch)
+                    || SPECIAL_WORD_CHARS.contains(ch);
             if (ch == '\n') {
                 line.append(word);
                 out.write(line.toString());
@@ -105,7 +114,7 @@ public final class Text {
                     }
                 }
             }
-            previousWasPunctuation = isPunctuation(ch);
+            previousWasPunctuation = isPunctuation(ch) && !SPECIAL_WORD_CHARS.contains(ch);
         }
         if (line.length() > 0) {
             String s = line.toString() + word.toString();
@@ -122,7 +131,7 @@ public final class Text {
     }
 
     private static boolean isPunctuation(char ch) {
-        return Pattern.matches("\\p{Punct}", ch + "") && !WORD_CHARS.contains(ch);
+        return Pattern.matches("\\p{Punct}", ch + "");
     }
 
     private static boolean tooLong(Function<? super CharSequence, ? extends Number> stringWidth,
