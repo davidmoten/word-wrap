@@ -32,6 +32,15 @@ hi there
 how are
 you going?
 ```
+Stream support:
+
+```java
+Reader in = ...
+Writer out = ...
+String newLine = "\r\n";
+Text.wordWrap(in, out, maxWidth, newLine, s -> s.length());
+```
+
 ## Build
 Use maven:
 ```bash
