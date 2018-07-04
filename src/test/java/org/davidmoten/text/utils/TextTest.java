@@ -189,5 +189,14 @@ public class TextTest {
             Text.wordWrap(in, out, 20);
         }
     }
+    
+    @Test
+    public void testTheBlackGang() throws IOException {
+        try (Reader in = new InputStreamReader(
+                TextTest.class.getResourceAsStream("/the-black-gang.txt"));
+                Writer out = new OutputStreamWriter(new FileOutputStream("target/book2.txt"))) {
+            Text.wordWrap(in, out, 20);
+        }
+    }
 
 }
