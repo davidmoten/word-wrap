@@ -14,6 +14,13 @@ Java library for wrapping text.
 Add this to your pom:
 
 ```xml
-TODO
+String text="hi there how are you going?";
+System.out.println(Text.wordWrap(text, 10));
+```
+Output:
+```
+hi there
+how are
+you going?
 ```
 
