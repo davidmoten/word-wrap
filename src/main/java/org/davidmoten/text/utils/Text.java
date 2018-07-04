@@ -4,11 +4,11 @@ import java.io.IOException;
 import java.io.Reader;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.regex.Pattern;
 
-import com.github.davidmoten.guavamini.Sets;
 import com.github.davidmoten.guavamini.annotations.VisibleForTesting;
 
 public final class Text {
@@ -17,12 +17,9 @@ public final class Text {
         // prevent instantiation
     }
 
-    /**
-     * If previous character is word character then this is part of the word,
-     * otherwise can break.
-     */
-    private static final Set<Character> SPECIAL_WORD_CHARS = Sets.newHashSet('\'', '"', '\'',
-            '\u2018', '\u2019', '\u201C', '\u201D', '?', '.', '/', '!', ',', ';', ':');
+    private static final String SPECIAL_WORD_CHARS = "\"\'\u2018\u2019\u201C\u201D?./!,;:_";
+
+    public static final Set<Character> SPECIAL_WORD_CHARS_SET = toSet(SPECIAL_WORD_CHARS);
 
     public static String wordWrap(String text, int maxWidth) {
         return wordWrap(text, maxWidth, s -> s.length());
@@ -30,7 +27,8 @@ public final class Text {
 
     public static String wordWrap(CharSequence text, Number maxWidth,
             Function<? super CharSequence, ? extends Number> stringWidth) {
-        try (Reader r = new CharSequenceReader(text); StringWriter w = new StringWriter()) {
+        try (Reader r = new CharSequenceReader(text); //
+                StringWriter w = new StringWriter()) {
             wordWrap(r, w, "\n", maxWidth, stringWidth);
             return w.toString();
         } catch (IOException e) {
@@ -38,12 +36,26 @@ public final class Text {
         }
     }
 
-    public static void wordWrap(Reader text, Writer out, Number maxWidth) throws IOException {
-        wordWrap(text, out, "\n", maxWidth, s -> s.length());
+    public static void wordWrap(Reader in, Writer out, Number maxWidth) throws IOException {
+        wordWrap(in, out, "\n", maxWidth, s -> s.length());
     }
 
-    public static void wordWrap(Reader text, Writer out, String newLine, Number maxWidth,
+    public static void wordWrap(Reader in, Writer out, String newLine, Number maxWidth,
             Function<? super CharSequence, ? extends Number> stringWidth) throws IOException {
+        wordWrap(in, out, newLine, maxWidth, stringWidth, toSet(SPECIAL_WORD_CHARS));
+    }
+
+    private static Set<Character> toSet(String chars) {
+        Set<Character> set = new HashSet<Character>();
+        for (int i = 0; i < chars.length(); i++) {
+            set.add(chars.charAt(i));
+        }
+        return set;
+    }
+
+    public static void wordWrap(Reader in, Writer out, String newLine, Number maxWidth,
+            Function<? super CharSequence, ? extends Number> stringWidth,
+            Set<Character> specialWordChars) throws IOException {
         StringBuilder line = new StringBuilder();
         StringBuilder word = new StringBuilder();
         double maxWidthDouble = maxWidth.doubleValue();
@@ -51,12 +63,12 @@ public final class Text {
         boolean alphanumeric = false;
         boolean previousWasPunctuation = false;
         while (true) {
-            int c = text.read();
+            int c = in.read();
             if (c == -1) {
                 break;
             }
             char ch = (char) c;
-            alphanumeric = Character.isAlphabetic(ch) || SPECIAL_WORD_CHARS.contains(ch);
+            alphanumeric = Character.isAlphabetic(ch) || specialWordChars.contains(ch);
             if (ch == '\n') {
                 line.append(word);
                 out.write(line.toString());
@@ -114,7 +126,7 @@ public final class Text {
                     }
                 }
             }
-            previousWasPunctuation = isPunctuation(ch) && !SPECIAL_WORD_CHARS.contains(ch);
+            previousWasPunctuation = isPunctuation(ch) && !specialWordChars.contains(ch);
         }
         if (line.length() > 0) {
             String s = line.toString() + word.toString();

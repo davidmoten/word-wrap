@@ -6,7 +6,7 @@
 Java library for wrapping text.
 
 ## Features
-* Can specify custom string width function
+* Can specify custom string width function (for example `FontMetrics.stringWidth`)
 * Treats special characters appropriately (don't wrap a comma to the next line for example)
 * Conserves leading whitespace on lines
 
