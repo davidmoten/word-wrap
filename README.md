@@ -24,7 +24,7 @@ Add this to your pom:
 ## Usage
 ```java
 String text="hi there how are you going?";
-System.out.println(Text.wordWrap(text, 10));
+System.out.println(WordWrap.from(text).maxWidth(10).wrap());
 ```
 Output:
 ```
@@ -32,14 +32,23 @@ hi there
 how are
 you going?
 ```
-Stream support:
+More options:
 
 ```java
 Reader in = ...
 Writer out = ...
 String newLine = "\r\n";
-Text.wordWrap(in, out, maxWidth, newLine, s -> s.length());
+WordWrap
+  .from(in)
+  .maxWidth(4.5)
+  .newLine("\r\n")
+  .includeWordChars("~")
+  .excludeWordChars("_")
+  .stringWidth(s -> s.length())
+  .wrap(out);
 ```
+
+Note that the `WordWrap` builder used above is quite flexible and allows you to take input from a `Reader`, `InputStream`, classpath resource, `File`, `String` and has similar options for output.
 
 ## Build
 Use maven:
