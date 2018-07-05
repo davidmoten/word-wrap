@@ -6,9 +6,13 @@
 Java library for wrapping text.
 
 ## Features
+* Designed for use with normally formatted English (spaces after commas, periods for example)
 * Can specify custom string width function (for example `FontMetrics.stringWidth`)
 * Treats special characters appropriately (don't wrap a comma to the next line for example)
 * Conserves leading whitespace on lines
+
+## Motivation
+I needed to render text for display in a PDF using PDFBox but PDFBox didn't offer word wrapping. I searched for libraries to do it and found Apache *commons-text* and *commons-lang* `WordUtils` but it didn't conserve leading spaces on lines and didn't allow for a customizable string width function. 
 
 ## Getting started
 Add this to your pom:
@@ -23,7 +27,7 @@ Add this to your pom:
 
 ## Usage
 ```java
-String text="hi there how are you going?";
+String text = "hi there how are you going?";
 System.out.println(WordWrap.from(text).maxWidth(10).wrap());
 ```
 Output:
