@@ -12,7 +12,7 @@ Java library for wrapping text.
 * Conserves leading whitespace on lines
 
 ## Motivation
-I needed to render text for display in a PDF using PDFBox but PDFBox didn't offer word wrapping. I searched for libraries to do it and found Apache *commons-text* and *commons-lang* `WordUtils` but it didn't conserve leading spaces on lines and didn't allow for a customizable string width function. 
+I needed to render text for display in a PDF using [PDFBox](https://pdfbox.apache.org/) but PDFBox didn't offer word wrapping. I searched for libraries to do it and found Apache *commons-text* and *commons-lang* `WordUtils` but it didn't conserve leading spaces on lines and didn't allow for a customizable string width function. 
 
 ## Getting started
 Add this to your pom:
