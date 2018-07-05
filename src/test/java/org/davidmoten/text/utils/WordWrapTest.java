@@ -191,6 +191,11 @@ public class WordWrapTest {
         WordWrap.from("hello there").maxWidth(6);
     }
 
+    @Test
+    public void testShortThenLong() {
+        checkWrap("hi mygoodnessme", "hi\nmygoo-\ndness-\nme");
+    }
+    
     private void checkWrap(String text, String expected) {
         String s = WordWrap.from(text).maxWidth(6).wrap();
         System.out.println(s);
