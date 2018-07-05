@@ -234,25 +234,15 @@ public final class WordWrap {
                 }
                 word.append(ch);
                 if (tooLongRightTrim(stringWidth, line.toString() + word.toString(), maxWidthDouble)) {
-                    if (line.length() > 0) {
-                        if (!isWhitespace(line)) {
-                            writeLine(out, line, newLine);
-                        } else {
-                            line.setLength(0);
-                        }
-                        broken = true;
+                    Preconditions.checkArgument(line.length() > 0,
+                            "line length was zero. If this happens please" //
+                            + " contribute unit test that provokes this failure to the project!");
+                    if (!isWhitespace(line)) {
+                        writeLine(out, line, newLine);
                     } else {
-                        String w = word.substring(0, word.length() - 1);
-                        word.delete(0, word.length() - 1);
-                        if (broken) {
-                            w = leftTrim(w);
-                        }
-                        if (w.length() > 0) {
-                            out.write(w);
-                            out.write(newLine);
-                            broken = false;
-                        }
+                        line.setLength(0);
                     }
+                    broken = true;
                 }
             }
             previousWasPunctuation = isPunctuation(ch) && !specialWordChars.contains(ch);
