@@ -78,7 +78,7 @@ public class WordWrapTest {
 
     @Test
     public void testPrecedingWhitespaceLongWord() {
-        checkWrap("  helloyou", "  hell\noyou");
+        checkWrap("  helloyou", "  hel-\nloyou");
     }
 
     @Test
@@ -128,12 +128,17 @@ public class WordWrapTest {
 
     @Test
     public void testLongWordForcesBreak() {
-        checkWrap("hellothere", "hellot\nhere");
+        checkWrap("hellothere", "hello-\nthere");
+    }
+    
+    @Test
+    public void testLongWordForcesBreakNoHyphens() {
+        assertEquals("hellot\nhere", WordWrap.from("hellothere").maxWidth(6).insertHyphens(false).wrap());
     }
 
     @Test
     public void breakOnComma() {
-        checkWrap("hi,there", "hi,the\nre");
+        checkWrap("hi,there", "hi,th-\nere");
     }
 
     @Test
@@ -143,12 +148,12 @@ public class WordWrapTest {
 
     @Test
     public void longThenShort() {
-        checkWrap("hellothere\n  boo", "hellot\nhere\n  boo");
+        checkWrap("hellothere\n  boo", "hello-\nthere\n  boo");
     }
 
     @Test
     public void longThenShortWithMoreLines() {
-        checkWrap("hellothere\n  boo\n  hi", "hellot\nhere\n  boo\n  hi");
+        checkWrap("hellothere\n  boo\n  hi", "hello-\nthere\n  boo\n  hi");
     }
 
     @Test
