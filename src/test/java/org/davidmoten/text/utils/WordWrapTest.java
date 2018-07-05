@@ -140,6 +140,11 @@ public class WordWrapTest {
     public void breakOnComma() {
         checkWrap("hi,there", "hi,th-\nere");
     }
+    
+    @Test
+    public void noHyphenAfterDigits() {
+        checkWrap("1234567890","123456\n7890");
+    }
 
     @Test
     public void breakOnCommas() {

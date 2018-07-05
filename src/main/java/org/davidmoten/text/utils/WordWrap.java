@@ -195,7 +195,7 @@ public final class WordWrap {
                 break;
             }
             char ch = (char) c;
-            alphanumeric = Character.isAlphabetic(ch) || specialWordChars.contains(ch);
+            alphanumeric = Character.isLetter(ch) || specialWordChars.contains(ch);
             if (ch == '\n') {
                 line.append(word);
                 out.write(line.toString());
