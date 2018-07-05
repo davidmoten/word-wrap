@@ -196,6 +196,21 @@ public class WordWrapTest {
         checkWrap("hi mygoodnessme", "hi\nmygoo-\ndness-\nme");
     }
     
+    @Test
+    public void testLongWhitespaceThenWord() {
+        checkWrap("        a","\na");
+    }
+    
+    @Test
+    public void testLongWhitespaceLastLine() {
+        checkWrap("          ","");
+    }
+    
+    @Test
+    public void testLongWhitespaceThenNewLine() {
+        checkWrap("          \n","\n");
+    }
+    
     private void checkWrap(String text, String expected) {
         String s = WordWrap.from(text).maxWidth(6).wrap();
         System.out.println(s);

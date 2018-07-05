@@ -198,7 +198,9 @@ public final class WordWrap {
             alphanumeric = Character.isLetter(ch) || specialWordChars.contains(ch);
             if (ch == '\n') {
                 line.append(word);
-                out.write(line.toString());
+                if (!isWhitespace(line)) {
+                    out.write(line.toString());
+                }
                 out.write(newLine);
                 word.setLength(0);
                 line.setLength(0);
@@ -210,11 +212,11 @@ public final class WordWrap {
                 if (broken && line.length() == 0) {
                     leftTrim(word);
                 }
-                if (tooLong(stringWidth, line.toString() + word.toString(), maxWidthDouble)) {
+                if (tooLongRightTrim(stringWidth, line.toString() + word.toString(), maxWidthDouble)) {
                     if (line.length() > 0) {
                         writeLine(out, line, newLine);
                         leftTrim(word);
-                        if (tooLong(stringWidth, word.toString(), maxWidthDouble)) {
+                        if (tooLongRightTrim(stringWidth, word.toString(), maxWidthDouble)) {
                             writeBrokenWord(out, word, newLine, insertHyphens);
                         } else {
                             broken = true;
@@ -231,7 +233,7 @@ public final class WordWrap {
                     }
                 }
                 word.append(ch);
-                if (tooLong(stringWidth, line.toString() + word.toString(), maxWidthDouble)) {
+                if (tooLongRightTrim(stringWidth, line.toString() + word.toString(), maxWidthDouble)) {
                     if (line.length() > 0) {
                         if (!isWhitespace(line)) {
                             writeLine(out, line, newLine);
@@ -265,7 +267,9 @@ public final class WordWrap {
             if (broken) {
                 leftTrim(word);
             }
-            out.write(word.toString());
+            if (!isWhitespace(word)) {
+                out.write(word.toString());
+            }
         }
     }
 
@@ -273,7 +277,7 @@ public final class WordWrap {
         return Pattern.matches("\\p{Punct}", ch + "");
     }
 
-    private static boolean tooLong(Function<? super CharSequence, ? extends Number> stringWidth, String s,
+    private static boolean tooLongRightTrim(Function<? super CharSequence, ? extends Number> stringWidth, String s,
             double maxWidthDouble) {
         return stringWidth.apply(rightTrim(s)).doubleValue() > maxWidthDouble;
     }
@@ -334,12 +338,15 @@ public final class WordWrap {
             throws IOException {
         // to be really thorough we'd check the new stringWidth with '-' but let's not
         // bother for now
-        if (insertHyphens) {
+        if (insertHyphens && word.length() > 2 && !isWhitespace(word.substring(0, word.length() - 2))) {
             out.write(word.substring(0, word.length() - 2) + "-");
             out.write(newLine);
             word.delete(0, word.length() - 2);
         } else {
-            out.write(word.substring(0, word.length() - 1));
+            String prefix = word.substring(0, word.length() - 1);
+            if (!isWhitespace(prefix)) {
+                out.write(word.substring(0, word.length() - 1));
+            }
             out.write(newLine);
             word.delete(0, word.length() - 1);
         }
