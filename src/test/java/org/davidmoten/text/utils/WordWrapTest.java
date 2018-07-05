@@ -2,17 +2,18 @@ package org.davidmoten.text.utils;
 
 import static org.junit.Assert.assertEquals;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.io.Reader;
-import java.io.Writer;
 
 import org.junit.Test;
 
+import com.github.davidmoten.junit.Asserts;
+
 public class WordWrapTest {
+    
+    @Test
+    public void testIsUtilityClass() {
+        Asserts.assertIsUtilityClass(WordWrap.class);
+    }
 
     @Test
     public void testTrimLeadingSpaces0() {
