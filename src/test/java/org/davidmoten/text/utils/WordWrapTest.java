@@ -2,6 +2,7 @@ package org.davidmoten.text.utils;
 
 import static org.junit.Assert.assertEquals;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -11,46 +12,46 @@ import java.io.Writer;
 
 import org.junit.Test;
 
-public class TextTest {
+public class WordWrapTest {
 
     @Test
     public void testTrimLeadingSpaces0() {
         StringBuilder s = new StringBuilder("abc");
-        Text.leftTrim(s);
+        WordWrap.leftTrim(s);
         assertEquals("abc", s.toString());
     }
 
     @Test
     public void testTrimLeadingSpaces1() {
         StringBuilder s = new StringBuilder(" abc");
-        Text.leftTrim(s);
+        WordWrap.leftTrim(s);
         assertEquals("abc", s.toString());
     }
 
     @Test
     public void testRightTrim() {
-        assertEquals("abc", Text.rightTrim("abc  "));
+        assertEquals("abc", WordWrap.rightTrim("abc  "));
     }
 
     @Test
     public void testRightTrimNoSpace() {
-        assertEquals("abc", Text.rightTrim("abc"));
+        assertEquals("abc", WordWrap.rightTrim("abc"));
     }
 
     @Test
     public void testRightTrimEmpty() {
-        assertEquals("", Text.rightTrim(""));
+        assertEquals("", WordWrap.rightTrim(""));
     }
 
     @Test
     public void testRightTrimOnlySpace() {
-        assertEquals("", Text.rightTrim("  "));
+        assertEquals("", WordWrap.rightTrim("  "));
     }
 
     @Test
     public void testTrimLeadingSpaces3() {
         StringBuilder s = new StringBuilder("   abc");
-        Text.leftTrim(s);
+        WordWrap.leftTrim(s);
         assertEquals("abc", s.toString());
     }
 
@@ -158,7 +159,7 @@ public class TextTest {
     public void spaceAndQuestionMark() {
         checkWrap("  ?", "  ?");
     }
-    
+
     @Test
     public void dontBreakOnQuestionMark() {
         checkWrap("ab cde?", "ab\ncde?");
@@ -174,28 +175,29 @@ public class TextTest {
         checkWrap("why he's nasty", "why\nhe's\nnasty");
     }
 
+    @Test
+    public void testBuilder() {
+        WordWrap.from("hello there").maxWidth(6);
+    }
+
     private void checkWrap(String text, String expected) {
-        String s = Text.wordWrap(text, 6);
+        String s = WordWrap.from(text).maxWidth(6).wrap();
         System.out.println(s);
         assertEquals(expected, s);
     }
 
     @Test
     public void testImportanceOfBeingEarnest() throws IOException {
-        try (Reader in = new InputStreamReader(
-                TextTest.class.getResourceAsStream("/the-importance-of-being-earnest.txt"));
-                Writer out = new OutputStreamWriter(new FileOutputStream("target/book.txt"))) {
-            Text.wordWrap(in, out, 20);
-        }
+        WordWrap.fromClasspathUtf8("/the-importance-of-being-earnest.txt") //
+                .maxWidth(20) //
+                .wrapUtf8("target/book.txt");
     }
-    
+
     @Test
     public void testTheBlackGang() throws IOException {
-        try (Reader in = new InputStreamReader(
-                TextTest.class.getResourceAsStream("/the-black-gang.txt"));
-                Writer out = new OutputStreamWriter(new FileOutputStream("target/book2.txt"))) {
-            Text.wordWrap(in, out, 20);
-        }
+        WordWrap.fromClasspathUtf8("/the-black-gang.txt") //
+                .maxWidth(20) //
+                .wrapUtf8("target/book2.txt");
     }
 
 }

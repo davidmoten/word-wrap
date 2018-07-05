@@ -1,48 +1,169 @@
 package org.davidmoten.text.utils;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.io.Reader;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.regex.Pattern;
 
+import com.github.davidmoten.guavamini.Preconditions;
 import com.github.davidmoten.guavamini.annotations.VisibleForTesting;
 
-public final class Text {
+public final class WordWrap {
 
-    private Text() {
+    private WordWrap() {
         // prevent instantiation
     }
 
     private static final String SPECIAL_WORD_CHARS = "\"\'\u2018\u2019\u201C\u201D?./!,;:_";
 
-    public static final Set<Character> SPECIAL_WORD_CHARS_SET = toSet(SPECIAL_WORD_CHARS);
+    public static final Set<Character> SPECIAL_WORD_CHARS_SET_DEFAULT = toSet(SPECIAL_WORD_CHARS);
 
-    public static String wordWrap(String text, int maxWidth) {
-        return wordWrap(text, maxWidth, s -> s.length());
+    public static Builder from(Reader reader) {
+        return from(reader, false);
     }
-
-    public static String wordWrap(CharSequence text, Number maxWidth,
-            Function<? super CharSequence, ? extends Number> stringWidth) {
-        try (Reader r = new CharSequenceReader(text); //
-                StringWriter w = new StringWriter()) {
-            wordWrap(r, w, "\n", maxWidth, stringWidth);
-            return w.toString();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+    
+    public static Builder fromClasspathUtf8(String resource) {
+        return fromClasspath(resource, StandardCharsets.UTF_8);
+    }
+    
+    public static Builder fromClasspath(String resource, Charset charset) {
+        return new Builder(new InputStreamReader(WordWrap.class.getResourceAsStream(resource), charset), true);
+    }
+    
+    private static Builder from(Reader reader, boolean close) {
+        return new Builder(reader, close);
+    }
+    
+    public static Builder from(CharSequence text) {
+        return from(new CharSequenceReader(text), true);
+    }
+    
+    public static Builder fromUtf8(InputStream in) {
+        return from(new InputStreamReader(in, StandardCharsets.UTF_8));
+    }
+    
+    public static Builder from(InputStream in, Charset charset) {
+        return from(new InputStreamReader(in, charset));
+    }
+    
+    public static Builder from(File file, Charset charset) {
+        try {
+            return from(new InputStreamReader(new FileInputStream(file), charset), true);
+        } catch (FileNotFoundException e) {
+            throw new IORuntimeException(e);
         }
     }
 
-    public static void wordWrap(Reader in, Writer out, Number maxWidth) throws IOException {
-        wordWrap(in, out, "\n", maxWidth, s -> s.length());
-    }
+    public static final class Builder {
 
-    public static void wordWrap(Reader in, Writer out, String newLine, Number maxWidth,
-            Function<? super CharSequence, ? extends Number> stringWidth) throws IOException {
-        wordWrap(in, out, newLine, maxWidth, stringWidth, toSet(SPECIAL_WORD_CHARS));
+        private final Reader reader;
+        private final boolean closeReader;
+        private Number maxWidth = 80;
+        private Function<? super CharSequence, ? extends Number> stringWidth = s -> s.length();
+        private Set<Character> wordChars = SPECIAL_WORD_CHARS_SET_DEFAULT;
+        private String  newLine= "\n";
+
+        Builder(Reader reader, boolean closeReader) {
+            this.reader = reader;
+            this.closeReader = closeReader;
+        }
+
+        public Builder maxWidth(Number maxWidth) {
+            Preconditions.checkArgument(maxWidth.doubleValue() > 0);
+            this.maxWidth = maxWidth;
+            return this;
+        }
+
+        public Builder stringWidth(Function<? super CharSequence, ? extends Number> stringWidth) {
+            this.stringWidth = stringWidth;
+            return this;
+        }
+        
+        public Builder newLine(String newLine) {
+            this.newLine = newLine;
+            return this;
+        }
+
+        public Builder wordChars(Set<Character> wordChars) {
+            this.wordChars = wordChars;
+            return this;
+        }
+
+        public Builder wordChars(String wordChars) {
+            this.wordChars = toSet(wordChars);
+            return this;
+        }
+
+        public Builder includeWordChars(String includeWordChars) {
+            Set<Character> set = toSet(includeWordChars);
+            this.wordChars.addAll(set);
+            return this;
+        }
+
+        public Builder excludeWordChars(String excludeWordChars) {
+            Set<Character> set = toSet(excludeWordChars);
+            this.wordChars.removeAll(set);
+            return this;
+        }
+
+        public void wrap(Writer out) {
+            try {
+                wordWrap(reader, out,newLine, maxWidth, stringWidth, wordChars );
+            } catch (IOException e) {
+                throw new IORuntimeException(e);
+            } finally {
+                if (closeReader) {
+                    try {
+                        reader.close();
+                    } catch (IOException e) {
+                        throw new IORuntimeException(e);
+                    }
+                }
+            }
+        }
+        
+        public void wrap(File file, Charset charset) {
+            try (Writer writer = new OutputStreamWriter(new FileOutputStream(file), charset)){
+                wrap(writer);
+            } catch (IOException e) {
+                throw new IORuntimeException(e);
+            }
+        }
+        
+        public void wrapUtf8(File file) {
+            wrap(file, StandardCharsets.UTF_8);
+        }
+        
+        public void wrapUtf8(String filename) {
+            wrapUtf8(new File(filename));
+        }
+        
+        public void wrap(String filename, Charset charset) {
+            wrap(filename, charset);
+        }
+        
+        public String wrap() {
+            try (StringWriter out = new StringWriter()) {
+                wrap(out);
+                return out.toString();
+            } catch (IOException e) {
+                throw new IORuntimeException(e);
+            }
+        }
+
     }
 
     private static Set<Character> toSet(String chars) {
@@ -53,9 +174,9 @@ public final class Text {
         return set;
     }
 
-    public static void wordWrap(Reader in, Writer out, String newLine, Number maxWidth,
-            Function<? super CharSequence, ? extends Number> stringWidth,
-            Set<Character> specialWordChars) throws IOException {
+    static void wordWrap(Reader in, Writer out, String newLine, Number maxWidth,
+            Function<? super CharSequence, ? extends Number> stringWidth, Set<Character> specialWordChars)
+            throws IOException {
         StringBuilder line = new StringBuilder();
         StringBuilder word = new StringBuilder();
         double maxWidthDouble = maxWidth.doubleValue();
@@ -146,8 +267,8 @@ public final class Text {
         return Pattern.matches("\\p{Punct}", ch + "");
     }
 
-    private static boolean tooLong(Function<? super CharSequence, ? extends Number> stringWidth,
-            String s, double maxWidthDouble) {
+    private static boolean tooLong(Function<? super CharSequence, ? extends Number> stringWidth, String s,
+            double maxWidthDouble) {
         return stringWidth.apply(rightTrim(s)).doubleValue() > maxWidthDouble;
     }
 
@@ -203,15 +324,13 @@ public final class Text {
         word.setLength(0);
     }
 
-    private static void writeBrokenWord(Writer out, StringBuilder word, String newLine)
-            throws IOException {
+    private static void writeBrokenWord(Writer out, StringBuilder word, String newLine) throws IOException {
         out.write(word.substring(0, word.length() - 1));
         out.write(newLine);
         word.delete(0, word.length() - 1);
     }
 
-    private static void writeLine(Writer out, StringBuilder line, String newLine)
-            throws IOException {
+    private static void writeLine(Writer out, StringBuilder line, String newLine) throws IOException {
         out.write(line.toString());
         out.write(newLine);
         line.setLength(0);
