@@ -2,14 +2,17 @@ package org.davidmoten.text.utils;
 
 import static org.junit.Assert.assertEquals;
 
+import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 
 import org.junit.Test;
 
 import com.github.davidmoten.junit.Asserts;
 
 public class WordWrapTest {
-    
+
     @Test
     public void testIsUtilityClass() {
         Asserts.assertIsUtilityClass(WordWrap.class);
@@ -130,7 +133,7 @@ public class WordWrapTest {
     public void testLongWordForcesBreak() {
         checkWrap("hellothere", "hello-\nthere");
     }
-    
+
     @Test
     public void testLongWordForcesBreakNoHyphens() {
         assertEquals("hellot\nhere", WordWrap.from("hellothere").maxWidth(6).insertHyphens(false).wrap());
@@ -140,10 +143,10 @@ public class WordWrapTest {
     public void breakOnComma() {
         checkWrap("hi,there", "hi,th-\nere");
     }
-    
+
     @Test
     public void noHyphenAfterDigits() {
-        checkWrap("1234567890","123456\n7890");
+        checkWrap("1234567890", "123456\n7890");
     }
 
     @Test
@@ -195,27 +198,27 @@ public class WordWrapTest {
     public void testShortThenLong() {
         checkWrap("hi mygoodnessme", "hi\nmygoo-\ndness-\nme");
     }
-    
+
     @Test
     public void testLongWhitespaceThenWord() {
-        checkWrap("        a","\na");
+        checkWrap("        a", "\na");
     }
-    
+
     @Test
     public void testLongWhitespaceLastLine() {
-        checkWrap("          ","");
+        checkWrap("          ", "");
     }
-    
+
     @Test
     public void testLongWhitespaceThenNewLine() {
-        checkWrap("          \n","\n");
+        checkWrap("          \n", "\n");
     }
-    
+
     @Test
     public void testConserveWhitespace() {
-        checkWrap("  ab\n   cd\n  ef\n\nhi","  ab\n   cd\n  ef\n\nhi");
+        checkWrap("  ab\n   cd\n  ef\n\nhi", "  ab\n   cd\n  ef\n\nhi");
     }
-    
+
     private void checkWrap(String text, String expected) {
         String s = WordWrap.from(text).maxWidth(6).wrap();
         System.out.println(s);
@@ -235,12 +238,34 @@ public class WordWrapTest {
                 .maxWidth(20) //
                 .wrapUtf8("target/the-black-gang.txt");
     }
-    
+
     @Test
     public void testTreasureIsland() throws IOException {
         WordWrap.fromClasspathUtf8("/treasure-island-fragment.txt") //
                 .maxWidth(80) //
                 .wrapUtf8("target/treasure-island-fragment.txt");
+    }
+
+    public static void main(String[] args) throws IOException {
+        int i = 0;
+        long t = 0;
+        byte[] bytes = Files.readAllBytes(new File("src/test/resources/treasure-island-fragment.txt").toPath());
+        String text = new String(bytes, StandardCharsets.UTF_8);
+        while (true) {
+            WordWrap.from(text) //
+                    .maxWidth(80) //
+                    .wrapUtf8("target/treasure-island-fragment.txt");
+            i++;
+            if (i % 100 == 0) {
+                if (i > 1000 && t == 0) {
+                    t = System.currentTimeMillis();
+                }
+                long dt = System.currentTimeMillis() - t;
+                if (dt != 0) {
+                    System.out.println("avgPerSecond=" + (i * 1000 / dt));
+                }
+            }
+        }
     }
 
 }

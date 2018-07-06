@@ -30,8 +30,10 @@ public final class WordWrap {
     private static final String SPECIAL_WORD_CHARS = "\"\'\u2018\u2019\u201C\u201D?./!,;:_";
 
     public static final Set<Character> SPECIAL_WORD_CHARS_SET_DEFAULT = toSet(SPECIAL_WORD_CHARS);
-    
+
     private static final Function<CharSequence, Number> STRING_WIDTH_DEFAULT = s -> s.length();
+
+    private static final String PUNCTUATION = "!\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~";
 
     public static Builder from(Reader reader) {
         return from(reader, false);
@@ -68,7 +70,7 @@ public final class WordWrap {
             throw new IORuntimeException(e);
         }
     }
-    
+
     public static final class Builder {
 
         private final Reader reader;
@@ -236,8 +238,7 @@ public final class WordWrap {
                 }
                 word.append(ch);
                 if (tooLongRightTrim(stringWidth, line.toString() + word.toString(), maxWidthDouble)) {
-                    Preconditions.checkArgument(line.length() > 0,
-                            "line length was zero. If this happens please" //
+                    Preconditions.checkArgument(line.length() > 0, "line length was zero. If this happens please" //
                             + " contribute unit test that provokes this failure to the project!");
                     if (!isWhitespace(line)) {
                         writeLine(out, line, newLine);
@@ -265,17 +266,73 @@ public final class WordWrap {
         }
     }
 
-    private static boolean isPunctuation(char ch) {
-        return Pattern.matches("\\p{Punct}", ch + "");
+    private static CharSequence concat(CharSequence a, CharSequence b) {
+        return new CharSequenceConcat(a, b);
     }
 
-    private static boolean tooLongRightTrim(Function<? super CharSequence, ? extends Number> stringWidth, String s,
-            double maxWidthDouble) {
+    private static final class CharSequenceConcat implements CharSequence {
+
+        private final CharSequence a;
+        private final CharSequence b;
+
+        CharSequenceConcat(CharSequence a, CharSequence b) {
+            this.a = a;
+            this.b = b;
+        }
+
+        @Override
+        public int length() {
+            return a.length() + b.length();
+        }
+
+        @Override
+        public char charAt(int index) {
+            if (index < a.length()) {
+                return a.charAt(index);
+            } else {
+                return b.charAt(index - a.length());
+            }
+        }
+
+        @Override
+        public CharSequence subSequence(int start, int end) {
+            return new CharSequence() {
+
+                @Override
+                public int length() {
+                    return end - start;
+                }
+
+                @Override
+                public char charAt(int index) {
+                    return CharSequenceConcat.this.charAt(start + index);
+                }
+
+                @Override
+                public CharSequence subSequence(int start, int end) {
+                    // only support one level of substring
+                    StringBuilder s = new StringBuilder(end - start);
+                    for (int i = start; i < end; i++) {
+                        s.append(charAt(i));
+                    }
+                    return s;
+                }
+
+            };
+        }
+    }
+
+    private static boolean isPunctuation(char ch) {
+        return PUNCTUATION.indexOf(ch) != -1;
+    }
+
+    private static boolean tooLongRightTrim(Function<? super CharSequence, ? extends Number> stringWidth,
+            CharSequence s, double maxWidthDouble) {
         return stringWidth.apply(rightTrim(s)).doubleValue() > maxWidthDouble;
     }
 
     @VisibleForTesting
-    static String rightTrim(String s) {
+    static CharSequence rightTrim(CharSequence s) {
         int i = s.length();
         while (i > 0) {
             if (Character.isWhitespace(s.charAt(i - 1))) {
@@ -285,7 +342,7 @@ public final class WordWrap {
             }
         }
         if (i != s.length()) {
-            return s.substring(0, i);
+            return s.subSequence(0, i);
         } else {
             return s;
         }
