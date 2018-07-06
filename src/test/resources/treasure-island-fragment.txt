@@ -48,12 +48,6 @@ PART SIX—Captain Silver
 34. And Last 
 
 
-0021m 
-
-0022m 
-
-
-
 TREASURE ISLAND
 To S.L.O., an American gentleman in accordance with whose classic taste the following narrative has been designed, it is now, in return for numerous delightful hours, and with the kindest wishes, dedicated by his affectionate friend, the author.
 
@@ -82,10 +76,6 @@ To S.L.O., an American gentleman in accordance with whose classic taste the foll
                   Where these and their creations lie!
 
 
-0028m 
-
-
-
 TREASURE ISLAND
 
 
@@ -96,10 +86,9 @@ PART ONE—The Old Buccaneer
 
 
 1
-0029m 
 
 The Old Sea-dog at the “Admiral Benbow”
-9029m  
+
 QUIRE TRELAWNEY, Dr. Livesey, and the rest of these gentlemen having asked me to write down the whole particulars about Treasure Island, from the beginning to the end, keeping nothing back but the bearings of the island, and that only because there is still treasure not yet lifted, I take up my pen in the year of grace 17__ and go back to the time when my father kept the Admiral Benbow inn and the brown old seaman with the sabre cut first took up his lodging under our roof.
 
 I remember him as if it were yesterday, as he came plodding to the inn door, his sea-chest following behind him in a hand-barrow—a tall, strong, heavy, nut-brown man, his tarry pigtail falling over the shoulder of his soiled blue coat, his hands ragged and scarred, with black, broken nails, and the sabre cut across one cheek, a dirty, livid white. I remember him looking round the cover and whistling to himself as he did so, and then breaking out in that old sea-song that he sang so often afterwards:
@@ -144,8 +133,6 @@ The old fellow's fury was awful. He sprang to his feet, drew and opened a sailor
 
 The doctor never so much as moved. He spoke to him as before, over his shoulder and in the same tone of voice, rather high, so that all the room might hear, but perfectly calm and steady: “If you do not put that knife this instant in your pocket, I promise, upon my honour, you shall hang at the next assizes.”
 
-0033m 
-
 Then followed a battle of looks between them, but the captain soon knuckled under, put up his weapon, and resumed his seat, grumbling like a beaten dog.
 
 “And now, sir,” continued the doctor, “since I now know there's such a fellow in my district, you may count I'll have an eye upon you day and night. I'm not a doctor only; I'm a magistrate; and if I catch a breath of complaint against you, if it's only for a piece of incivility like tonight's, I'll take effectual means to have you hunted down and routed out of this. Let that suffice.”
@@ -158,10 +145,9 @@ Soon after, Dr. Livesey's horse came to the door and he rode away, but the capta
 
 
 2
-0037m 
 
 Black Dog Appears and Disappears
-9037m  
+
 T was not very long after this that there occurred the first of the mysterious events that rid us at last of the captain, though not, as you will see, of his affairs. It was a bitter cold winter, with long, hard frosts and heavy gales; and it was plain from the first that my poor father was little likely to see the spring. He sank daily, and my mother and I had all the inn upon our hands, and were kept busy enough without paying much regard to our unpleasant guest.
 
 It was one January morning, very early—a pinching, frosty morning—the cove all grey with hoar-frost, the ripple lapping softly on the stones, the sun still low and only touching the hilltops and shining far to seaward. The captain had risen earlier than usual and set out down the beach, his cutlass swinging under the broad skirts of the old blue coat, his brass telescope under his arm, his hat tilted back upon his head. I remember his breath hanging like smoke in his wake as he strode off, and the last sound I heard of him as he turned the big rock was a loud snort of indignation, as though his mind was still running upon Dr. Livesey.
@@ -216,7 +202,7 @@ For a long time, though I certainly did my best to listen, I could hear nothing 
 
 “No, no, no, no; and an end of it!” he cried once. And again, “If it comes to swinging, swing all, say I.”
 
-0041m 
+ 
 
 Then all of a sudden there was a tremendous explosion of oaths and other noises—the chair and table went over in a lump, a clash of steel followed, and then a cry of pain, and the next instant I saw Black Dog in full flight, and the captain hotly pursuing, both with drawn cutlasses, and the former streaming blood from the left shoulder. Just at the door the captain aimed at the fugitive one last tremendous cut, which would certainly have split him to the chine had it not been intercepted by our big signboard of Admiral Benbow. You may see the notch on the lower side of the frame to this day.
 
@@ -268,10 +254,10 @@ And with that he went off to see my father, taking me with him by the arm.
 
 
 3
-0046m 
+ 
 
 The Black Spot
-9046m  
+  
 BOUT noon I stopped at the captain's door with some cooling drinks and medicines. He was lying very much as we had left him, only a little higher, and he seemed both weak and excited.
 
 “Jim,” he said, “you're the only one here that's worth anything, and you know I've been always good to you. Never a month but I've given you a silver fourpenny for yourself. And now you see, mate, I'm pretty low, and deserted by all; and Jim, you'll bring me one noggin of rum, now, won't you, matey?”
@@ -332,7 +318,7 @@ And he gave it, as he spoke, a wrench that made me cry out.
 
 “Come, now, march,” interrupted he; and I never heard a voice so cruel, and cold, and ugly as that blind man's. It cowed me more than the pain, and I began to obey him at once, walking straight in at the door and towards the parlour, where our sick old buccaneer was sitting, dazed with rum. The blind man clung close to me, holding me in one iron fist and leaning almost more of his weight on me than I could carry. “Lead me straight up to him, and when I'm in view, cry out, 'Here's a friend for you, Bill.' If you don't, I'll do this,” and with that he gave me a twitch that I thought would have made me faint. Between this and that, I was so utterly terrified of the blind beggar that I forgot my terror of the captain, and as I opened the parlour door, cried out the words he had ordered in a trembling voice.
 
-0051m 
+ 
 
 The poor captain raised his eyes, and at one look the rum went out of him and left him staring sober. The expression of his face was not so much of terror as of mortal sickness. He made a movement to rise, but I do not believe he had enough force left in his body.
 
@@ -356,10 +342,10 @@ I ran to him at once, calling to my mother. But haste was all in vain. The capta
 
 
 4
-0054m 
+ 
 
 The Sea-chest
-9054m  
+  
 LOST no time, of course, in telling my mother all that I knew, and perhaps should have told her long before, and we saw ourselves at once in a difficult and dangerous position. Some of the man's money—if he had any—was certainly due to us, but it was not likely that our captain's shipmates, above all the two specimens seen by me, Black Dog and the blind beggar, would be inclined to give up their booty in payment of the dead man's debts. The captain's order to mount at once and ride for Doctor Livesey would have left my mother alone and unprotected, which was not to be thought of. Indeed, it seemed impossible for either of us to remain much longer in the house; the fall of coals in the kitchen grate, the very ticking of the clock, filled us with alarms. The neighbourhood, to our ears, seemed haunted by approaching footsteps; and what between the dead body of the captain on the parlour floor and the thought of that detestable blind beggar hovering near at hand and ready to return, there were moments when, as the saying goes, I jumped in my skin for terror. Something must speedily be resolved upon, and it occurred to us at last to go forth together and seek help in the neighbouring hamlet. No sooner said than done. Bare-headed as we were, we ran out at once in the gathering evening and the frosty fog.
 
 The hamlet lay not many hundred yards away, though out of view, on the other side of the next cove; and what greatly encouraged me, it was in an opposite direction from that whence the blind man had made his appearance and whither he had presumably returned. We were not many minutes on the road, though we sometimes stopped to lay hold of each other and hearken. But there was no unusual sound—nothing but the low wash of the ripple and the croaking of the inmates of the wood.
@@ -398,7 +384,7 @@ In the meantime, we had found nothing of any value but the silver and the trinke
 
 “I'll show these rogues that I'm an honest woman,” said my mother. “I'll have my dues, and not a farthing over. Hold Mrs. Crossley's bag.” And she began to count over the amount of the captain's score from the sailor's bag into the one that I was holding.
 
-0059m 
+ 
 
 It was a long, difficult business, for the coins were of all countries and sizes—doubloons, and louis d'ors, and guineas, and pieces of eight, and I know not what besides, all shaken together at random. The guineas, too, were about the scarcest, and it was with these only that my mother knew how to make her count.
 
@@ -424,10 +410,10 @@ This was certainly the end for both of us, I thought. How I cursed the cowardice
 
 
 5
-0062m 
+ 
 
 The Last of the Blind Man
-9062m  
+  
 Y curiosity, in a sense, was stronger than my fear, for I could not remain where I was, but crept back to the bank again, whence, sheltering my head behind a bush of broom, I might command the road before our door. I was scarcely in position ere my enemies began to arrive, seven or eight of them, running hard, their feet beating out of time along the road and the man with the lantern some paces in front. Three men ran together, hand in hand; and I made out, even through the mist, that the middle man of this trio was the blind beggar. The next moment his voice showed me that I was right.
 
 “Down with the door!” he cried.
@@ -482,7 +468,7 @@ This appeal seemed to produce some effect, for two of the fellows began to look 
 
 Squalling was the word for it; Pew's anger rose so high at these objections till at last, his passion completely taking the upper hand, he struck at them right and left in his blindness and his stick sounded heavily on more than one.
 
-0065m 
+ 
 
 These, in their turn, cursed back at the blind miscreant, threatened him in horrid terms, and tried in vain to catch the stick and wrest it from his grasp.
 
@@ -522,10 +508,10 @@ As soon as I was mounted, holding on to Dogger's belt, the supervisor gave the w
 
 
 6
-0070m 
+ 
 
 The Captain's Papers
-9070m  
+  
 E rode hard all the way till we drew up before Dr. Livesey's door. The house was all dark to the front.
 
 Mr. Dance told me to jump down and knock, and Dogger gave me a stirrup to descend by. The door was opened almost at once by the maid.

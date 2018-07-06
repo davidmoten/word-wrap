@@ -226,21 +226,21 @@ public class WordWrapTest {
     public void testImportanceOfBeingEarnest() throws IOException {
         WordWrap.fromClasspathUtf8("/the-importance-of-being-earnest.txt") //
                 .maxWidth(20) //
-                .wrapUtf8("target/book.txt");
+                .wrapUtf8("target/the-importance-of-being-earnest.txt");
     }
 
     @Test
     public void testTheBlackGang() throws IOException {
         WordWrap.fromClasspathUtf8("/the-black-gang.txt") //
                 .maxWidth(20) //
-                .wrapUtf8("target/book2.txt");
+                .wrapUtf8("target/the-black-gang.txt");
     }
     
     @Test
     public void testTreasureIsland() throws IOException {
         WordWrap.fromClasspathUtf8("/treasure-island-fragment.txt") //
-                .maxWidth(100) //
-                .wrapUtf8("target/book3.txt");
+                .maxWidth(80) //
+                .wrapUtf8("target/treasure-island-fragment.txt");
     }
 
 }
