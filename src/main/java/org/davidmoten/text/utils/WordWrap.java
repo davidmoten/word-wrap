@@ -17,6 +17,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import com.github.davidmoten.guavamini.Preconditions;
 import com.github.davidmoten.guavamini.annotations.VisibleForTesting;
@@ -270,58 +271,6 @@ public final class WordWrap {
         return new CharSequenceConcat(a, b);
     }
 
-    private static final class CharSequenceConcat implements CharSequence {
-
-        private final CharSequence a;
-        private final CharSequence b;
-
-        CharSequenceConcat(CharSequence a, CharSequence b) {
-            this.a = a;
-            this.b = b;
-        }
-
-        @Override
-        public int length() {
-            return a.length() + b.length();
-        }
-
-        @Override
-        public char charAt(int index) {
-            if (index < a.length()) {
-                return a.charAt(index);
-            } else {
-                return b.charAt(index - a.length());
-            }
-        }
-
-        @Override
-        public CharSequence subSequence(int start, int end) {
-            return new CharSequence() {
-
-                @Override
-                public int length() {
-                    return end - start;
-                }
-
-                @Override
-                public char charAt(int index) {
-                    return CharSequenceConcat.this.charAt(start + index);
-                }
-
-                @Override
-                public CharSequence subSequence(int start, int end) {
-                    // only support one level of substring
-                    StringBuilder s = new StringBuilder(end - start);
-                    for (int i = start; i < end; i++) {
-                        s.append(charAt(i));
-                    }
-                    return s;
-                }
-
-            };
-        }
-    }
-
     private static boolean isPunctuation(char ch) {
         return PUNCTUATION.indexOf(ch) != -1;
     }
@@ -387,14 +336,16 @@ public final class WordWrap {
             throws IOException {
         // to be really thorough we'd check the new stringWidth with '-' but let's not
         // bother for now
-        if (insertHyphens && word.length() > 2 && !isWhitespace(word.substring(0, word.length() - 2))) {
-            out.write(word.substring(0, word.length() - 2) + "-");
+        String x;
+        if (insertHyphens && word.length() > 2 && !isWhitespace((x = word.substring(0, word.length() - 2)))) {
+            out.write(x);
+            out.write("-");
             out.write(newLine);
             word.delete(0, word.length() - 2);
         } else {
             String prefix = word.substring(0, word.length() - 1);
             if (!isWhitespace(prefix)) {
-                out.write(word.substring(0, word.length() - 1));
+                out.write(prefix);
             }
             out.write(newLine);
             word.delete(0, word.length() - 1);
