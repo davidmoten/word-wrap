@@ -211,6 +211,11 @@ public class WordWrapTest {
         checkWrap("          \n","\n");
     }
     
+    @Test
+    public void testConserveWhitespace() {
+        checkWrap("  ab\n   cd\n  ef\n\nhi","  ab\n   cd\n  ef\n\nhi");
+    }
+    
     private void checkWrap(String text, String expected) {
         String s = WordWrap.from(text).maxWidth(6).wrap();
         System.out.println(s);
@@ -229,6 +234,13 @@ public class WordWrapTest {
         WordWrap.fromClasspathUtf8("/the-black-gang.txt") //
                 .maxWidth(20) //
                 .wrapUtf8("target/book2.txt");
+    }
+    
+    @Test
+    public void testTreasureIsland() throws IOException {
+        WordWrap.fromClasspathUtf8("/treasure-island-fragment.txt") //
+                .maxWidth(100) //
+                .wrapUtf8("target/book3.txt");
     }
 
 }
