@@ -61,6 +61,9 @@ Note that the `WordWrap` builder used above is quite flexible and allows you to 
 ## Rewrapping classic fiction
 A good test is to rewrap novels downloaded from Gutenberg (copied from the html form). When you run `mvn test` the output of *The Importance of Being Earnest*, *The Black Gang*, and *Treasure Island* are rewrapped into the directory `target` with line lengths of 20, 20 and 80 respectively. Part of the testing process for this library in addition to lots of unit tests is inspecting the wrapped output from these novels.
 
+## Performance
+The library has been built with correctness in mind rather than performance (although streaming options in the library does mean that memory use can be kept down for large texts). Later releases may include performance enhancements. If it's a priority for you then let me know!
+
 ## Build
 Use maven:
 ```bash
