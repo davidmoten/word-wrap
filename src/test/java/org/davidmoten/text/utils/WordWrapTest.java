@@ -218,7 +218,37 @@ public class WordWrapTest {
     public void testConserveWhitespace() {
         checkWrap("  ab\n   cd\n  ef\n\nhi", "  ab\n   cd\n  ef\n\nhi");
     }
+    
+    @Test
+    public void testStringWidth() {
+        String text = WordWrap.from("abc").maxWidth(4).stringWidth(s -> s.length() * 2).wrap();
+        assertEquals("a-\nbc",text);
+    }
 
+    @Test
+    public void testNewLineOverride() {
+        String text = WordWrap.from("abc").maxWidth(2).newLine("\r\n").wrap();
+        assertEquals("a-\r\nbc",text);
+    }
+    
+    @Test
+    public void testSetWordChars() {
+        String text = WordWrap.from("abc").maxWidth(2).wordChars("abc").wrap();
+        assertEquals("a-\nbc",text);
+    }
+    
+    @Test
+    public void testIncludeWordChars() {
+        String text = WordWrap.from("abc").maxWidth(2).wordChars("").includeWordChars("abc").wrap();
+        assertEquals("a-\nbc",text);
+    }
+    
+    @Test
+    public void testExcludeWordChars() {
+        String text = WordWrap.from("abc").maxWidth(2).wordChars("abc").excludeWordChars("abc").wrap();
+        assertEquals("a-\nbc",text);
+    }
+    
     private void checkWrap(String text, String expected) {
         String s = WordWrap.from(text).maxWidth(6).wrap();
         System.out.println(s);

@@ -16,8 +16,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Function;
-import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 import com.github.davidmoten.guavamini.Preconditions;
 import com.github.davidmoten.guavamini.annotations.VisibleForTesting;
@@ -109,8 +107,7 @@ public final class WordWrap {
         }
 
         public Builder wordChars(String wordChars) {
-            this.wordChars = toSet(wordChars);
-            return this;
+            return wordChars(toSet(wordChars));
         }
 
         public Builder includeWordChars(String includeWordChars) {
