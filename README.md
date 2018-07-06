@@ -48,6 +48,7 @@ WordWrap
   .newLine("\r\n")
   .includeWordChars("~")
   .excludeWordChars("_")
+  .insertHyphens(true)
   .stringWidth(s -> s.length())
   .wrap(out);
 ```

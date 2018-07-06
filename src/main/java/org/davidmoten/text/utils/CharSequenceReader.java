@@ -33,8 +33,7 @@ final class CharSequenceReader extends Reader {
     private int mark;
 
     public CharSequenceReader(CharSequence seq) {
-        Preconditions.checkNotNull(seq);
-        this.seq = seq;
+        this.seq = Preconditions.checkNotNull(seq);
     }
 
     private void checkOpen() throws IOException {
