@@ -30,6 +30,8 @@ public final class WordWrap {
     private static final String SPECIAL_WORD_CHARS = "\"\'\u2018\u2019\u201C\u201D?./!,;:_";
 
     public static final Set<Character> SPECIAL_WORD_CHARS_SET_DEFAULT = toSet(SPECIAL_WORD_CHARS);
+    
+    private static final Function<CharSequence, Number> STRING_WIDTH_DEFAULT = s -> s.length();
 
     public static Builder from(Reader reader) {
         return from(reader, false);
@@ -66,13 +68,13 @@ public final class WordWrap {
             throw new IORuntimeException(e);
         }
     }
-
+    
     public static final class Builder {
 
         private final Reader reader;
         private final boolean closeReader;
         private Number maxWidth = 80;
-        private Function<? super CharSequence, ? extends Number> stringWidth = s -> s.length();
+        private Function<? super CharSequence, ? extends Number> stringWidth = STRING_WIDTH_DEFAULT;
         private Set<Character> wordChars = SPECIAL_WORD_CHARS_SET_DEFAULT;
         private String newLine = "\n";
         private boolean insertHyphens = true;
