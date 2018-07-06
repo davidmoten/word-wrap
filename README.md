@@ -14,7 +14,7 @@ Java library for wrapping text.
 * Easy to use and read builder
 
 ## Motivation
-The primary author of this librar needed to render text for display in a PDF using [PDFBox](https://pdfbox.apache.org/) but PDFBox didn't offer word wrapping. He searched for libraries to do it and found Apache *commons-text* and *commons-lang* `WordUtils` but it didn't conserve leading spaces on lines and didn't allow for a customizable string width function. With a bit of luck this library will help those who are on a similar search!
+@davidmoten needed to render text for display in a PDF using [PDFBox](https://pdfbox.apache.org/) but PDFBox didn't offer word wrapping. He searched for libraries to do it and found Apache *commons-text* and *commons-lang* `WordUtils` but it didn't conserve leading spaces on lines and didn't allow for a customizable string width function. With a bit of luck this library will help those who are on a similar search!
 
 ## Getting started
 Add this to your pom:
@@ -30,7 +30,8 @@ Add this to your pom:
 ## Usage
 ```java
 String text = "hi there how are you going?";
-System.out.println(WordWrap.from(text).maxWidth(10).wrap());
+System.out.println(
+  WordWrap.from(text).maxWidth(10).wrap());
 ```
 Output:
 ```
