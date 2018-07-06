@@ -5,6 +5,8 @@
 
 Java library for wrapping text.
 
+Maven site reports are [here](https://davidmoten.github.io/word-wrap) including [javadoc](https://davidmoten.github.io/word-wrap/apidocs/index.html).
+
 ## Features
 * Designed for use with normally formatted English (spaces after commas, periods for example)
 * Can specify custom string width function (for example `FontMetrics.stringWidth`)
