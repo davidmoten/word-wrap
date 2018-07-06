@@ -259,6 +259,7 @@ public class WordWrapTest {
             if (i % 100 == 0) {
                 if (i > 1000 && t == 0) {
                     t = System.currentTimeMillis();
+                    i = 0;
                 }
                 long dt = System.currentTimeMillis() - t;
                 if (dt != 0) {

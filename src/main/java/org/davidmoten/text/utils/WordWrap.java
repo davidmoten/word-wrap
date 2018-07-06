@@ -216,11 +216,11 @@ public final class WordWrap {
                 if (broken && line.length() == 0) {
                     leftTrim(word);
                 }
-                if (tooLongRightTrim(stringWidth, line.toString() + word.toString(), maxWidthDouble)) {
+                if (tooLongRightTrim(stringWidth, concat(line, word), maxWidthDouble)) {
                     if (line.length() > 0) {
                         writeLine(out, line, newLine);
                         leftTrim(word);
-                        if (tooLongRightTrim(stringWidth, word.toString(), maxWidthDouble)) {
+                        if (tooLongRightTrim(stringWidth, word, maxWidthDouble)) {
                             writeBrokenWord(out, word, newLine, insertHyphens);
                         } else {
                             broken = true;
@@ -237,7 +237,7 @@ public final class WordWrap {
                     }
                 }
                 word.append(ch);
-                if (tooLongRightTrim(stringWidth, line.toString() + word.toString(), maxWidthDouble)) {
+                if (tooLongRightTrim(stringWidth, concat(line, word), maxWidthDouble)) {
                     Preconditions.checkArgument(line.length() > 0, "line length was zero. If this happens please" //
                             + " contribute unit test that provokes this failure to the project!");
                     if (!isWhitespace(line)) {
