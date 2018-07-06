@@ -1,18 +1,22 @@
 package org.davidmoten.text.utils;
 
-final class CharSequenceConcat implements CharSequence {
+final class CharSequenceConcatRightTrim implements CharSequence {
 
     private final CharSequence a;
     private final CharSequence b;
 
-    CharSequenceConcat(CharSequence a, CharSequence b) {
+    CharSequenceConcatRightTrim(CharSequence a, CharSequence b) {
         this.a = a;
         this.b = b;
     }
 
     @Override
     public int length() {
-        return a.length() + b.length();
+        int i = a.length() + b.length() - 1;
+        while (i > 0 && Character.isWhitespace(charAt(i))) {
+            i--;
+        }
+        return i + 1;
     }
 
     @Override
@@ -35,7 +39,7 @@ final class CharSequenceConcat implements CharSequence {
 
             @Override
             public char charAt(int index) {
-                return CharSequenceConcat.this.charAt(start + index);
+                return CharSequenceConcatRightTrim.this.charAt(start + index);
             }
 
             @Override
@@ -63,7 +67,12 @@ final class CharSequenceConcat implements CharSequence {
 
     @Override
     public String toString() {
-        return a.toString() + b.toString();
+        StringBuilder s = new StringBuilder();
+        int len = length();
+        for (int i = 0; i < len; i++) {
+            s.append(charAt(i));
+        }
+        return s.toString();
     }
 
 }

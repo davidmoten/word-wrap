@@ -43,7 +43,8 @@ public final class WordWrap {
     }
 
     public static Builder fromClasspath(String resource, Charset charset) {
-        return new Builder(new InputStreamReader(WordWrap.class.getResourceAsStream(resource), charset), true);
+        return new Builder(
+                new InputStreamReader(WordWrap.class.getResourceAsStream(resource), charset), true);
     }
 
     private static Builder from(Reader reader, boolean close) {
@@ -183,10 +184,11 @@ public final class WordWrap {
     }
 
     static void wordWrap(Reader in, Writer out, String newLine, Number maxWidth,
-            Function<? super CharSequence, ? extends Number> stringWidth, Set<Character> specialWordChars,
-            boolean insertHyphens) throws IOException {
+            Function<? super CharSequence, ? extends Number> stringWidth,
+            Set<Character> specialWordChars, boolean insertHyphens) throws IOException {
         StringBuilder line = new StringBuilder();
         StringBuilder word = new StringBuilder();
+        CharSequence lineAndWordRightTrim = concatRightTrim(line, word);
         double maxWidthDouble = maxWidth.doubleValue();
         boolean broken = false;
         boolean alphanumeric = false;
@@ -214,11 +216,11 @@ public final class WordWrap {
                 if (broken && line.length() == 0) {
                     leftTrim(word);
                 }
-                if (tooLongRightTrim(stringWidth, concat(line, word), maxWidthDouble)) {
+                if (tooLong(stringWidth, lineAndWordRightTrim, maxWidthDouble)) {
                     if (line.length() > 0) {
                         writeLine(out, line, newLine);
                         leftTrim(word);
-                        if (tooLongRightTrim(stringWidth, word, maxWidthDouble)) {
+                        if (tooLong(stringWidth, word, maxWidthDouble)) {
                             writeBrokenWord(out, word, newLine, insertHyphens);
                         } else {
                             broken = true;
@@ -235,9 +237,10 @@ public final class WordWrap {
                     }
                 }
                 word.append(ch);
-                if (tooLongRightTrim(stringWidth, concat(line, word), maxWidthDouble)) {
-                    Preconditions.checkArgument(line.length() > 0, "line length was zero. If this happens please" //
-                            + " contribute unit test that provokes this failure to the project!");
+                if (tooLong(stringWidth, lineAndWordRightTrim, maxWidthDouble)) {
+                    Preconditions.checkArgument(line.length() > 0,
+                            "line length was zero. If this happens please" //
+                                    + " contribute unit test that provokes this failure to the project!");
                     if (!isWhitespace(line)) {
                         writeLine(out, line, newLine);
                     } else {
@@ -264,17 +267,17 @@ public final class WordWrap {
         }
     }
 
-    private static CharSequence concat(CharSequence a, CharSequence b) {
-        return new CharSequenceConcat(a, b);
+    private static CharSequence concatRightTrim(CharSequence a, CharSequence b) {
+        return new CharSequenceConcatRightTrim(a, b);
     }
 
     private static boolean isPunctuation(char ch) {
         return PUNCTUATION.indexOf(ch) != -1;
     }
 
-    private static boolean tooLongRightTrim(Function<? super CharSequence, ? extends Number> stringWidth,
+    private static boolean tooLong(Function<? super CharSequence, ? extends Number> stringWidth,
             CharSequence s, double maxWidthDouble) {
-        return stringWidth.apply(rightTrim(s)).doubleValue() > maxWidthDouble;
+        return stringWidth.apply(s).doubleValue() > maxWidthDouble;
     }
 
     @VisibleForTesting
@@ -329,12 +332,13 @@ public final class WordWrap {
         word.setLength(0);
     }
 
-    private static void writeBrokenWord(Writer out, StringBuilder word, String newLine, boolean insertHyphens)
-            throws IOException {
+    private static void writeBrokenWord(Writer out, StringBuilder word, String newLine,
+            boolean insertHyphens) throws IOException {
         // to be really thorough we'd check the new stringWidth with '-' but let's not
         // bother for now
         String x;
-        if (insertHyphens && word.length() > 2 && !isWhitespace((x = word.substring(0, word.length() - 2)))) {
+        if (insertHyphens && word.length() > 2
+                && !isWhitespace((x = word.substring(0, word.length() - 2)))) {
             out.write(x);
             out.write("-");
             out.write(newLine);
@@ -349,7 +353,8 @@ public final class WordWrap {
         }
     }
 
-    private static void writeLine(Writer out, StringBuilder line, String newLine) throws IOException {
+    private static void writeLine(Writer out, StringBuilder line, String newLine)
+            throws IOException {
         out.write(line.toString());
         out.write(newLine);
         line.setLength(0);
