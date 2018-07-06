@@ -66,6 +66,10 @@ A good test is to rewrap novels downloaded from Gutenberg (copied from the html 
 ## Performance
 The library has been built with correctness in mind rather than performance (although streaming options in the library does mean that memory use can be kept down for large texts). Later releases may include performance enhancements. If it's a priority for you then let me know!
 
+17 July 2018:
+* increased throughput by 3x
+* decreased allocations by 90%
+
 ## Build
 Use maven:
 ```bash
