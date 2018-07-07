@@ -161,7 +161,7 @@ public final class WordWrap {
         }
 
         public void wrap(String filename, Charset charset) {
-            wrap(filename, charset);
+            wrap(new File(filename), charset);
         }
 
         public String wrap() {

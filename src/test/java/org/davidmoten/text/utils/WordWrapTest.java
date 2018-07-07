@@ -1,6 +1,7 @@
 package org.davidmoten.text.utils;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -21,6 +22,13 @@ public class WordWrapTest {
     @Test
     public void testIsUtilityClass() {
         Asserts.assertIsUtilityClass(WordWrap.class);
+    }
+
+    @Test
+    public void testTrimLeadingEmpty() {
+        StringBuilder2 s = new StringBuilder2("");
+        WordWrap.leftTrim(s);
+        assertEquals("", s.toString());
     }
 
     @Test
@@ -322,8 +330,8 @@ public class WordWrapTest {
     public void testWrapToFileThrows() {
         WordWrap.from("abc").wrap(new File("target/doesNoExist/temp.txt"), StandardCharsets.UTF_8);
     }
-    
-    @Test(expected=IORuntimeException.class)
+
+    @Test(expected = IORuntimeException.class)
     public void testCloseReaderThrows() {
         WordWrap.close(new Reader() {
 
@@ -336,7 +344,8 @@ public class WordWrapTest {
             @Override
             public void close() throws IOException {
                 throw new IOException("boo");
-            }});
+            }
+        });
     }
 
     @Test(expected = IORuntimeException.class)
@@ -347,6 +356,13 @@ public class WordWrapTest {
     @Test(expected = IllegalArgumentException.class)
     public void testMaxWidthZero() {
         WordWrap.from("abc").maxWidth(0);
+    }
+
+    @Test
+    public void testWrapToFile() {
+        File file = new File("target/testWrap.txt");
+        WordWrap.from("abc").wrap(file.getAbsolutePath(), StandardCharsets.UTF_8);
+        assertTrue(file.exists());
     }
 
     public static void main(String[] args) throws IOException {
