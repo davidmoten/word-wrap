@@ -2,6 +2,7 @@ package org.davidmoten.text.utils;
 
 import static org.junit.Assert.assertEquals;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
@@ -278,6 +279,13 @@ public class WordWrapTest {
                 .maxWidth(80) //
                 .wrapUtf8("target/treasure-island-fragment.txt");
     }
+    
+    @Test
+    public void testFromInputStream() {
+        ByteArrayInputStream bytes = new ByteArrayInputStream("hi".getBytes(StandardCharsets.UTF_8));
+        assertEquals("hi", WordWrap.fromUtf8(bytes).maxWidth(6).wrap());
+    }
+    
 
     public static void main(String[] args) throws IOException {
         int i = 0;

@@ -58,7 +58,7 @@ public final class WordWrap {
     }
 
     public static Builder fromUtf8(InputStream in) {
-        return from(new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8)));
+        return from(in , StandardCharsets.UTF_8);
     }
 
     public static Builder from(InputStream in, Charset charset) {
