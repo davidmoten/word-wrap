@@ -296,7 +296,7 @@ public class WordWrapTest {
                 .maxWidth(6).wrap());
     }
 
-    @Test(expected=IORuntimeException.class)
+    @Test(expected = IORuntimeException.class)
     public void testWriterThrows() {
         WordWrap.from("abc").wrap(new Writer() {
 
@@ -307,21 +307,27 @@ public class WordWrapTest {
 
             @Override
             public void flush() throws IOException {
-                
+
             }
 
             @Override
             public void close() throws IOException {
-                
-            }});
+
+            }
+        });
     }
-    
+
+    @Test(expected = IORuntimeException.class)
+    public void testWrapToFileThrows() {
+        WordWrap.from("abc").wrap(new File("target/doesNoExist/temp.txt"), StandardCharsets.UTF_8);
+    }
+
     @Test(expected = IORuntimeException.class)
     public void testFromFileDoesNotExist() throws IOException {
         WordWrap.from(new File("target/doesNotExist"), StandardCharsets.UTF_8).maxWidth(6).wrap();
     }
 
-    @Test(expected=IllegalArgumentException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void testMaxWidthZero() {
         WordWrap.from("abc").maxWidth(0);
     }
