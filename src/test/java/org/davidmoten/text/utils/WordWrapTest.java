@@ -7,6 +7,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.io.Reader;
 import java.io.Writer;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -320,6 +321,22 @@ public class WordWrapTest {
     @Test(expected = IORuntimeException.class)
     public void testWrapToFileThrows() {
         WordWrap.from("abc").wrap(new File("target/doesNoExist/temp.txt"), StandardCharsets.UTF_8);
+    }
+    
+    @Test(expected=IORuntimeException.class)
+    public void testCloseReaderThrows() {
+        WordWrap.close(new Reader() {
+
+            @Override
+            public int read(char[] cbuf, int off, int len) throws IOException {
+                // TODO Auto-generated method stub
+                return 0;
+            }
+
+            @Override
+            public void close() throws IOException {
+                throw new IOException("boo");
+            }});
     }
 
     @Test(expected = IORuntimeException.class)
