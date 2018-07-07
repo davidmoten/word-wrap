@@ -186,8 +186,8 @@ public final class WordWrap {
     static void wordWrap(Reader in, Writer out, String newLine, Number maxWidth,
             Function<? super CharSequence, ? extends Number> stringWidth,
             Set<Character> specialWordChars, boolean insertHyphens) throws IOException {
-        StringBuilder line = new StringBuilder();
-        StringBuilder word = new StringBuilder();
+        StringBuilder2 line = new StringBuilder2();
+        StringBuilder2 word = new StringBuilder2();
         CharSequence lineAndWordRightTrim = concatRightTrim(line, word);
         double maxWidthDouble = maxWidth.doubleValue();
         boolean broken = false;
@@ -307,7 +307,7 @@ public final class WordWrap {
     }
 
     @VisibleForTesting
-    static void leftTrim(StringBuilder word) {
+    static void leftTrim(StringBuilder2  word) {
         // trim leading spaces on the word
         // because we have inserted a new line
         int i;
@@ -322,17 +322,17 @@ public final class WordWrap {
     }
 
     private static String leftTrim(String s) {
-        StringBuilder b = new StringBuilder(s);
+        StringBuilder2 b = new StringBuilder2(s);
         leftTrim(b);
         return b.toString();
     }
 
-    private static void appendWordToLine(StringBuilder line, StringBuilder word) {
-        line.append(word.toString());
+    private static void appendWordToLine(StringBuilder2 line, StringBuilder2 word) {
+        line.append(word);
         word.setLength(0);
     }
 
-    private static void writeBrokenWord(Writer out, StringBuilder word, String newLine,
+    private static void writeBrokenWord(Writer out, StringBuilder2 word, String newLine,
             boolean insertHyphens) throws IOException {
         // to be really thorough we'd check the new stringWidth with '-' but let's not
         // bother for now
@@ -353,7 +353,7 @@ public final class WordWrap {
         }
     }
 
-    private static void writeLine(Writer out, StringBuilder line, String newLine)
+    private static void writeLine(Writer out, StringBuilder2 line, String newLine)
             throws IOException {
         out.write(line.toString());
         out.write(newLine);

@@ -23,14 +23,14 @@ public class WordWrapTest {
 
     @Test
     public void testTrimLeadingSpaces0() {
-        StringBuilder s = new StringBuilder("abc");
+        StringBuilder2 s = new StringBuilder2("abc");
         WordWrap.leftTrim(s);
         assertEquals("abc", s.toString());
     }
 
     @Test
     public void testTrimLeadingSpaces1() {
-        StringBuilder s = new StringBuilder(" abc");
+        StringBuilder2 s = new StringBuilder2(" abc");
         WordWrap.leftTrim(s);
         assertEquals("abc", s.toString());
     }
@@ -57,7 +57,7 @@ public class WordWrapTest {
 
     @Test
     public void testTrimLeadingSpaces3() {
-        StringBuilder s = new StringBuilder("   abc");
+        StringBuilder2 s = new StringBuilder2("   abc");
         WordWrap.leftTrim(s);
         assertEquals("abc", s.toString());
     }
