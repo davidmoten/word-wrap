@@ -27,12 +27,19 @@ public class CharSequenceReaderTest extends TestCase {
         assertReadsCorrectly("");
     }
 
+    public void testReady() throws IOException {
+        String string = "abcdefghijklmnopqrstuvwxyz";
+        try (CharSequenceReader reader = new CharSequenceReader(string)) {
+            assertTrue(reader.ready());
+        }
+    }
+
     public void testReadsStringsCorrectly() throws IOException {
         assertReadsCorrectly("abc");
         assertReadsCorrectly("abcde");
         assertReadsCorrectly("abcdefghijkl");
-        assertReadsCorrectly("" + "abcdefghijklmnopqrstuvwxyz\n" + "ABCDEFGHIJKLMNOPQRSTUVWXYZ\r" + "0123456789\r\n"
-                + "!@#$%^&*()-=_+\t[]{};':\",./<>?\\| ");
+        assertReadsCorrectly("" + "abcdefghijklmnopqrstuvwxyz\n" + "ABCDEFGHIJKLMNOPQRSTUVWXYZ\r"
+                + "0123456789\r\n" + "!@#$%^&*()-=_+\t[]{};':\",./<>?\\| ");
     }
 
     public void testMarkAndReset() throws IOException {
