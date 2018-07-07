@@ -1,5 +1,6 @@
 package org.davidmoten.text.utils;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -43,8 +44,9 @@ public final class WordWrap {
     }
 
     public static Builder fromClasspath(String resource, Charset charset) {
-        return new Builder(
-                new InputStreamReader(WordWrap.class.getResourceAsStream(resource), charset), true);
+        return new Builder(new BufferedReader(
+                new InputStreamReader(WordWrap.class.getResourceAsStream(resource), charset)),
+                true);
     }
 
     private static Builder from(Reader reader, boolean close) {
@@ -56,16 +58,18 @@ public final class WordWrap {
     }
 
     public static Builder fromUtf8(InputStream in) {
-        return from(new InputStreamReader(in, StandardCharsets.UTF_8));
+        return from(new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8)));
     }
 
     public static Builder from(InputStream in, Charset charset) {
-        return from(new InputStreamReader(in, charset));
+        return from(new BufferedReader(new InputStreamReader(in, charset)));
     }
 
     public static Builder from(File file, Charset charset) {
         try {
-            return from(new InputStreamReader(new FileInputStream(file), charset), true);
+            return from(
+                    new BufferedReader(new InputStreamReader(new FileInputStream(file), charset)),
+                    true);
         } catch (FileNotFoundException e) {
             throw new IORuntimeException(e);
         }
