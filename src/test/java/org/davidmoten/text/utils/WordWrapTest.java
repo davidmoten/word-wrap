@@ -140,7 +140,8 @@ public class WordWrapTest {
 
     @Test
     public void testLongWordForcesBreakNoHyphens() {
-        assertEquals("hellot\nhere", WordWrap.from("hellothere").maxWidth(6).insertHyphens(false).wrap());
+        assertEquals("hellot\nhere",
+                WordWrap.from("hellothere").maxWidth(6).insertHyphens(false).wrap());
     }
 
     @Test
@@ -222,37 +223,38 @@ public class WordWrapTest {
     public void testConserveWhitespace() {
         checkWrap("  ab\n   cd\n  ef\n\nhi", "  ab\n   cd\n  ef\n\nhi");
     }
-    
+
     @Test
     public void testStringWidth() {
         String text = WordWrap.from("abc").maxWidth(4).stringWidth(s -> s.length() * 2).wrap();
-        assertEquals("a-\nbc",text);
+        assertEquals("a-\nbc", text);
     }
 
     @Test
     public void testNewLineOverride() {
         String text = WordWrap.from("abc").maxWidth(2).newLine("\r\n").wrap();
-        assertEquals("a-\r\nbc",text);
+        assertEquals("a-\r\nbc", text);
     }
-    
+
     @Test
     public void testSetWordChars() {
         String text = WordWrap.from("abc").maxWidth(2).wordChars("abc").wrap();
-        assertEquals("a-\nbc",text);
+        assertEquals("a-\nbc", text);
     }
-    
+
     @Test
     public void testIncludeWordChars() {
         String text = WordWrap.from("abc").maxWidth(2).wordChars("").includeWordChars("abc").wrap();
-        assertEquals("a-\nbc",text);
+        assertEquals("a-\nbc", text);
     }
-    
+
     @Test
     public void testExcludeWordChars() {
-        String text = WordWrap.from("abc").maxWidth(2).wordChars("abc").excludeWordChars("abc").wrap();
-        assertEquals("a-\nbc",text);
+        String text = WordWrap.from("abc").maxWidth(2).wordChars("abc").excludeWordChars("abc")
+                .wrap();
+        assertEquals("a-\nbc", text);
     }
-    
+
     private void checkWrap(String text, String expected) {
         String s = WordWrap.from(text).maxWidth(6).wrap();
         System.out.println(s);
@@ -279,19 +281,33 @@ public class WordWrapTest {
                 .maxWidth(80) //
                 .wrapUtf8("target/treasure-island-fragment.txt");
     }
-    
+
     @Test
     public void testFromInputStream() {
-        ByteArrayInputStream bytes = new ByteArrayInputStream("hi".getBytes(StandardCharsets.UTF_8));
+        ByteArrayInputStream bytes = new ByteArrayInputStream(
+                "hi".getBytes(StandardCharsets.UTF_8));
         assertEquals("hi", WordWrap.fromUtf8(bytes).maxWidth(6).wrap());
     }
+
+    @Test
+    public void testFromFile() throws IOException {
+        Files.write(new File("target/test1.txt").toPath(), "hi".getBytes(StandardCharsets.UTF_8));
+        assertEquals("hi", WordWrap.from(new File("target/test1.txt"), StandardCharsets.UTF_8)
+                .maxWidth(6).wrap());
+    }
     
+    @Test(expected=IORuntimeException.class)
+    public void testFromFileDoesNotExist() throws IOException {
+        WordWrap.from(new File("target/doesNotExist"), StandardCharsets.UTF_8)
+                .maxWidth(6).wrap();
+    }
 
     public static void main(String[] args) throws IOException {
         int i = 0;
         long t = 0;
-        ByteArrayOutputStream b = new ByteArrayOutputStream(128*1024);
-        byte[] bytes = Files.readAllBytes(new File("src/test/resources/treasure-island-fragment.txt").toPath());
+        ByteArrayOutputStream b = new ByteArrayOutputStream(128 * 1024);
+        byte[] bytes = Files
+                .readAllBytes(new File("src/test/resources/treasure-island-fragment.txt").toPath());
         String text = new String(bytes, StandardCharsets.UTF_8);
         while (true) {
             b.reset();
