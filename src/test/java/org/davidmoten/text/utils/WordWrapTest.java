@@ -296,6 +296,26 @@ public class WordWrapTest {
                 .maxWidth(6).wrap());
     }
 
+    @Test(expected=IORuntimeException.class)
+    public void testWriterThrows() {
+        WordWrap.from("abc").wrap(new Writer() {
+
+            @Override
+            public void write(char[] cbuf, int off, int len) throws IOException {
+                throw new IOException("boo");
+            }
+
+            @Override
+            public void flush() throws IOException {
+                
+            }
+
+            @Override
+            public void close() throws IOException {
+                
+            }});
+    }
+    
     @Test(expected = IORuntimeException.class)
     public void testFromFileDoesNotExist() throws IOException {
         WordWrap.from(new File("target/doesNotExist"), StandardCharsets.UTF_8).maxWidth(6).wrap();
