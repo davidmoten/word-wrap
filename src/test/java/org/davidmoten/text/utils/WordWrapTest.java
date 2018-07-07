@@ -295,11 +295,15 @@ public class WordWrapTest {
         assertEquals("hi", WordWrap.from(new File("target/test1.txt"), StandardCharsets.UTF_8)
                 .maxWidth(6).wrap());
     }
-    
-    @Test(expected=IORuntimeException.class)
+
+    @Test(expected = IORuntimeException.class)
     public void testFromFileDoesNotExist() throws IOException {
-        WordWrap.from(new File("target/doesNotExist"), StandardCharsets.UTF_8)
-                .maxWidth(6).wrap();
+        WordWrap.from(new File("target/doesNotExist"), StandardCharsets.UTF_8).maxWidth(6).wrap();
+    }
+
+    @Test(expected=IllegalArgumentException.class)
+    public void testMaxWidthZero() {
+        WordWrap.from("abc").maxWidth(0);
     }
 
     public static void main(String[] args) throws IOException {

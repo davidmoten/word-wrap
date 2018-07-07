@@ -58,7 +58,7 @@ public final class WordWrap {
     }
 
     public static Builder fromUtf8(InputStream in) {
-        return from(in , StandardCharsets.UTF_8);
+        return from(in, StandardCharsets.UTF_8);
     }
 
     public static Builder from(InputStream in, Charset charset) {
@@ -139,11 +139,7 @@ public final class WordWrap {
                 throw new IORuntimeException(e);
             } finally {
                 if (closeReader) {
-                    try {
-                        reader.close();
-                    } catch (IOException e) {
-                        throw new IORuntimeException(e);
-                    }
+                    close(reader);
                 }
             }
         }
@@ -177,6 +173,15 @@ public final class WordWrap {
             }
         }
 
+    }
+
+    @VisibleForTesting
+    static void close(Reader reader) {
+        try {
+            reader.close();
+        } catch (IOException e) {
+            throw new IORuntimeException(e);
+        }
     }
 
     private static Set<Character> toSet(String chars) {
