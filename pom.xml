@@ -11,7 +11,7 @@
     <artifactId>word-wrap</artifactId>
     <version>0.1.4-SNAPSHOT</version>
     <name>${project.artifactId}</name>
-    <description>Library to generate advanced builder patterns in Java</description>
+    <description>Text word wrapping in Java</description>
     <packaging>jar</packaging>
 
     <url>http://github.com/davidmoten/word-wrap</url>
