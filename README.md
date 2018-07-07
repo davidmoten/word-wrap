@@ -68,6 +68,12 @@ For version 0.1.2 JMH benchmarks were added and numerous performance improvement
 
 Benchmark throughput for repeatedly wrapping the Treasure Island fragment at a word length of 80 chars is ~21MB/s on my i5 laptop.
 
+To run benchmarks
+
+```bash
+mvn clean install -P benchmark
+```
+
 ## Build
 Use maven:
 ```bash
