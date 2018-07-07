@@ -20,6 +20,10 @@ final class StringBuilder2 implements CharSequence {
         this.length = length;
     }
 
+    char[] internalArray() {
+        return chars;
+    }
+
     @Override
     public int length() {
         return length;

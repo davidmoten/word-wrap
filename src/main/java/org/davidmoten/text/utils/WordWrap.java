@@ -203,7 +203,7 @@ public final class WordWrap {
             if (ch == '\n') {
                 line.append(word);
                 if (!isWhitespace(line)) {
-                    out.write(line.toString());
+                    out.write(line.internalArray(), 0, line.length());
                 }
                 out.write(newLine);
                 word.setLength(0);
@@ -262,7 +262,7 @@ public final class WordWrap {
                 leftTrim(word);
             }
             if (!isWhitespace(word)) {
-                out.write(word.toString());
+                out.write(word.internalArray(), 0, word.length());
             }
         }
     }
@@ -307,7 +307,7 @@ public final class WordWrap {
     }
 
     @VisibleForTesting
-    static void leftTrim(StringBuilder2  word) {
+    static void leftTrim(StringBuilder2 word) {
         // trim leading spaces on the word
         // because we have inserted a new line
         int i;
@@ -355,7 +355,7 @@ public final class WordWrap {
 
     private static void writeLine(Writer out, StringBuilder2 line, String newLine)
             throws IOException {
-        out.write(line.toString());
+        out.write(line.internalArray(), 0, line.length());
         out.write(newLine);
         line.setLength(0);
     }
