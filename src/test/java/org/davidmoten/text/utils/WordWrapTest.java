@@ -2,8 +2,11 @@ package org.davidmoten.text.utils;
 
 import static org.junit.Assert.assertEquals;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 
@@ -279,12 +282,15 @@ public class WordWrapTest {
     public static void main(String[] args) throws IOException {
         int i = 0;
         long t = 0;
+        ByteArrayOutputStream b = new ByteArrayOutputStream(128*1024);
         byte[] bytes = Files.readAllBytes(new File("src/test/resources/treasure-island-fragment.txt").toPath());
         String text = new String(bytes, StandardCharsets.UTF_8);
         while (true) {
+            b.reset();
+            Writer out = new OutputStreamWriter(b, StandardCharsets.UTF_8);
             WordWrap.from(text) //
                     .maxWidth(80) //
-                    .wrapUtf8("target/treasure-island-fragment.txt");
+                    .wrap(out);
             i++;
             if (i % 100 == 0) {
                 if (i > 1000 && t == 0) {
