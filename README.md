@@ -64,11 +64,9 @@ Note that the `WordWrap` builder used above is quite flexible and allows you to 
 A good test is to rewrap novels downloaded from Gutenberg (copied from the html form). When you run `mvn test` the output of *The Importance of Being Earnest*, *The Black Gang*, and *Treasure Island* are rewrapped into the directory `target` with line lengths of 20, 20 and 80 respectively. Part of the testing process for this library in addition to lots of unit tests is inspecting the wrapped output from these novels.
 
 ## Performance
-The library has been built with correctness in mind rather than performance (although streaming options in the library does mean that memory use can be kept down for large texts). Later releases may include performance enhancements. If it's a priority for you then let me know!
+For version 0.1.2 JMH benchmarks were added and numerous performance improvements made that gave 10x throughput increase and reduced memory allocation rate to 1/30x.
 
-17 July 2018:
-* increased throughput by 3x
-* decreased allocations by 90%
+Benchmark throughput for repeatedly wrapping the Treasure Island fragment at a word length of 80 chars is ~21MB/s on my i5 laptop.
 
 ## Build
 Use maven:
