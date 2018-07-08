@@ -49,7 +49,7 @@ public class WordWrapTest {
 	public void testRightTrimAtEnd() {
 		assertEquals("abc", WordWrap.rightTrim("abc  "));
 	}
-	
+
 	@Test
 	public void testRightTrimNoSpace() {
 		assertEquals("abc", WordWrap.rightTrim("abc"));
@@ -67,11 +67,11 @@ public class WordWrapTest {
 
 	@Test
 	public void testWrapRightTrimsWhitespaceBeforeNewLine() {
-		assertEquals("abc\ncde   ", WordWrap.from("abc    \ncde   ").maxWidth(6).wrap());
+		checkWrap("abc    \ncde   ", "abc\ncde   ");
 	}
-	
+
 	@Test
-	public void testTrimLeadingSpaces3() {
+	public void testLeftTrimLeadingSpaces3() {
 		StringBuilder2 s = new StringBuilder2("   abc");
 		WordWrap.leftTrim(s);
 		assertEquals("abc", s.toString());
@@ -371,7 +371,7 @@ public class WordWrapTest {
 		String s = WordWrap.from("hello jonathon").maxWidth(6).breakWords(false).wrap();
 		assertEquals("hello\njonathon", s);
 	}
-	
+
 	@Test
 	public void testDontBreakLongWords2() {
 		String s = WordWrap.from("hell jonathon").maxWidth(6).breakWords(false).wrap();
