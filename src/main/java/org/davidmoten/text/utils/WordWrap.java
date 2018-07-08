@@ -236,7 +236,7 @@ public final class WordWrap {
 							if (breakWords) {
 								writeBrokenWord(out, word, newLine, insertHyphens);
 							} else {
-								writeWord(out, newLine, word);
+								broken = true;
 							}
 						} else {
 							broken = true;
@@ -245,7 +245,7 @@ public final class WordWrap {
 						if (breakWords) {
 							writeBrokenWord(out, word, newLine, insertHyphens);
 						} else {
-							writeWord(out, newLine, word);
+							broken = true;
 						}
 					}
 				}
