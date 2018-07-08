@@ -200,7 +200,7 @@ public final class WordWrap {
         CharSequence lineAndWordRightTrim = concatRightTrim(line, word);
         double maxWidthDouble = maxWidth.doubleValue();
         boolean broken = false;
-        boolean alphanumeric = false;
+        boolean isWordCharacter = false;
         boolean previousWasPunctuation = false;
         while (true) {
             int c = in.read();
@@ -208,7 +208,7 @@ public final class WordWrap {
                 break;
             }
             char ch = (char) c;
-            alphanumeric = Character.isLetter(ch) || specialWordChars.contains(ch);
+            isWordCharacter = Character.isLetter(ch) || specialWordChars.contains(ch);
             if (ch == '\n') {
                 line.append(word);
                 if (!isWhitespace(line)) {
@@ -220,7 +220,7 @@ public final class WordWrap {
                 broken = false;
             } else if (ch == '\r') {
                 // ignore carriage return
-            } else if (alphanumeric && !previousWasPunctuation) {
+            } else if (isWordCharacter && !previousWasPunctuation) {
                 word.append(ch);
                 if (broken && line.length() == 0) {
                     leftTrim(word);
