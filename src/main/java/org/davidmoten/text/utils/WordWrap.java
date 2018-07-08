@@ -289,12 +289,6 @@ public final class WordWrap {
 		}
 	}
 
-	private static void writeWord(Writer out, String newLine, StringBuilder2 word) throws IOException {
-		out.write(word.internalArray());
-		out.write(newLine);
-		word.setLength(0);
-	}
-
 	private static CharSequence concatRightTrim(CharSequence a, CharSequence b) {
 		return new CharSequenceConcatRightTrim(a, b);
 	}

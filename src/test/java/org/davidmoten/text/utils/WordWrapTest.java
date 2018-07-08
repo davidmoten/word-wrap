@@ -51,11 +51,6 @@ public class WordWrapTest {
 	}
 	
 	@Test
-	public void testRightTrimMultiline() {
-		assertEquals("abc    \ncde", WordWrap.rightTrim("abc    \ncde   "));
-	}
-
-	@Test
 	public void testRightTrimNoSpace() {
 		assertEquals("abc", WordWrap.rightTrim("abc"));
 	}
@@ -70,6 +65,11 @@ public class WordWrapTest {
 		assertEquals("", WordWrap.rightTrim("  "));
 	}
 
+	@Test
+	public void testWrapRightTrimsWhitespaceBeforeNewLine() {
+		assertEquals("abc\ncde   ", WordWrap.from("abc    \ncde   ").maxWidth(6).wrap());
+	}
+	
 	@Test
 	public void testTrimLeadingSpaces3() {
 		StringBuilder2 s = new StringBuilder2("   abc");
