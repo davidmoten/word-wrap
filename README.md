@@ -54,6 +54,7 @@ WordWrap
   .includeWordChars("~")
   .excludeWordChars("_")
   .insertHyphens(true)
+  .breakWords(true)
   .stringWidth(s -> s.length())
   .wrap(out);
 ```
