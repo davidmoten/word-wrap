@@ -46,8 +46,13 @@ public class WordWrapTest {
 	}
 
 	@Test
-	public void testRightTrim() {
+	public void testRightTrimAtEnd() {
 		assertEquals("abc", WordWrap.rightTrim("abc  "));
+	}
+	
+	@Test
+	public void testRightTrimMultiline() {
+		assertEquals("abc    \ncde", WordWrap.rightTrim("abc    \ncde   "));
 	}
 
 	@Test

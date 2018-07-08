@@ -214,6 +214,9 @@ public final class WordWrap {
 			isWordCharacter = Character.isLetter(ch) || specialWordChars.contains(ch);
 			if (ch == '\n') {
 				line.append(word);
+				if (tooLong(stringWidth, line, maxWidthDouble)) {
+					line.rightTrim();
+				}
 				if (!isWhitespace(line)) {
 					out.write(line.internalArray(), 0, line.length());
 				}
