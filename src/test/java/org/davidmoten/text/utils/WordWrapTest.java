@@ -19,63 +19,9 @@ import com.github.davidmoten.junit.Asserts;
 
 public class WordWrapTest {
 
-	@Test
-	public void testIsUtilityClass() {
-		Asserts.assertIsUtilityClass(WordWrap.class);
-	}
-
-	@Test
-	public void testTrimLeadingEmpty() {
-		StringBuilder2 s = new StringBuilder2("");
-		WordWrap.leftTrim(s);
-		assertEquals("", s.toString());
-	}
-
-	@Test
-	public void testTrimLeadingSpaces0() {
-		StringBuilder2 s = new StringBuilder2("abc");
-		WordWrap.leftTrim(s);
-		assertEquals("abc", s.toString());
-	}
-
-	@Test
-	public void testTrimLeadingSpaces1() {
-		StringBuilder2 s = new StringBuilder2(" abc");
-		WordWrap.leftTrim(s);
-		assertEquals("abc", s.toString());
-	}
-
-	@Test
-	public void testRightTrimAtEnd() {
-		assertEquals("abc", WordWrap.rightTrim("abc  "));
-	}
-
-	@Test
-	public void testRightTrimNoSpace() {
-		assertEquals("abc", WordWrap.rightTrim("abc"));
-	}
-
-	@Test
-	public void testRightTrimEmpty() {
-		assertEquals("", WordWrap.rightTrim(""));
-	}
-
-	@Test
-	public void testRightTrimOnlySpace() {
-		assertEquals("", WordWrap.rightTrim("  "));
-	}
-
-	@Test
-	public void testWrapRightTrimsWhitespaceBeforeNewLine() {
-		checkWrap("abc    \ncde   ", "abc\ncde   ");
-	}
-
-	@Test
-	public void testLeftTrimLeadingSpaces3() {
-		StringBuilder2 s = new StringBuilder2("   abc");
-		WordWrap.leftTrim(s);
-		assertEquals("abc", s.toString());
-	}
+	////////////////////////////////////////////
+	// Word wrap tests
+	////////////////////////////////////////////
 
 	@Test
 	public void testLongLineSplitsOnWhiteSpace() {
@@ -145,6 +91,11 @@ public class WordWrapTest {
 	@Test
 	public void testWhitespaceConservedAfterNewLine() {
 		checkWrap("hello\n there", "hello\n there");
+	}
+
+	@Test
+	public void testWrapRightTrimsWhitespaceBeforeNewLine() {
+		checkWrap("abc    \ncde   ", "abc\ncde   ");
 	}
 
 	@Test
@@ -237,6 +188,66 @@ public class WordWrapTest {
 		checkWrap("  ab\n   cd\n  ef\n\nhi", "  ab\n   cd\n  ef\n\nhi");
 	}
 
+	////////////////////////////////////////////
+	// Left trim tests
+	////////////////////////////////////////////
+
+	@Test
+	public void testLeftTrimLeadingEmpty() {
+		StringBuilder2 s = new StringBuilder2("");
+		WordWrap.leftTrim(s);
+		assertEquals("", s.toString());
+	}
+
+	@Test
+	public void testLeftTrimLeadingSpaces0() {
+		StringBuilder2 s = new StringBuilder2("abc");
+		WordWrap.leftTrim(s);
+		assertEquals("abc", s.toString());
+	}
+
+	@Test
+	public void testLeftTrimLeadingSpaces1() {
+		StringBuilder2 s = new StringBuilder2(" abc");
+		WordWrap.leftTrim(s);
+		assertEquals("abc", s.toString());
+	}
+
+	@Test
+	public void testLeftTrimLeadingSpaces3() {
+		StringBuilder2 s = new StringBuilder2("   abc");
+		WordWrap.leftTrim(s);
+		assertEquals("abc", s.toString());
+	}
+
+	////////////////////////////////////////////
+	// Right trim tests
+	////////////////////////////////////////////
+
+	@Test
+	public void testRightTrimAtEnd() {
+		assertEquals("abc", WordWrap.rightTrim("abc  "));
+	}
+
+	@Test
+	public void testRightTrimNoSpace() {
+		assertEquals("abc", WordWrap.rightTrim("abc"));
+	}
+
+	@Test
+	public void testRightTrimEmpty() {
+		assertEquals("", WordWrap.rightTrim(""));
+	}
+
+	@Test
+	public void testRightTrimOnlySpace() {
+		assertEquals("", WordWrap.rightTrim("  "));
+	}
+
+	////////////////////////////////////////////
+	// Builder tests
+	////////////////////////////////////////////
+
 	@Test
 	public void testStringWidth() {
 		String text = WordWrap.from("abc").maxWidth(4).stringWidth(s -> s.length() * 2).wrap();
@@ -267,31 +278,16 @@ public class WordWrapTest {
 		assertEquals("a-\nbc", text);
 	}
 
-	private void checkWrap(String text, String expected) {
-		String s = WordWrap.from(text).maxWidth(6).wrap();
-		System.out.println(s);
-		assertEquals(expected, s);
+	@Test
+	public void testDontBreakLongWords() {
+		String s = WordWrap.from("hello jonathon").maxWidth(6).breakWords(false).wrap();
+		assertEquals("hello\njonathon", s);
 	}
 
 	@Test
-	public void testImportanceOfBeingEarnest() throws IOException {
-		WordWrap.fromClasspathUtf8("/the-importance-of-being-earnest.txt") //
-				.maxWidth(20) //
-				.wrapUtf8("target/the-importance-of-being-earnest.txt");
-	}
-
-	@Test
-	public void testTheBlackGang() throws IOException {
-		WordWrap.fromClasspathUtf8("/the-black-gang.txt") //
-				.maxWidth(20) //
-				.wrapUtf8("target/the-black-gang.txt");
-	}
-
-	@Test
-	public void testTreasureIsland() throws IOException {
-		WordWrap.fromClasspathUtf8("/treasure-island-fragment.txt") //
-				.maxWidth(80) //
-				.wrapUtf8("target/treasure-island-fragment.txt");
+	public void testDontBreakLongWords2() {
+		String s = WordWrap.from("hell jonathon").maxWidth(6).breakWords(false).wrap();
+		assertEquals("hell\njonathon", s);
 	}
 
 	@Test
@@ -338,7 +334,6 @@ public class WordWrapTest {
 
 			@Override
 			public int read(char[] cbuf, int off, int len) throws IOException {
-				// TODO Auto-generated method stub
 				return 0;
 			}
 
@@ -366,16 +361,40 @@ public class WordWrapTest {
 		assertTrue(file.exists());
 	}
 
+	////////////////////////////////////////////
+	// Novel wrapping tests
+	////////////////////////////////////////////
+
 	@Test
-	public void testDontBreakLongWords() {
-		String s = WordWrap.from("hello jonathon").maxWidth(6).breakWords(false).wrap();
-		assertEquals("hello\njonathon", s);
+	public void testImportanceOfBeingEarnest() throws IOException {
+		WordWrap.fromClasspathUtf8("/the-importance-of-being-earnest.txt") //
+				.maxWidth(20) //
+				.wrapUtf8("target/the-importance-of-being-earnest.txt");
 	}
 
 	@Test
-	public void testDontBreakLongWords2() {
-		String s = WordWrap.from("hell jonathon").maxWidth(6).breakWords(false).wrap();
-		assertEquals("hell\njonathon", s);
+	public void testTheBlackGang() throws IOException {
+		WordWrap.fromClasspathUtf8("/the-black-gang.txt") //
+				.maxWidth(20) //
+				.wrapUtf8("target/the-black-gang.txt");
+	}
+
+	@Test
+	public void testTreasureIsland() throws IOException {
+		WordWrap.fromClasspathUtf8("/treasure-island-fragment.txt") //
+				.maxWidth(80) //
+				.wrapUtf8("target/treasure-island-fragment.txt");
+	}
+
+	@Test
+	public void testIsUtilityClass() {
+		Asserts.assertIsUtilityClass(WordWrap.class);
+	}
+
+	private static void checkWrap(String text, String expected) {
+		String s = WordWrap.from(text).maxWidth(6).wrap();
+		System.out.println(s);
+		assertEquals(expected, s);
 	}
 
 	public static void main(String[] args) throws IOException {
