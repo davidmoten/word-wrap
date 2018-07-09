@@ -35,41 +35,97 @@ public final class WordWrap {
 
 	private static final String PUNCTUATION = "!\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~";
 
+	/**
+	 * Sets the source to be wrapped and returns a builder to specify more
+	 * parameters.
+	 * 
+	 * @param reader source to be wrapped
+	 * @return builder
+	 */
 	public static Builder from(Reader reader) {
 		return from(reader, false);
 	}
 
+	/**
+	 * Sets the source to be wrapped as a classpath resource which will be read
+	 * using the UTF-8 character set. Returns a builder to specify more parameters.
+	 * Uses an 8192 byte buffer for reading.
+	 * 
+	 * @param resource source to be wrapped as a classpath resource
+	 * @return builder
+	 */
 	public static Builder fromClasspathUtf8(String resource) {
 		return fromClasspath(resource, StandardCharsets.UTF_8);
 	}
 
+	/**
+	 * Sets the source to be wrapped as a classpath resource to be read using the
+	 * given character set. Returns a builder to specify more parameters. Uses an
+	 * 8192 byte buffer for reading.
+	 * 
+	 * @param resource classpath resource name
+	 * @param charset  charset to use for reading
+	 * @return builder
+	 */
 	public static Builder fromClasspath(String resource, Charset charset) {
 		return new Builder(
 				new BufferedReader(new InputStreamReader(WordWrap.class.getResourceAsStream(resource), charset)), true);
 	}
 
-	private static Builder from(Reader reader, boolean close) {
-		return new Builder(reader, close);
-	}
-
+	/**
+	 * Sets the the source to be wrapped and returns a builder to specify more
+	 * parameters. Uses an 8192 byte buffer for reading.
+	 * 
+	 * @param text text to be wrapped
+	 * @return builder
+	 */
 	public static Builder from(CharSequence text) {
-		return from(new CharSequenceReader(text), true);
+		return from(new BufferedReader(new CharSequenceReader(text)), true);
 	}
 
+	/**
+	 * Sets the source to be wrapped. Returns a builder to specify more parameters.
+	 * Uses an 8192 byte buffer for reading.s
+	 * 
+	 * @param in source to be wrapped
+	 * @return builder
+	 */
 	public static Builder fromUtf8(InputStream in) {
 		return from(in, StandardCharsets.UTF_8);
 	}
 
+	/**
+	 * Sets the source to be wrapped and the character set to be used to read it.
+	 * Uses an 8192 byte buffer for reading. Returns a builder to specify more
+	 * parameters.
+	 * 
+	 * @param in
+	 * @param charset
+	 * @return builder
+	 */
 	public static Builder from(InputStream in, Charset charset) {
 		return from(new BufferedReader(new InputStreamReader(in, charset)));
 	}
 
+	/**
+	 * Sets the source to be wrapped and the character set to be used to read it.
+	 * Uses an 8192 byte buffer for reading. Returns a builder to specify more
+	 * parameters.
+	 * 
+	 * @param file    file to be read
+	 * @param charset charset of the text in the source file
+	 * @return
+	 */
 	public static Builder from(File file, Charset charset) {
 		try {
 			return from(new BufferedReader(new InputStreamReader(new FileInputStream(file), charset)), true);
 		} catch (FileNotFoundException e) {
 			throw new IORuntimeException(e);
 		}
+	}
+
+	private static Builder from(Reader reader, boolean close) {
+		return new Builder(reader, close);
 	}
 
 	public static final class Builder {
