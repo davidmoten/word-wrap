@@ -137,7 +137,7 @@ public final class WordWrap {
 		private final boolean closeReader;
 		private Number maxWidth = 80;
 		private Function<? super CharSequence, ? extends Number> stringWidth = STRING_WIDTH_DEFAULT;
-		private Set<Character> wordChars = SPECIAL_WORD_CHARS_SET_DEFAULT;
+		private Set<Character> extraWordChars = SPECIAL_WORD_CHARS_SET_DEFAULT;
 		private String newLine = "\n";
 		private boolean insertHyphens = true;
 		private boolean breakWords = true;
@@ -148,11 +148,12 @@ public final class WordWrap {
 		}
 
 		/**
-		 * The maximum width of a line using the {@code stringWidth} function. Word
+		 * Sets the maximum width of a line using the {@code stringWidth} function. Word
 		 * wrapping/splitting will be attempted for lines with greater than
-		 * {@code maxWidth}.
+		 * {@code maxWidth}. If not set the default is 80.
 		 * 
-		 * @param maxWidth maximum width of a line using the {@code stringWidth} function.
+		 * @param maxWidth maximum width of a line using the {@code stringWidth}
+		 *                 function.
 		 * @return this
 		 */
 		public Builder maxWidth(Number maxWidth) {
@@ -161,34 +162,50 @@ public final class WordWrap {
 			return this;
 		}
 
+		/**
+		 * Sets the string width function used to determine if a line is at maximum
+		 * width (and therefore needing wrapping or splitting). If not set the string
+		 * width function is the number of characters.
+		 * 
+		 * @param stringWidth function that returns the width of a sequence of
+		 *                    characters
+		 * @return this
+		 */
 		public Builder stringWidth(Function<? super CharSequence, ? extends Number> stringWidth) {
 			this.stringWidth = stringWidth;
 			return this;
 		}
 
+		/**
+		 * Sets the newLine string to be used. If not set the default is '\n' (line feed
+		 * character).
+		 * 
+		 * @param newLine
+		 * @return this
+		 */
 		public Builder newLine(String newLine) {
 			this.newLine = newLine;
 			return this;
 		}
 
-		public Builder wordChars(Set<Character> wordChars) {
-			this.wordChars = wordChars;
+		public Builder extraWordChars(Set<Character> extraWordChars) {
+			this.extraWordChars = extraWordChars;
 			return this;
 		}
 
-		public Builder wordChars(String wordChars) {
-			return wordChars(toSet(wordChars));
+		public Builder extraWordChars(String extraWordChars) {
+			return extraWordChars(toSet(extraWordChars));
 		}
 
-		public Builder includeWordChars(String includeWordChars) {
+		public Builder includeExtraWordChars(String includeWordChars) {
 			Set<Character> set = toSet(includeWordChars);
-			this.wordChars.addAll(set);
+			this.extraWordChars.addAll(set);
 			return this;
 		}
 
-		public Builder excludeWordChars(String excludeWordChars) {
+		public Builder excludeExtraWordChars(String excludeWordChars) {
 			Set<Character> set = toSet(excludeWordChars);
-			this.wordChars.removeAll(set);
+			this.extraWordChars.removeAll(set);
 			return this;
 		}
 
@@ -204,7 +221,7 @@ public final class WordWrap {
 
 		public void wrap(Writer out) {
 			try {
-				wordWrap(reader, out, newLine, maxWidth, stringWidth, wordChars, insertHyphens, breakWords);
+				wordWrap(reader, out, newLine, maxWidth, stringWidth, extraWordChars, insertHyphens, breakWords);
 			} catch (IOException e) {
 				throw new IORuntimeException(e);
 			} finally {
@@ -263,7 +280,7 @@ public final class WordWrap {
 	}
 
 	static void wordWrap(Reader in, Writer out, String newLine, Number maxWidth,
-			Function<? super CharSequence, ? extends Number> stringWidth, Set<Character> specialWordChars,
+			Function<? super CharSequence, ? extends Number> stringWidth, Set<Character> extraWordChars,
 			boolean insertHyphens, boolean breakWords) throws IOException {
 		StringBuilder2 line = new StringBuilder2();
 		StringBuilder2 word = new StringBuilder2();

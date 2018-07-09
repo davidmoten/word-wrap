@@ -262,19 +262,19 @@ public class WordWrapTest {
 
 	@Test
 	public void testSetWordChars() {
-		String text = WordWrap.from("abc").maxWidth(2).wordChars("abc").wrap();
+		String text = WordWrap.from("abc").maxWidth(2).extraWordChars("abc").wrap();
 		assertEquals("a-\nbc", text);
 	}
 
 	@Test
 	public void testIncludeWordChars() {
-		String text = WordWrap.from("abc").maxWidth(2).wordChars("").includeWordChars("abc").wrap();
+		String text = WordWrap.from("abc").maxWidth(2).extraWordChars("").includeExtraWordChars("abc").wrap();
 		assertEquals("a-\nbc", text);
 	}
 
 	@Test
 	public void testExcludeWordChars() {
-		String text = WordWrap.from("abc").maxWidth(2).wordChars("abc").excludeWordChars("abc").wrap();
+		String text = WordWrap.from("abc").maxWidth(2).extraWordChars("abc").excludeExtraWordChars("abc").wrap();
 		assertEquals("a-\nbc", text);
 	}
 
