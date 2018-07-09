@@ -25,7 +25,6 @@
         <exec.version>1.6.0</exec.version>
         <jmh.version>1.21</jmh.version>
 
-        <cobertura.version>2.7</cobertura.version>
         <checkstyle.version>3.0.0</checkstyle.version>
         <findbugs.version>2.5.4</findbugs.version>
         <javadoc.version>3.0.1</javadoc.version>
@@ -35,7 +34,7 @@
         <project.info.version>3.0.0</project.info.version>
         <jxr.version>2.5</jxr.version>
         <taglist.version>2.4</taglist.version>
-        <m3.site.version>3.4</m3.site.version>
+        <m3.site.version>3.7.1</m3.site.version>
         <changelog.version>2.2</changelog.version>
         <coverage.reports.dir>${project.build.directory}/target/coverage-reports</coverage.reports.dir>
         <jmh.verion>1.21</jmh.verion>
@@ -191,14 +190,6 @@
                 <version>${jxr.version}</version>
                 <configuration>
                     <aggregate>true</aggregate>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>cobertura-maven-plugin</artifactId>
-                <version>${cobertura.version}</version>
-                <configuration>
-                    <aggregate>false</aggregate>
                 </configuration>
             </plugin>
             <plugin>
