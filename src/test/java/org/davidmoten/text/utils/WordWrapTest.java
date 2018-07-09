@@ -25,82 +25,82 @@ public class WordWrapTest {
 
 	@Test
 	public void testLongLineSplitsOnWhiteSpace() {
-		checkWrap("hello there", "hello\nthere");
+		check("hello there", "hello\nthere");
 	}
 
 	@Test
 	public void testLongLineTwoSpaces() {
-		checkWrap("hello  there", "hello\nthere");
+		check("hello  there", "hello\nthere");
 	}
 
 	@Test
 	public void testLongLineALotOfWhiteSpace() {
-		checkWrap("hello          there", "hello\nthere");
+		check("hello          there", "hello\nthere");
 	}
 
 	@Test
-	public void testPrecedingWhitespace() {
-		checkWrap("  he", "  he");
+	public void testPrecedingWhitespaceConserved() {
+		check("  he", "  he");
 	}
 
 	@Test
 	public void testPrecedingWhitespaceLongWord() {
-		checkWrap("  helloyou", "  hel-\nloyou");
+		check("  helloyou", "  hel-\nloyou");
 	}
 
 	@Test
 	public void testWhitespacePreservedAfterNewLine() {
-		checkWrap("hello\n  the", "hello\n  the");
+		check("hello\n  the", "hello\n  the");
 	}
 
 	@Test
 	public void testShortLineNoWhitespace() {
-		checkWrap("hello", "hello");
+		check("hello", "hello");
 	}
 
 	@Test
 	public void testShortLineHasWhitespace() {
-		checkWrap("hi bo", "hi bo");
+		check("hi bo", "hi bo");
 	}
 
 	@Test
 	public void testEmpty() {
-		checkWrap("", "");
+		check("", "");
 	}
 
 	@Test
 	public void testOneLetter() {
-		checkWrap("a", "a");
+		check("a", "a");
 	}
 
 	@Test
 	public void testSpaceThenOneLetter() {
-		checkWrap(" a", " a");
+		check(" a", " a");
 	}
 
 	@Test
 	public void testNewLine() {
-		checkWrap("hello\nthere", "hello\nthere");
+		check("hello\nthere", "hello\nthere");
 	}
 
 	@Test
-	public void testCarriageReturnNewLine() {
-		checkWrap("hello\r\nthere", "hello\nthere");
+	public void testCarriageRemoved() {
+		check("hello\r\nthere", "hello\nthere");
 	}
 
 	@Test
 	public void testWhitespaceConservedAfterNewLine() {
-		checkWrap("hello\n there", "hello\n there");
+		check("hello\n there", "hello\n there");
 	}
 
 	@Test
 	public void testWrapRightTrimsWhitespaceBeforeNewLine() {
-		checkWrap("abc    \ncde   ", "abc\ncde   ");
+		check("abc    \ncde   ", "abc\ncde   ");
 	}
 
 	@Test
 	public void testLongWordForcesBreak() {
-		checkWrap("hellothere", "hello-\nthere");
+		check("hellothere", "hello-\nthere");
 	}
 
 	@Test
@@ -110,52 +110,52 @@ public class WordWrapTest {
 
 	@Test
 	public void breakOnComma() {
-		checkWrap("hi,there", "hi,th-\nere");
+		check("hi,there", "hi,th-\nere");
 	}
 
 	@Test
 	public void noHyphenAfterDigits() {
-		checkWrap("1234567890", "123456\n7890");
+		check("1234567890", "123456\n7890");
 	}
 
 	@Test
 	public void breakOnCommas() {
-		checkWrap("1,2,3,4,5,6,7,8,9", "1,2,3,\n4,5,6,\n7,8,9");
+		check("1,2,3,4,5,6,7,8,9", "1,2,3,\n4,5,6,\n7,8,9");
 	}
 
 	@Test
 	public void longThenShort() {
-		checkWrap("hellothere\n  boo", "hello-\nthere\n  boo");
+		check("hellothere\n  boo", "hello-\nthere\n  boo");
 	}
 
 	@Test
 	public void longThenShortWithMoreLines() {
-		checkWrap("hellothere\n  boo\n  hi", "hello-\nthere\n  boo\n  hi");
+		check("hellothere\n  boo\n  hi", "hello-\nthere\n  boo\n  hi");
 	}
 
 	@Test
 	public void testEndWithNewLine() {
-		checkWrap("a\n", "a\n");
+		check("a\n", "a\n");
 	}
 
 	@Test
 	public void spaceAndQuestionMark() {
-		checkWrap("  ?", "  ?");
+		check("  ?", "  ?");
 	}
 
 	@Test
 	public void dontBreakOnQuestionMark() {
-		checkWrap("ab cde?", "ab\ncde?");
+		check("ab cde?", "ab\ncde?");
 	}
 
 	@Test
 	public void testBreakOnQuote() {
-		checkWrap("says 'helo'", "says\n'helo'");
+		check("says 'helo'", "says\n'helo'");
 	}
 
 	@Test
 	public void testBreakQuoteInMiddle() {
-		checkWrap("why he's nasty", "why\nhe's\nnasty");
+		check("why he's nasty", "why\nhe's\nnasty");
 	}
 
 	@Test
@@ -165,27 +165,27 @@ public class WordWrapTest {
 
 	@Test
 	public void testShortThenLong() {
-		checkWrap("hi mygoodnessme", "hi\nmygoo-\ndness-\nme");
+		check("hi mygoodnessme", "hi\nmygoo-\ndness-\nme");
 	}
 
 	@Test
 	public void testLongWhitespaceThenWord() {
-		checkWrap("        a", "\na");
+		check("        a", "\na");
 	}
 
 	@Test
 	public void testLongWhitespaceLastLine() {
-		checkWrap("          ", "");
+		check("          ", "");
 	}
 
 	@Test
 	public void testLongWhitespaceThenNewLine() {
-		checkWrap("          \n", "\n");
+		check("          \n", "\n");
 	}
 
 	@Test
 	public void testConserveWhitespace() {
-		checkWrap("  ab\n   cd\n  ef\n\nhi", "  ab\n   cd\n  ef\n\nhi");
+		check("  ab\n   cd\n  ef\n\nhi", "  ab\n   cd\n  ef\n\nhi");
 	}
 
 	////////////////////////////////////////////
@@ -391,7 +391,7 @@ public class WordWrapTest {
 		Asserts.assertIsUtilityClass(WordWrap.class);
 	}
 
-	private static void checkWrap(String text, String expected) {
+	private static void check(String text, String expected) {
 		String s = WordWrap.from(text).maxWidth(6).wrap();
 		System.out.println(s);
 		assertEquals(expected, s);
