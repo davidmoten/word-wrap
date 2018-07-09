@@ -398,7 +398,7 @@ public class WordWrapTest {
 
     private static void check(String text, String expected) {
         String s = WordWrap.from(text).maxWidth(6).wrap();
-        System.out.println(s);
+//        System.out.println(s);
         assertEquals(expected, s);
     }
 
