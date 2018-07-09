@@ -72,7 +72,7 @@ final class CharSequenceReader extends Reader {
 
     @Override
     public synchronized int read(char[] cbuf, int off, int len) throws IOException {
-        if (len <0 || off <0|| off + len > cbuf.length) {
+        if (len < 0 || off < 0 || off + len > cbuf.length) {
             throw new IndexOutOfBoundsException();
         }
         checkOpen();
