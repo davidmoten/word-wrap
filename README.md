@@ -55,7 +55,7 @@ WordWrap
   .excludeExtraWordChars("_")
   .insertHyphens(true)
   .breakWords(true)
-  .stringWidth(s -> s.length())
+  .stringWidth(s -> fontMetrics.stringWidth(s.toString()))
   .wrap(out);
 ```
 
