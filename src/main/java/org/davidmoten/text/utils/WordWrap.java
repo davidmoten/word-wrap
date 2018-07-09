@@ -295,7 +295,7 @@ public final class WordWrap {
 				break;
 			}
 			char ch = (char) c;
-			isWordCharacter = Character.isLetter(ch) || specialWordChars.contains(ch);
+			isWordCharacter = Character.isLetter(ch) || extraWordChars.contains(ch);
 			if (ch == '\n') {
 				line.append(word);
 				if (tooLong(stringWidth, line, maxWidthDouble)) {
@@ -355,7 +355,7 @@ public final class WordWrap {
 					broken = true;
 				}
 			}
-			previousWasPunctuation = isPunctuation(ch) && !specialWordChars.contains(ch);
+			previousWasPunctuation = isPunctuation(ch) && !extraWordChars.contains(ch);
 		}
 		if (line.length() > 0) {
 			String s = line.toString() + word.toString();
