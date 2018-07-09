@@ -155,6 +155,8 @@ public final class WordWrap {
 		 * @param maxWidth maximum width of a line using the {@code stringWidth}
 		 *                 function.
 		 * @return this
+		 * @throws {@link IllegalArgumentException} if {@code maxWidth} is less than or
+		 *         equal to zero
 		 */
 		public Builder maxWidth(Number maxWidth) {
 			Preconditions.checkArgument(maxWidth.doubleValue() > 0);
@@ -188,37 +190,88 @@ public final class WordWrap {
 			return this;
 		}
 
+		/**
+		 * Sets all extra word characters (characters that will be treated like normal
+		 * alphabetic characters for defining word boundaries).
+		 * 
+		 * @param extraWordChars extra word characters (in addtion to alphabetic
+		 *                       characters)
+		 * @return this
+		 */
 		public Builder extraWordChars(Set<Character> extraWordChars) {
 			this.extraWordChars = extraWordChars;
 			return this;
 		}
 
+		/**
+		 * Sets all extra word characters (characters that will be treated like normal
+		 * alphabetic characters for defining word boundaries).
+		 * 
+		 * @param extraWordChars extra word characters (in addtion to alphabetic
+		 *                       characters)
+		 * @return this
+		 */
 		public Builder extraWordChars(String extraWordChars) {
 			return extraWordChars(toSet(extraWordChars));
 		}
 
+		/**
+		 * Adds more word characters (characters that will be treated like normal
+		 * alphabetic characters for defining word boundaries).
+		 * 
+		 * @param includeWordChars more word characters
+		 * @return this
+		 */
 		public Builder includeExtraWordChars(String includeWordChars) {
 			Set<Character> set = toSet(includeWordChars);
 			this.extraWordChars.addAll(set);
 			return this;
 		}
 
+		/**
+		 * Adds extra word characters to be excluded. Alphabetic characters are always
+		 * word characters and thus will be ignored here.
+		 * 
+		 * @param excludeWordChars extra word characters to be excluded
+		 * @return this
+		 */
 		public Builder excludeExtraWordChars(String excludeWordChars) {
 			Set<Character> set = toSet(excludeWordChars);
 			this.extraWordChars.removeAll(set);
 			return this;
 		}
 
+		/**
+		 * Sets if to break words using a hyphen character. If set to false then no
+		 * breaking character will be used.
+		 * 
+		 * @param insertHyphens whether to break hyphens
+		 * @return this
+		 */
 		public Builder insertHyphens(boolean insertHyphens) {
 			this.insertHyphens = insertHyphens;
 			return this;
 		}
 
+		/**
+		 * If a word is longer than {@code maxWidth} and {@code breakWords} is true then
+		 * such a word will be broken across two or more lines (with or without a hyphen
+		 * according to {@link Builder#insertHyphens}).
+		 * 
+		 * @param breakWords
+		 * @return
+		 */
 		public Builder breakWords(boolean breakWords) {
 			this.breakWords = breakWords;
 			return this;
 		}
 
+		/**
+		 * Performs the wrapping of the source text and writes output to the given
+		 * {@link Writer}.
+		 * 
+		 * @param out output for wrapped text
+		 */
 		public void wrap(Writer out) {
 			try {
 				wordWrap(reader, out, newLine, maxWidth, stringWidth, extraWordChars, insertHyphens, breakWords);
@@ -231,6 +284,13 @@ public final class WordWrap {
 			}
 		}
 
+		/**
+		 * Performs the wrapping of the source text and writes output to the given file
+		 * with the given character set encoding.
+		 * 
+		 * @param file    file to receive wrapped output
+		 * @param charset encoding to use for output
+		 */
 		public void wrap(File file, Charset charset) {
 			try (Writer writer = new OutputStreamWriter(new FileOutputStream(file), charset)) {
 				wrap(writer);
@@ -239,18 +299,42 @@ public final class WordWrap {
 			}
 		}
 
+		/**
+		 * Performs the wrapping of the source text and writes the output to the given
+		 * file using UTF-8 encoding.
+		 * 
+		 * @param file output file for wrapped text
+		 */
 		public void wrapUtf8(File file) {
 			wrap(file, StandardCharsets.UTF_8);
 		}
 
+		/**
+		 * Performs the wrapping of the source text and writes the output to a file with
+		 * the given filename.
+		 * 
+		 * @param filename output file for wrapped text
+		 */
 		public void wrapUtf8(String filename) {
 			wrapUtf8(new File(filename));
 		}
 
+		/**
+		 * Performs the wrapping of the source text and writes the output to a file with
+		 * the given filename using the given encoding.
+		 * 
+		 * @param filename output file for the wrapped text
+		 * @param charset  encoding to use for output
+		 */
 		public void wrap(String filename, Charset charset) {
 			wrap(new File(filename), charset);
 		}
 
+		/**
+		 * Performs the wrapping of the source text and returns output as a String.
+		 * 
+		 * @return
+		 */
 		public String wrap() {
 			try (StringWriter out = new StringWriter()) {
 				wrap(out);
