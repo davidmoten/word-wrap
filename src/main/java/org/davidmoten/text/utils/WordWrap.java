@@ -99,8 +99,8 @@ public final class WordWrap {
 	 * Uses an 8192 byte buffer for reading. Returns a builder to specify more
 	 * parameters.
 	 * 
-	 * @param in
-	 * @param charset
+	 * @param in      source to be wrapped
+	 * @param charset encoding
 	 * @return builder
 	 */
 	public static Builder from(InputStream in, Charset charset) {
@@ -114,7 +114,7 @@ public final class WordWrap {
 	 * 
 	 * @param file    file to be read
 	 * @param charset charset of the text in the source file
-	 * @return
+	 * @return builder
 	 */
 	public static Builder from(File file, Charset charset) {
 		try {
@@ -155,8 +155,8 @@ public final class WordWrap {
 		 * @param maxWidth maximum width of a line using the {@code stringWidth}
 		 *                 function.
 		 * @return this
-		 * @throws {@link IllegalArgumentException} if {@code maxWidth} is less than or
-		 *         equal to zero
+		 * @throws IllegalArgumentException if {@code maxWidth} is less than or equal to
+		 *                                  zero
 		 */
 		public Builder maxWidth(Number maxWidth) {
 			Preconditions.checkArgument(maxWidth.doubleValue() > 0);
@@ -182,7 +182,7 @@ public final class WordWrap {
 		 * Sets the newLine string to be used. If not set the default is '\n' (line feed
 		 * character).
 		 * 
-		 * @param newLine
+		 * @param newLine string to be output on for a new line delimiter
 		 * @return this
 		 */
 		public Builder newLine(String newLine) {
@@ -256,10 +256,10 @@ public final class WordWrap {
 		/**
 		 * If a word is longer than {@code maxWidth} and {@code breakWords} is true then
 		 * such a word will be broken across two or more lines (with or without a hyphen
-		 * according to {@link Builder#insertHyphens}).
+		 * according to {@link Builder#insertHyphens(boolean)}).
 		 * 
-		 * @param breakWords
-		 * @return
+		 * @param breakWords if true then break words across lines
+		 * @return this
 		 */
 		public Builder breakWords(boolean breakWords) {
 			this.breakWords = breakWords;
@@ -333,7 +333,7 @@ public final class WordWrap {
 		/**
 		 * Performs the wrapping of the source text and returns output as a String.
 		 * 
-		 * @return
+		 * @return wrapped text
 		 */
 		public String wrap() {
 			try (StringWriter out = new StringWriter()) {
