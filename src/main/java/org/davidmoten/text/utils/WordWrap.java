@@ -128,6 +128,9 @@ public final class WordWrap {
 		return new Builder(reader, close);
 	}
 
+	/**
+	 * Provides method chaining for specifying parameters to word wrap.
+	 */
 	public static final class Builder {
 
 		private final Reader reader;
@@ -144,6 +147,14 @@ public final class WordWrap {
 			this.closeReader = closeReader;
 		}
 
+		/**
+		 * The maximum width of a line using the {@code stringWidth} function. Word
+		 * wrapping/splitting will be attempted for lines with greater than
+		 * {@code maxWidth}.
+		 * 
+		 * @param maxWidth maximum width of a line using the {@code stringWidth} function.
+		 * @return this
+		 */
 		public Builder maxWidth(Number maxWidth) {
 			Preconditions.checkArgument(maxWidth.doubleValue() > 0);
 			this.maxWidth = maxWidth;
