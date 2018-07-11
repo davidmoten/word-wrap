@@ -430,7 +430,7 @@ public class WordWrapTest {
                 out.append("```\n");
                 out.append(prettify(check.input));
                 out.append("\n```\n");
-                out.append(":arrow_down:\n");
+                out.append("&nbsp;&nbsp;&nbsp;&nbsp;:arrow_down:\n");
                 out.append("```\n");
                 out.append(prettify(check.output));
                 out.append("\n```\n\n");

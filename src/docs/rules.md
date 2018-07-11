@@ -5,7 +5,7 @@ The rules below are generated from the unit tests in `WordWrapTest.java`. The de
 ```
 hi,there
 ```
-:arrow_down:
+&nbsp;&nbsp;&nbsp;&nbsp;:arrow_down:
 ```
 hi,th-$
 ere
@@ -15,7 +15,7 @@ ere
 ```
 1,2,3,4,5,6,7,8,9
 ```
-:arrow_down:
+&nbsp;&nbsp;&nbsp;&nbsp;:arrow_down:
 ```
 1,2,3,$
 4,5,6,$
@@ -26,7 +26,7 @@ ere
 ```
 says␣'helo'
 ```
-:arrow_down:
+&nbsp;&nbsp;&nbsp;&nbsp;:arrow_down:
 ```
 says$
 'helo'
@@ -36,7 +36,7 @@ says$
 ```
 why␣he's␣nasty
 ```
-:arrow_down:
+&nbsp;&nbsp;&nbsp;&nbsp;:arrow_down:
 ```
 why$
 he's$
@@ -48,7 +48,7 @@ nasty
 hello$
 there
 ```
-:arrow_down:
+&nbsp;&nbsp;&nbsp;&nbsp;:arrow_down:
 ```
 hello$
 there
@@ -62,7 +62,7 @@ there
 $
 hi
 ```
-:arrow_down:
+&nbsp;&nbsp;&nbsp;&nbsp;:arrow_down:
 ```
 ␣␣ab$
 ␣␣␣cd$
@@ -75,7 +75,7 @@ hi
 ```
 ab␣cde?
 ```
-:arrow_down:
+&nbsp;&nbsp;&nbsp;&nbsp;:arrow_down:
 ```
 ab$
 cde?
@@ -85,7 +85,7 @@ cde?
 ```
 
 ```
-:arrow_down:
+&nbsp;&nbsp;&nbsp;&nbsp;:arrow_down:
 ```
 
 ```
@@ -95,7 +95,7 @@ cde?
 a$
 
 ```
-:arrow_down:
+&nbsp;&nbsp;&nbsp;&nbsp;:arrow_down:
 ```
 a$
 
@@ -105,7 +105,7 @@ a$
 ```
 hello␣␣␣␣␣␣␣␣␣␣there
 ```
-:arrow_down:
+&nbsp;&nbsp;&nbsp;&nbsp;:arrow_down:
 ```
 hello$
 there
@@ -115,7 +115,7 @@ there
 ```
 hello␣there
 ```
-:arrow_down:
+&nbsp;&nbsp;&nbsp;&nbsp;:arrow_down:
 ```
 hello$
 there
@@ -125,7 +125,7 @@ there
 ```
 hello␣␣there
 ```
-:arrow_down:
+&nbsp;&nbsp;&nbsp;&nbsp;:arrow_down:
 ```
 hello$
 there
@@ -136,7 +136,7 @@ there
 hellothere$
 ␣␣boo
 ```
-:arrow_down:
+&nbsp;&nbsp;&nbsp;&nbsp;:arrow_down:
 ```
 hello-$
 there$
@@ -149,7 +149,7 @@ hellothere$
 ␣␣boo$
 ␣␣hi
 ```
-:arrow_down:
+&nbsp;&nbsp;&nbsp;&nbsp;:arrow_down:
 ```
 hello-$
 there$
@@ -161,7 +161,7 @@ there$
 ```
 ␣␣␣␣␣␣␣␣␣␣
 ```
-:arrow_down:
+&nbsp;&nbsp;&nbsp;&nbsp;:arrow_down:
 ```
 
 ```
@@ -171,7 +171,7 @@ there$
 ␣␣␣␣␣␣␣␣␣␣$
 
 ```
-:arrow_down:
+&nbsp;&nbsp;&nbsp;&nbsp;:arrow_down:
 ```
 $
 
@@ -181,7 +181,7 @@ $
 ```
 ␣␣␣␣␣␣␣␣a
 ```
-:arrow_down:
+&nbsp;&nbsp;&nbsp;&nbsp;:arrow_down:
 ```
 $
 a
@@ -191,7 +191,7 @@ a
 ```
 hellothere
 ```
-:arrow_down:
+&nbsp;&nbsp;&nbsp;&nbsp;:arrow_down:
 ```
 hello-$
 there
@@ -202,7 +202,7 @@ there
 hello$
 there
 ```
-:arrow_down:
+&nbsp;&nbsp;&nbsp;&nbsp;:arrow_down:
 ```
 hello$
 there
@@ -212,7 +212,7 @@ there
 ```
 1234567890
 ```
-:arrow_down:
+&nbsp;&nbsp;&nbsp;&nbsp;:arrow_down:
 ```
 123456$
 7890
@@ -222,7 +222,7 @@ there
 ```
 a
 ```
-:arrow_down:
+&nbsp;&nbsp;&nbsp;&nbsp;:arrow_down:
 ```
 a
 ```
@@ -231,7 +231,7 @@ a
 ```
 ␣␣he
 ```
-:arrow_down:
+&nbsp;&nbsp;&nbsp;&nbsp;:arrow_down:
 ```
 ␣␣he
 ```
@@ -240,7 +240,7 @@ a
 ```
 ␣␣helloyou
 ```
-:arrow_down:
+&nbsp;&nbsp;&nbsp;&nbsp;:arrow_down:
 ```
 ␣␣hel-$
 loyou
@@ -250,7 +250,7 @@ loyou
 ```
 hi␣bo
 ```
-:arrow_down:
+&nbsp;&nbsp;&nbsp;&nbsp;:arrow_down:
 ```
 hi␣bo
 ```
@@ -259,7 +259,7 @@ hi␣bo
 ```
 hello
 ```
-:arrow_down:
+&nbsp;&nbsp;&nbsp;&nbsp;:arrow_down:
 ```
 hello
 ```
@@ -268,7 +268,7 @@ hello
 ```
 hi␣mygoodnessme
 ```
-:arrow_down:
+&nbsp;&nbsp;&nbsp;&nbsp;:arrow_down:
 ```
 hi$
 mygoo-$
@@ -280,7 +280,7 @@ me
 ```
 ␣␣?
 ```
-:arrow_down:
+&nbsp;&nbsp;&nbsp;&nbsp;:arrow_down:
 ```
 ␣␣?
 ```
@@ -289,7 +289,7 @@ me
 ```
 ␣a
 ```
-:arrow_down:
+&nbsp;&nbsp;&nbsp;&nbsp;:arrow_down:
 ```
 ␣a
 ```
@@ -299,7 +299,7 @@ me
 hello$
 ␣there
 ```
-:arrow_down:
+&nbsp;&nbsp;&nbsp;&nbsp;:arrow_down:
 ```
 hello$
 ␣there
@@ -310,7 +310,7 @@ hello$
 hello$
 ␣␣the
 ```
-:arrow_down:
+&nbsp;&nbsp;&nbsp;&nbsp;:arrow_down:
 ```
 hello$
 ␣␣the
@@ -321,7 +321,7 @@ hello$
 abc␣␣␣␣$
 cde␣␣␣
 ```
-:arrow_down:
+&nbsp;&nbsp;&nbsp;&nbsp;:arrow_down:
 ```
 abc$
 cde␣␣␣
