@@ -1,21 +1,23 @@
 ## Wrapping rules
-The rules below are generated from the unit tests in `WordWrapTest.java`. The default wrapping configuration used is a line length of 6 characters.
+The rules below are generated from the unit tests in `WordWrapTest.java`. The default wrapping configuration used is a line length of 6 characters. The $ symbol is used to represent a new line character.
 
 1. **breakOnCommaDoesNotHappenWithoutSpaceAfter**
+Input:
 ```
 hi,there
 ```
-&nbsp;&nbsp;&nbsp;&nbsp;:arrow_down:
+Output:
 ```
 hi,th-$
 ere
 ```
 
 2. **breakOnCommasWithDigits**
+Input:
 ```
 1,2,3,4,5,6,7,8,9
 ```
-&nbsp;&nbsp;&nbsp;&nbsp;:arrow_down:
+Output:
 ```
 1,2,3,$
 4,5,6,$
@@ -23,20 +25,22 @@ ere
 ```
 
 3. **breakOnQuote**
+Input:
 ```
 says␣'helo'
 ```
-&nbsp;&nbsp;&nbsp;&nbsp;:arrow_down:
+Output:
 ```
 says$
 'helo'
 ```
 
 4. **breakQuoteInMiddle**
+Input:
 ```
 why␣he's␣nasty
 ```
-&nbsp;&nbsp;&nbsp;&nbsp;:arrow_down:
+Output:
 ```
 why$
 he's$
@@ -44,17 +48,19 @@ nasty
 ```
 
 5. **carriageReturnRemoved**
+Input:
 ```
 hello$
 there
 ```
-&nbsp;&nbsp;&nbsp;&nbsp;:arrow_down:
+Output:
 ```
 hello$
 there
 ```
 
 6. **conserveWhitespace**
+Input:
 ```
 ␣␣ab$
 ␣␣␣cd$
@@ -62,7 +68,7 @@ there
 $
 hi
 ```
-&nbsp;&nbsp;&nbsp;&nbsp;:arrow_down:
+Output:
 ```
 ␣␣ab$
 ␣␣␣cd$
@@ -72,71 +78,78 @@ hi
 ```
 
 7. **dontBreakOnQuestionMark**
+Input:
 ```
 ab␣cde?
 ```
-&nbsp;&nbsp;&nbsp;&nbsp;:arrow_down:
+Output:
 ```
 ab$
 cde?
 ```
 
 8. **emptyText**
+Input:
 ```
 
 ```
-&nbsp;&nbsp;&nbsp;&nbsp;:arrow_down:
+Output:
 ```
 
 ```
 
 9. **endWithNewLine**
+Input:
 ```
 a$
 
 ```
-&nbsp;&nbsp;&nbsp;&nbsp;:arrow_down:
+Output:
 ```
 a$
 
 ```
 
 10. **longLineALotOfWhiteSpaceInMiddle**
+Input:
 ```
 hello␣␣␣␣␣␣␣␣␣␣there
 ```
-&nbsp;&nbsp;&nbsp;&nbsp;:arrow_down:
+Output:
 ```
 hello$
 there
 ```
 
 11. **longLineSplitsOnWhiteSpace**
+Input:
 ```
 hello␣there
 ```
-&nbsp;&nbsp;&nbsp;&nbsp;:arrow_down:
+Output:
 ```
 hello$
 there
 ```
 
 12. **longLineWithTwoSpacesInMiddle**
+Input:
 ```
 hello␣␣there
 ```
-&nbsp;&nbsp;&nbsp;&nbsp;:arrow_down:
+Output:
 ```
 hello$
 there
 ```
 
 13. **longThenShort**
+Input:
 ```
 hellothere$
 ␣␣boo
 ```
-&nbsp;&nbsp;&nbsp;&nbsp;:arrow_down:
+Output:
 ```
 hello-$
 there$
@@ -144,12 +157,13 @@ there$
 ```
 
 14. **longThenShortWithMoreLines**
+Input:
 ```
 hellothere$
 ␣␣boo$
 ␣␣hi
 ```
-&nbsp;&nbsp;&nbsp;&nbsp;:arrow_down:
+Output:
 ```
 hello-$
 there$
@@ -158,117 +172,129 @@ there$
 ```
 
 15. **longWhitespaceLastLine**
+Input:
 ```
 ␣␣␣␣␣␣␣␣␣␣
 ```
-&nbsp;&nbsp;&nbsp;&nbsp;:arrow_down:
+Output:
 ```
 
 ```
 
 16. **longWhitespaceThenNewLine**
+Input:
 ```
 ␣␣␣␣␣␣␣␣␣␣$
 
 ```
-&nbsp;&nbsp;&nbsp;&nbsp;:arrow_down:
+Output:
 ```
 $
 
 ```
 
 17. **longWhitespaceThenWord**
+Input:
 ```
 ␣␣␣␣␣␣␣␣a
 ```
-&nbsp;&nbsp;&nbsp;&nbsp;:arrow_down:
+Output:
 ```
 $
 a
 ```
 
 18. **longWordForcesBreak**
+Input:
 ```
 hellothere
 ```
-&nbsp;&nbsp;&nbsp;&nbsp;:arrow_down:
+Output:
 ```
 hello-$
 there
 ```
 
 19. **newLineCharacterPreserved**
+Input:
 ```
 hello$
 there
 ```
-&nbsp;&nbsp;&nbsp;&nbsp;:arrow_down:
+Output:
 ```
 hello$
 there
 ```
 
 20. **noHyphenAfterDigits**
+Input:
 ```
 1234567890
 ```
-&nbsp;&nbsp;&nbsp;&nbsp;:arrow_down:
+Output:
 ```
 123456$
 7890
 ```
 
 21. **oneLetter**
+Input:
 ```
 a
 ```
-&nbsp;&nbsp;&nbsp;&nbsp;:arrow_down:
+Output:
 ```
 a
 ```
 
 22. **precedingWhitespaceConserved**
+Input:
 ```
 ␣␣he
 ```
-&nbsp;&nbsp;&nbsp;&nbsp;:arrow_down:
+Output:
 ```
 ␣␣he
 ```
 
 23. **precedingWhitespaceLongWord**
+Input:
 ```
 ␣␣helloyou
 ```
-&nbsp;&nbsp;&nbsp;&nbsp;:arrow_down:
+Output:
 ```
 ␣␣hel-$
 loyou
 ```
 
 24. **shortLineHasWhitespace**
+Input:
 ```
 hi␣bo
 ```
-&nbsp;&nbsp;&nbsp;&nbsp;:arrow_down:
+Output:
 ```
 hi␣bo
 ```
 
 25. **shortLineNoWhitespace**
+Input:
 ```
 hello
 ```
-&nbsp;&nbsp;&nbsp;&nbsp;:arrow_down:
+Output:
 ```
 hello
 ```
 
 26. **shortThenLong**
+Input:
 ```
 hi␣mygoodnessme
 ```
-&nbsp;&nbsp;&nbsp;&nbsp;:arrow_down:
+Output:
 ```
 hi$
 mygoo-$
@@ -277,51 +303,56 @@ me
 ```
 
 27. **spaceAndQuestionMark**
+Input:
 ```
 ␣␣?
 ```
-&nbsp;&nbsp;&nbsp;&nbsp;:arrow_down:
+Output:
 ```
 ␣␣?
 ```
 
 28. **spaceThenOneLetter**
+Input:
 ```
 ␣a
 ```
-&nbsp;&nbsp;&nbsp;&nbsp;:arrow_down:
+Output:
 ```
 ␣a
 ```
 
 29. **whitespaceConservedAfterNewLine**
+Input:
 ```
 hello$
 ␣there
 ```
-&nbsp;&nbsp;&nbsp;&nbsp;:arrow_down:
+Output:
 ```
 hello$
 ␣there
 ```
 
 30. **whitespacePreservedAfterNewLine**
+Input:
 ```
 hello$
 ␣␣the
 ```
-&nbsp;&nbsp;&nbsp;&nbsp;:arrow_down:
+Output:
 ```
 hello$
 ␣␣the
 ```
 
 31. **wrapRightTrimsWhitespaceBeforeNewLine**
+Input:
 ```
 abc␣␣␣␣$
 cde␣␣␣
 ```
-&nbsp;&nbsp;&nbsp;&nbsp;:arrow_down:
+Output:
 ```
 abc$
 cde␣␣␣

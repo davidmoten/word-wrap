@@ -422,15 +422,15 @@ public class WordWrapTest {
         try (FileWriter out = new FileWriter("src/docs/rules.md")) {
             out.append("## Wrapping rules\n");
             out.append(
-                    "The rules below are generated from the unit tests in `WordWrapTest.java`. The default wrapping configuration used is a line length of 6 characters.\n\n");
+                    "The rules below are generated from the unit tests in `WordWrapTest.java`. The default wrapping configuration used is a line length of 6 characters. The $ symbol is used to represent a new line character.\n\n");
             for (Check check : checks) {
                 i++;
-                out.append(i + ". **" + check.name + "**");
-                out.append("\n");
+                out.append(i + ". **" + check.name + "**\n");
+                out.append("Input:\n");
                 out.append("```\n");
                 out.append(prettify(check.input));
                 out.append("\n```\n");
-                out.append("&nbsp;&nbsp;&nbsp;&nbsp;:arrow_down:\n");
+                out.append("Output:\n");
                 out.append("```\n");
                 out.append(prettify(check.output));
                 out.append("\n```\n\n");
