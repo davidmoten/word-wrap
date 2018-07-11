@@ -6,17 +6,23 @@ import static org.junit.Assert.assertTrue;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Reader;
 import java.io.Writer;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.util.ArrayList;
+import java.util.List;
 
+import org.junit.FixMethodOrder;
 import org.junit.Test;
+import org.junit.runners.MethodSorters;
 
 import com.github.davidmoten.junit.Asserts;
 
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class WordWrapTest {
 
     ////////////////////////////////////////////
@@ -24,93 +30,93 @@ public class WordWrapTest {
     ////////////////////////////////////////////
 
     @Test
-    public void testLongLineSplitsOnWhiteSpace() {
+    public void longLineSplitsOnWhiteSpace() {
         check("hello there", "hello\nthere");
     }
 
     @Test
-    public void testLongLineTwoSpaces() {
+    public void longLineWithTwoSpacesInMiddle() {
         check("hello  there", "hello\nthere");
     }
 
     @Test
-    public void testLongLineALotOfWhiteSpace() {
+    public void longLineALotOfWhiteSpaceInMiddle() {
         check("hello          there", "hello\nthere");
     }
 
     @Test
-    public void testPrecedingWhitespaceConserved() {
+    public void precedingWhitespaceConserved() {
         check("  he", "  he");
     }
 
     @Test
-    public void testPrecedingWhitespaceLongWord() {
+    public void precedingWhitespaceLongWord() {
         check("  helloyou", "  hel-\nloyou");
     }
 
     @Test
-    public void testWhitespacePreservedAfterNewLine() {
+    public void whitespacePreservedAfterNewLine() {
         check("hello\n  the", "hello\n  the");
     }
 
     @Test
-    public void testShortLineNoWhitespace() {
+    public void shortLineNoWhitespace() {
         check("hello", "hello");
     }
 
     @Test
-    public void testShortLineHasWhitespace() {
+    public void shortLineHasWhitespace() {
         check("hi bo", "hi bo");
     }
 
     @Test
-    public void testEmpty() {
+    public void emptyText() {
         check("", "");
     }
 
     @Test
-    public void testOneLetter() {
+    public void oneLetter() {
         check("a", "a");
     }
 
     @Test
-    public void testSpaceThenOneLetter() {
+    public void spaceThenOneLetter() {
         check(" a", " a");
     }
 
     @Test
-    public void testNewLine() {
+    public void newLineCharacterPreserved() {
         check("hello\nthere", "hello\nthere");
     }
 
     @Test
-    public void testCarriageRemoved() {
+    public void carriageReturnRemoved() {
         check("hello\r\nthere", "hello\nthere");
     }
 
     @Test
-    public void testWhitespaceConservedAfterNewLine() {
+    public void whitespaceConservedAfterNewLine() {
         check("hello\n there", "hello\n there");
     }
 
     @Test
-    public void testWrapRightTrimsWhitespaceBeforeNewLine() {
+    public void wrapRightTrimsWhitespaceBeforeNewLine() {
         check("abc    \ncde   ", "abc\ncde   ");
     }
 
     @Test
-    public void testLongWordForcesBreak() {
+    public void longWordForcesBreak() {
         check("hellothere", "hello-\nthere");
     }
 
     @Test
-    public void testLongWordForcesBreakNoHyphens() {
+    public void longWordForcesBreakNoHyphens() {
         assertEquals("hellot\nhere",
                 WordWrap.from("hellothere").maxWidth(6).insertHyphens(false).wrap());
     }
 
     @Test
-    public void breakOnComma() {
+    public void breakOnCommaDoesNotHappenWithoutSpaceAfter() {
         check("hi,there", "hi,th-\nere");
     }
 
@@ -120,7 +126,7 @@ public class WordWrapTest {
     }
 
     @Test
-    public void breakOnCommas() {
+    public void breakOnCommasWithDigits() {
         check("1,2,3,4,5,6,7,8,9", "1,2,3,\n4,5,6,\n7,8,9");
     }
 
@@ -135,7 +141,7 @@ public class WordWrapTest {
     }
 
     @Test
-    public void testEndWithNewLine() {
+    public void endWithNewLine() {
         check("a\n", "a\n");
     }
 
@@ -150,42 +156,37 @@ public class WordWrapTest {
     }
 
     @Test
-    public void testBreakOnQuote() {
+    public void breakOnQuote() {
         check("says 'helo'", "says\n'helo'");
     }
 
     @Test
-    public void testBreakQuoteInMiddle() {
+    public void breakQuoteInMiddle() {
         check("why he's nasty", "why\nhe's\nnasty");
     }
 
     @Test
-    public void testBuilder() {
-        WordWrap.from("hello there").maxWidth(6);
-    }
-
-    @Test
-    public void testShortThenLong() {
+    public void shortThenLong() {
         check("hi mygoodnessme", "hi\nmygoo-\ndness-\nme");
     }
 
     @Test
-    public void testLongWhitespaceThenWord() {
+    public void longWhitespaceThenWord() {
         check("        a", "\na");
     }
 
     @Test
-    public void testLongWhitespaceLastLine() {
+    public void longWhitespaceLastLine() {
         check("          ", "");
     }
 
     @Test
-    public void testLongWhitespaceThenNewLine() {
+    public void longWhitespaceThenNewLine() {
         check("          \n", "\n");
     }
 
     @Test
-    public void testConserveWhitespace() {
+    public void conserveWhitespace() {
         check("  ab\n   cd\n  ef\n\nhi", "  ab\n   cd\n  ef\n\nhi");
     }
 
@@ -396,10 +397,48 @@ public class WordWrapTest {
         Asserts.assertIsUtilityClass(WordWrap.class);
     }
 
+    private static final class Check {
+        final String input;
+        final String output;
+        final String name;
+
+        Check(String input, String output, String name) {
+            this.input = input;
+            this.output = output;
+            this.name = name;
+        }
+
+    }
+
+    private static List<Check> checks = new ArrayList<>();
+
     private static void check(String text, String expected) {
         String s = WordWrap.from(text).maxWidth(6).wrap();
-//        System.out.println(s);
+        // System.out.println(s.replace(" ","\u2423"));
         assertEquals(expected, s);
+        String name = Thread.currentThread().getStackTrace()[2].getMethodName();
+        checks.add(new Check(text, expected, name));
+        int i = 0;
+        try (FileWriter out = new FileWriter("src/docs/rules.md")) {
+            for (Check check : checks) {
+                i++;
+                out.append(i + ". " + check.name);
+                out.append("\n");
+                out.append("```\n");
+                out.append(prettify(check.input));
+                out.append("\n```\n");
+                out.append(" ->\n");
+                out.append("```\n");
+                out.append(prettify(check.output));
+                out.append("\n```\n\n");
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private static String prettify(String s) {
+        return s.replace(" ", "\u2423").replace("\n", "$\n");
     }
 
     public static void main(String[] args) throws IOException {
