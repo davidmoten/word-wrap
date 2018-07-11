@@ -2,6 +2,7 @@
 The rules below are generated from the unit tests in `WordWrapTest.java`. The default wrapping configuration used is a line length of 6 characters. The $ symbol is used to represent a new line character.
 
 1. **breakOnCommaDoesNotHappenWithoutSpaceAfter**
+
 Input:
 ```
 hi,there
@@ -13,6 +14,7 @@ ere
 ```
 
 2. **breakOnCommasWithDigits**
+
 Input:
 ```
 1,2,3,4,5,6,7,8,9
@@ -25,6 +27,7 @@ Output:
 ```
 
 3. **breakOnQuote**
+
 Input:
 ```
 says␣'helo'
@@ -36,6 +39,7 @@ says$
 ```
 
 4. **breakQuoteInMiddle**
+
 Input:
 ```
 why␣he's␣nasty
@@ -48,6 +52,7 @@ nasty
 ```
 
 5. **carriageReturnRemoved**
+
 Input:
 ```
 hello$
@@ -60,6 +65,7 @@ there
 ```
 
 6. **conserveWhitespace**
+
 Input:
 ```
 ␣␣ab$
@@ -78,6 +84,7 @@ hi
 ```
 
 7. **dontBreakOnQuestionMark**
+
 Input:
 ```
 ab␣cde?
@@ -89,6 +96,7 @@ cde?
 ```
 
 8. **emptyText**
+
 Input:
 ```
 
@@ -99,6 +107,7 @@ Output:
 ```
 
 9. **endWithNewLine**
+
 Input:
 ```
 a$
@@ -111,6 +120,7 @@ a$
 ```
 
 10. **longLineALotOfWhiteSpaceInMiddle**
+
 Input:
 ```
 hello␣␣␣␣␣␣␣␣␣␣there
@@ -122,6 +132,7 @@ there
 ```
 
 11. **longLineSplitsOnWhiteSpace**
+
 Input:
 ```
 hello␣there
@@ -133,6 +144,7 @@ there
 ```
 
 12. **longLineWithTwoSpacesInMiddle**
+
 Input:
 ```
 hello␣␣there
@@ -144,6 +156,7 @@ there
 ```
 
 13. **longThenShort**
+
 Input:
 ```
 hellothere$
@@ -157,6 +170,7 @@ there$
 ```
 
 14. **longThenShortWithMoreLines**
+
 Input:
 ```
 hellothere$
@@ -172,6 +186,7 @@ there$
 ```
 
 15. **longWhitespaceLastLine**
+
 Input:
 ```
 ␣␣␣␣␣␣␣␣␣␣
@@ -182,6 +197,7 @@ Output:
 ```
 
 16. **longWhitespaceThenNewLine**
+
 Input:
 ```
 ␣␣␣␣␣␣␣␣␣␣$
@@ -194,6 +210,7 @@ $
 ```
 
 17. **longWhitespaceThenWord**
+
 Input:
 ```
 ␣␣␣␣␣␣␣␣a
@@ -205,6 +222,7 @@ a
 ```
 
 18. **longWordForcesBreak**
+
 Input:
 ```
 hellothere
@@ -216,6 +234,7 @@ there
 ```
 
 19. **newLineCharacterPreserved**
+
 Input:
 ```
 hello$
@@ -228,6 +247,7 @@ there
 ```
 
 20. **noHyphenAfterDigits**
+
 Input:
 ```
 1234567890
@@ -239,6 +259,7 @@ Output:
 ```
 
 21. **oneLetter**
+
 Input:
 ```
 a
@@ -249,6 +270,7 @@ a
 ```
 
 22. **precedingWhitespaceConserved**
+
 Input:
 ```
 ␣␣he
@@ -259,6 +281,7 @@ Output:
 ```
 
 23. **precedingWhitespaceLongWord**
+
 Input:
 ```
 ␣␣helloyou
@@ -270,6 +293,7 @@ loyou
 ```
 
 24. **shortLineHasWhitespace**
+
 Input:
 ```
 hi␣bo
@@ -280,6 +304,7 @@ hi␣bo
 ```
 
 25. **shortLineNoWhitespace**
+
 Input:
 ```
 hello
@@ -290,6 +315,7 @@ hello
 ```
 
 26. **shortThenLong**
+
 Input:
 ```
 hi␣mygoodnessme
@@ -303,6 +329,7 @@ me
 ```
 
 27. **spaceAndQuestionMark**
+
 Input:
 ```
 ␣␣?
@@ -313,6 +340,7 @@ Output:
 ```
 
 28. **spaceThenOneLetter**
+
 Input:
 ```
 ␣a
@@ -323,6 +351,7 @@ Output:
 ```
 
 29. **whitespaceConservedAfterNewLine**
+
 Input:
 ```
 hello$
@@ -335,6 +364,7 @@ hello$
 ```
 
 30. **whitespacePreservedAfterNewLine**
+
 Input:
 ```
 hello$
@@ -347,6 +377,7 @@ hello$
 ```
 
 31. **wrapRightTrimsWhitespaceBeforeNewLine**
+
 Input:
 ```
 abc␣␣␣␣$

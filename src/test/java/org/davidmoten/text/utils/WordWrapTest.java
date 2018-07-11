@@ -425,7 +425,7 @@ public class WordWrapTest {
                     "The rules below are generated from the unit tests in `WordWrapTest.java`. The default wrapping configuration used is a line length of 6 characters. The $ symbol is used to represent a new line character.\n\n");
             for (Check check : checks) {
                 i++;
-                out.append(i + ". **" + check.name + "**\n");
+                out.append(i + ". **" + check.name + "**\n\n");
                 out.append("Input:\n");
                 out.append("```\n");
                 out.append(prettify(check.input));
