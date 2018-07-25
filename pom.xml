@@ -20,7 +20,6 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <maven.compiler.target>1.8</maven.compiler.target>
-        <rxjava.version>2.1.13</rxjava.version>
         <jmh.version>1.11.1</jmh.version>
         <exec.version>1.6.0</exec.version>
         <jmh.version>1.21</jmh.version>
@@ -37,7 +36,6 @@
         <m3.site.version>3.7.1</m3.site.version>
         <changelog.version>2.2</changelog.version>
         <coverage.reports.dir>${project.build.directory}/target/coverage-reports</coverage.reports.dir>
-        <jmh.verion>1.21</jmh.verion>
     </properties>
 
     <licenses>
