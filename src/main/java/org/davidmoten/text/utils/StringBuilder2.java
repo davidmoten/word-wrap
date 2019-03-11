@@ -50,8 +50,16 @@ final class StringBuilder2 implements CharSequence {
 
     private void checkSize(int len) {
         if (length + len > chars.length) {
-            chars = Arrays.copyOf(chars, chars.length * 2);
+            chars = Arrays.copyOf(chars, newSize(len));
         }
+    }
+
+    private int newSize(int len) {
+        int newSize = chars.length * 2;
+        if (newSize < length + len) {
+            newSize = length + len;
+        }
+        return newSize;
     }
 
     public void setLength(int length) {
