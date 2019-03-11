@@ -42,6 +42,14 @@ public class StringBuilder2Test {
     }
 
     @Test
+    public void testAppendStringBuilder2WithLongWord() {
+        StringBuilder2 b = new StringBuilder2("abc");
+        StringBuilder2 c = new StringBuilder2("defghijklmnopqrstuvwxyz");
+        b.append(c);
+        assertEquals("abcdefghijklmnopqrstuvwxyz", b.toString());
+    }
+
+    @Test
     public void testBlank() {
         StringBuilder2 a = new StringBuilder2();
         a.append('a');
