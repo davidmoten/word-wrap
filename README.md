@@ -67,6 +67,57 @@ Rules are [here](https://github.com/davidmoten/word-wrap/blob/master/src/docs/ru
 ## Rewrapping classic fiction
 A good test is to rewrap novels downloaded from Gutenberg (copied from the html form). When you run `mvn test` the output of *The Importance of Being Earnest*, *The Black Gang*, and *Treasure Island* are rewrapped into the directory `target` with line lengths of 20, 20 and 80 respectively. Part of the testing process for this library in addition to lots of unit tests is inspecting the wrapped output from these novels.
 
+From *The Black Gang* wrapped at 20 chars:
+
+```
+The wind howled
+dismally round a
+house standing by
+itself almost on the
+shores of Barking
+Creek. It was the
+grey dusk of an
+early autumn day,
+and the occasional
+harsh cry of a sea-
+gull rising
+discordantly above
+the wind alone broke
+the silence of the
+flat, desolate
+waste.
+
+The house seemed
+deserted. Every
+window was
+shuttered; the
+garden was uncared
+for and a mass of
+weeds; the gate
+leading on to the
+road, apparently
+feeling the need of
+a deficient top
+hinge, propped
+itself drunkenly on
+what once had been a
+flower-bed. A few
+gloomy trees swaying
+dismally in the wind
+surrounded the house
+and completed the
+picture—one that
+would have caused
+even the least
+imaginative of men
+to draw his coat a
+little tighter round
+him, and feel
+thankful that it was
+not his fate to live
+in such a place.
+```
+
 ## Performance
 For version 0.1.2 JMH benchmarks were added and numerous performance improvements made that gave 10x throughput increase and reduced memory allocation rate to 1/30x.
 
