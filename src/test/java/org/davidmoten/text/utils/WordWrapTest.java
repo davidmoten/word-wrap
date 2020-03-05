@@ -366,7 +366,17 @@ public class WordWrapTest {
         WordWrap.from("abc").wrap(file.getAbsolutePath(), StandardCharsets.UTF_8);
         assertTrue(file.exists());
     }
+    
+    @Test
+    public void testDontWrapNumbers() {
+        assertEquals("hello\n123", WordWrap.from("hello 123").extraWordChars("0123456789").breakWords(false).maxWidth(8).wrap());
+    }
 
+    @Test
+    public void testNumbersWrapByDefault() {
+        assertEquals("hello 12\n3", WordWrap.from("hello 123").breakWords(false).maxWidth(8).wrap());
+    }
+    
     ////////////////////////////////////////////
     // Novel wrapping tests
     ////////////////////////////////////////////
@@ -396,7 +406,7 @@ public class WordWrapTest {
     public void testIsUtilityClass() {
         Asserts.assertIsUtilityClass(WordWrap.class);
     }
-
+    
     private static final class Check {
         final String input;
         final String output;
