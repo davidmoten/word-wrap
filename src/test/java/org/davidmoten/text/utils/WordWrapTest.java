@@ -14,6 +14,7 @@ import java.io.Writer;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.junit.FixMethodOrder;
@@ -353,6 +354,12 @@ public class WordWrapTest {
     @Test(expected = IORuntimeException.class)
     public void testFromFileDoesNotExist() throws IOException {
         WordWrap.from(new File("target/doesNotExist"), StandardCharsets.UTF_8).maxWidth(6).wrap();
+    }
+    
+    @Test
+    public void testToList() {
+        List<String> list = WordWrap.from("hello there how are you").maxWidth(10).wrapToList();
+        assertEquals(Arrays.asList("hello", "there how", "are you"), list);
     }
 
     @Test(expected = IllegalArgumentException.class)

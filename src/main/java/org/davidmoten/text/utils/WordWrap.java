@@ -14,7 +14,9 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.function.Function;
 
@@ -287,7 +289,50 @@ public final class WordWrap {
                 }
             }
         }
+        
+        public List<String> wrapToList() {
+            List<String> lines = new ArrayList<>();
+            StringBuilder b = new StringBuilder();
+            StringBuilder[] line = new StringBuilder[1];
+            wrap(new LineConsumer() {
 
+                @Override
+                public void write(char[] chars, int offset, int length) throws IOException {
+                    if (line[0] == null) {
+                        line[0] = b;
+                    }
+                    b.append(chars, offset, length);
+                }
+
+                @Override
+                public void writeNewLine() throws IOException {
+                    if (line[0] == null) {
+                        line[0] = b;
+                    }
+                    lines.add(b.toString());
+                    b.setLength(0);
+                    line[0] = null;
+                }
+            });
+            if (line[0] != null) {
+                lines.add(b.toString());
+            }
+            return lines;
+        }
+
+        public void wrap(LineConsumer consumer) {
+            try {
+                wordWrap(reader, consumer, maxWidth, stringWidth, extraWordChars, insertHyphens,
+                        breakWords);
+            } catch (IOException e) {
+                throw new IORuntimeException(e);
+            } finally {
+                if (closeReader) {
+                    close(reader);
+                }
+            }
+        }
+        
         /**
          * Performs the wrapping of the source text and writes output to the given file
          * with the given character set encoding.
@@ -366,8 +411,33 @@ public final class WordWrap {
         }
         return set;
     }
-
+    
     static void wordWrap(Reader in, Writer out, String newLine, Number maxWidth,
+            Function<? super CharSequence, ? extends Number> stringWidth,
+            Set<Character> extraWordChars, boolean insertHyphens, boolean breakWords)
+            throws IOException {
+        LineConsumer consumer = new LineConsumer() {
+
+            @Override
+            public void write(String s) throws IOException {
+                out.write(s);
+            }
+
+            @Override
+            public void write(char[] chars, int start, int length) throws IOException {
+                out.write(chars, start, length);
+            }
+
+            @Override
+            public void writeNewLine() throws IOException {
+                out.write(newLine);
+            }
+            
+        };
+        wordWrap(in, consumer,  maxWidth, stringWidth, extraWordChars, insertHyphens, breakWords);
+    }
+    
+    static void wordWrap(Reader in, LineConsumer out, Number maxWidth,
             Function<? super CharSequence, ? extends Number> stringWidth,
             Set<Character> extraWordChars, boolean insertHyphens, boolean breakWords)
             throws IOException {
@@ -393,7 +463,7 @@ public final class WordWrap {
                 if (!isWhitespace(line)) {
                     out.write(line.internalArray(), 0, line.length());
                 }
-                out.write(newLine);
+                out.writeNewLine();
                 word.setLength(0);
                 line.setLength(0);
                 broken = false;
@@ -406,11 +476,11 @@ public final class WordWrap {
                 }
                 if (tooLong(stringWidth, lineAndWordRightTrim, maxWidthDouble)) {
                     if (line.length() > 0) {
-                        writeLine(out, line, newLine);
+                        writeLine(out, line);
                         leftTrim(word);
                         if (tooLong(stringWidth, word, maxWidthDouble)) {
                             if (breakWords) {
-                                writeBrokenWord(out, word, newLine, insertHyphens);
+                                writeBrokenWord(out, word, insertHyphens);
                             } else {
                                 broken = true;
                             }
@@ -419,7 +489,7 @@ public final class WordWrap {
                         }
                     } else {
                         if (breakWords) {
-                            writeBrokenWord(out, word, newLine, insertHyphens);
+                            writeBrokenWord(out, word, insertHyphens);
                         } else {
                             broken = true;
                         }
@@ -438,7 +508,7 @@ public final class WordWrap {
                             "line length was zero. If this happens please" //
                                     + " contribute unit test that provokes this failure to the project!");
                     if (!isWhitespace(line)) {
-                        writeLine(out, line, newLine);
+                        writeLine(out, line);
                     } else {
                         line.setLength(0);
                     }
@@ -528,8 +598,7 @@ public final class WordWrap {
         word.setLength(0);
     }
 
-    private static void writeBrokenWord(Writer out, StringBuilder2 word, String newLine,
-            boolean insertHyphens) throws IOException {
+    private static void writeBrokenWord(LineConsumer out, StringBuilder2 word, boolean insertHyphens) throws IOException {
         // to be really thorough we'd check the new stringWidth with '-' but let's not
         // bother for now
         String x;
@@ -537,22 +606,22 @@ public final class WordWrap {
                 && !isWhitespace((x = word.substring(0, word.length() - 2)))) {
             out.write(x);
             out.write("-");
-            out.write(newLine);
+            out.writeNewLine();
             word.delete(0, word.length() - 2);
         } else {
             String prefix = word.substring(0, word.length() - 1);
             if (!isWhitespace(prefix)) {
                 out.write(prefix);
             }
-            out.write(newLine);
+            out.writeNewLine();
             word.delete(0, word.length() - 1);
         }
     }
 
-    private static void writeLine(Writer out, StringBuilder2 line, String newLine)
+    private static void writeLine(LineConsumer out, StringBuilder2 line)
             throws IOException {
         out.write(line.internalArray(), 0, line.length());
-        out.write(newLine);
+        out.writeNewLine();
         line.setLength(0);
     }
 }
