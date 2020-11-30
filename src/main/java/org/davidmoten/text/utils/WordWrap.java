@@ -298,17 +298,19 @@ public final class WordWrap {
 
                 @Override
                 public void write(char[] chars, int offset, int length) throws IOException {
+                    checkLine();
+                    b.append(chars, offset, length);
+                }
+                
+                private void checkLine() {
                     if (line[0] == null) {
                         line[0] = b;
                     }
-                    b.append(chars, offset, length);
                 }
 
                 @Override
                 public void writeNewLine() throws IOException {
-                    if (line[0] == null) {
-                        line[0] = b;
-                    }
+                    checkLine();
                     lines.add(b.toString());
                     b.setLength(0);
                     line[0] = null;
@@ -319,7 +321,7 @@ public final class WordWrap {
             }
             return lines;
         }
-
+        
         public void wrap(LineConsumer consumer) {
             try {
                 wordWrap(reader, consumer, maxWidth, stringWidth, extraWordChars, insertHyphens,
