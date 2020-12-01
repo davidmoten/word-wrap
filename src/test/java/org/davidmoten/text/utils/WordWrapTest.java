@@ -361,6 +361,18 @@ public class WordWrapTest {
         List<String> list = WordWrap.from("hello there how are you").maxWidth(10).wrapToList();
         assertEquals(Arrays.asList("hello", "there how", "are you"), list);
     }
+    
+    @Test
+    public void testToListWithNewLines() {
+        List<String> list = WordWrap.from("hello\n\n\n\nhow how\n").maxWidth(10).wrapToList();
+        assertEquals(Arrays.asList("hello", "", "","", "how how"), list);
+    }
+    
+    @Test
+    public void testToListFinishWithNewLines() {
+        List<String> list = WordWrap.from("hello\n\n\n\n").maxWidth(10).wrapToList();
+        assertEquals(Arrays.asList("hello", "", "",""), list);
+    }
 
     @Test(expected = IllegalArgumentException.class)
     public void testMaxWidthZero() {
