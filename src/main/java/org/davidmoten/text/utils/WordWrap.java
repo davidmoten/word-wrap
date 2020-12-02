@@ -293,30 +293,23 @@ public final class WordWrap {
         public List<String> wrapToList() {
             List<String> lines = new ArrayList<>();
             StringBuilder b = new StringBuilder();
-            StringBuilder[] line = new StringBuilder[1];
+            boolean[] building = new boolean[1];
             wrap(new LineConsumer() {
 
                 @Override
                 public void write(char[] chars, int offset, int length) throws IOException {
-                    checkLine();
+                    building[0] = true;
                     b.append(chars, offset, length);
                 }
                 
-                private void checkLine() {
-                    if (line[0] == null) {
-                        line[0] = b;
-                    }
-                }
-
                 @Override
                 public void writeNewLine() throws IOException {
-                    checkLine();
                     lines.add(b.toString());
                     b.setLength(0);
-                    line[0] = null;
+                    building[0] = false;
                 }
             });
-            if (line[0] != null) {
+            if (building[0]) {
                 lines.add(b.toString());
             }
             return lines;
@@ -394,7 +387,6 @@ public final class WordWrap {
                 throw new IORuntimeException(e);
             }
         }
-
     }
 
     @VisibleForTesting
