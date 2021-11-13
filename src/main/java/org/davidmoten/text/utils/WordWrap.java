@@ -129,7 +129,8 @@ public final class WordWrap {
         }
     }
 
-    private static Builder from(Reader reader, boolean close) {
+    @VisibleForTesting
+    static Builder from(Reader reader, boolean close) {
         return new Builder(reader, close);
     }
 
@@ -380,12 +381,10 @@ public final class WordWrap {
          * @return wrapped text
          */
         public String wrap() {
-            try (StringWriter out = new StringWriter()) {
-                wrap(out);
-                return out.toString();
-            } catch (IOException e) {
-                throw new IORuntimeException(e);
-            }
+            // close not required
+           StringWriter out = new StringWriter();
+           wrap(out);
+           return out.toString();
         }
     }
 

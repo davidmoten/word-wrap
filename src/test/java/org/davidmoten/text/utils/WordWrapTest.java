@@ -10,6 +10,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Reader;
+import java.io.StringReader;
 import java.io.Writer;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -372,6 +373,37 @@ public class WordWrapTest {
     public void testToListFinishWithNewLines() {
         List<String> list = WordWrap.from("hello\n\n\n\n").maxWidth(10).wrapToList();
         assertEquals(Arrays.asList("hello", "", "",""), list);
+    }
+    
+    @Test(expected=IORuntimeException.class)
+    public void testLineConsumerThrows() {
+        WordWrap.from("hello there how are you").maxWidth(10).wrap(new LineConsumer() {
+
+            @Override
+            public void write(char[] chars, int offset, int length) throws IOException {
+                throw new IOException("problem");
+            }
+
+            @Override
+            public void writeNewLine() throws IOException {
+                throw new IOException("problem");
+            }});
+    }
+    
+    @Test(expected=IORuntimeException.class)
+    public void testLineConsumerThrowsDontCloseReader() {
+        StringReader reader = new StringReader("hello there how are you");
+        WordWrap.from(reader, false).maxWidth(10).wrap(new LineConsumer() {
+
+            @Override
+            public void write(char[] chars, int offset, int length) throws IOException {
+                throw new IOException("problem");
+            }
+
+            @Override
+            public void writeNewLine() throws IOException {
+                throw new IOException("problem");
+            }});
     }
 
     @Test(expected = IllegalArgumentException.class)
