@@ -5,7 +5,7 @@
 
 Java library for wrapping text.
 
-**Status**: published to Maven Central
+**Status**: *published to Maven Central*
 
 Maven site reports are [here](https://davidmoten.github.io/word-wrap) including [javadoc](https://davidmoten.github.io/word-wrap/apidocs/index.html).
 
