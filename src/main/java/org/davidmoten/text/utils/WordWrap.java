@@ -229,6 +229,7 @@ public final class WordWrap {
          * @return this
          */
         public Builder includeExtraWordChars(String includeWordChars) {
+            copyOnWriteDefaultWordCharset();
             Set<Character> set = toSet(includeWordChars);
             this.extraWordChars.addAll(set);
             return this;
@@ -242,9 +243,19 @@ public final class WordWrap {
          * @return this
          */
         public Builder excludeExtraWordChars(String excludeWordChars) {
+            copyOnWriteDefaultWordCharset();
             Set<Character> set = toSet(excludeWordChars);
             this.extraWordChars.removeAll(set);
             return this;
+        }
+
+        /**
+         * Create a copy of extraWordChars in case it refers to SPECIAL_WORD_CHARS_SET_DEFAULT.
+         */
+        private void copyOnWriteDefaultWordCharset() {
+            if (this.extraWordChars == SPECIAL_WORD_CHARS_SET_DEFAULT) {
+                this.extraWordChars = new HashSet<>(SPECIAL_WORD_CHARS_SET_DEFAULT);
+            }
         }
 
         /**
