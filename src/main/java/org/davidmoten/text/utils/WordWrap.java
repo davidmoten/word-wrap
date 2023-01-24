@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.io.PushbackReader;
 import java.io.Reader;
 import java.io.StringWriter;
 import java.io.Writer;
@@ -139,7 +140,7 @@ public final class WordWrap {
      */
     public static final class Builder {
 
-        private final Reader reader;
+        private final PushbackReader reader;
         private final boolean closeReader;
         private Number maxWidth = 80;
         private Function<? super CharSequence, ? extends Number> stringWidth = STRING_WIDTH_DEFAULT;
@@ -147,9 +148,11 @@ public final class WordWrap {
         private String newLine = "\n";
         private boolean insertHyphens = true;
         private boolean breakWords = true;
+        private boolean wrapDecimalSeparator = true;
+        private char decimalSeparator = ',';
 
         Builder(Reader reader, boolean closeReader) {
-            this.reader = reader;
+            this.reader = pushback(reader);
             this.closeReader = closeReader;
         }
 
@@ -272,6 +275,21 @@ public final class WordWrap {
             return this;
         }
 
+        public Builder wrapDecimalSeparator(boolean wrapDecimalSeparator) {
+            this.wrapDecimalSeparator = wrapDecimalSeparator;
+            return this;
+        }
+        
+        public Builder decimalSeparatorPeriod() {
+            this.decimalSeparator = '.';
+            return this;
+        }
+        
+        public Builder decimalSeparatorComma() {
+            this.decimalSeparator = ',';
+            return this;
+        }
+        
         /**
          * Performs the wrapping of the source text and writes output to the given
          * {@link Writer}.
@@ -281,7 +299,7 @@ public final class WordWrap {
         public void wrap(Writer out) {
             try {
                 wordWrap(reader, out, newLine, maxWidth, stringWidth, extraWordChars, insertHyphens,
-                        breakWords);
+                        breakWords, wrapDecimalSeparator, decimalSeparator);
             } catch (IOException e) {
                 throw new IORuntimeException(e);
             } finally {
@@ -319,7 +337,7 @@ public final class WordWrap {
         public void wrap(LineConsumer consumer) {
             try {
                 wordWrap(reader, consumer, maxWidth, stringWidth, extraWordChars, insertHyphens,
-                        breakWords);
+                        breakWords, wrapDecimalSeparator, decimalSeparator);
             } catch (IOException e) {
                 throw new IORuntimeException(e);
             } finally {
@@ -407,14 +425,15 @@ public final class WordWrap {
     
     static void wordWrap(Reader in, Writer out, String newLine, Number maxWidth,
             Function<? super CharSequence, ? extends Number> stringWidth,
-            Set<Character> extraWordChars, boolean insertHyphens, boolean breakWords)
+            Set<Character> extraWordChars, boolean insertHyphens, boolean breakWords, 
+            boolean wrapDecimalSeparator, char decimalSeparator)
             throws IOException {
         LineConsumer consumer = new LineConsumer() {
 
             @Override
             public void write(String s) throws IOException {
                 out.write(s);
-            }
+            } 
 
             @Override
             public void write(char[] chars, int start, int length) throws IOException {
@@ -427,12 +446,14 @@ public final class WordWrap {
             }
             
         };
-        wordWrap(in, consumer,  maxWidth, stringWidth, extraWordChars, insertHyphens, breakWords);
+        wordWrap(pushback(in), consumer,  maxWidth, stringWidth, extraWordChars, insertHyphens, 
+                breakWords, wrapDecimalSeparator, decimalSeparator);
     }
     
-    static void wordWrap(Reader in, LineConsumer out, Number maxWidth,
+    static void wordWrap(PushbackReader in, LineConsumer out, Number maxWidth,
             Function<? super CharSequence, ? extends Number> stringWidth,
-            Set<Character> extraWordChars, boolean insertHyphens, boolean breakWords)
+            Set<Character> extraWordChars, boolean insertHyphens, boolean breakWords, 
+            boolean wrapDecimalSeparator, char decimalSeparator)
             throws IOException {
         StringBuilder2 line = new StringBuilder2();
         StringBuilder2 word = new StringBuilder2();
@@ -616,5 +637,13 @@ public final class WordWrap {
         out.write(line.internalArray(), 0, line.length());
         out.writeNewLine();
         line.setLength(0);
+    }
+    
+    private static PushbackReader pushback(Reader in) {
+        if (in instanceof PushbackReader) {
+            return (PushbackReader) in;
+        } else {
+            return new PushbackReader(in);
+        }
     }
 }

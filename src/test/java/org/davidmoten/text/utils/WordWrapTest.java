@@ -428,6 +428,11 @@ public class WordWrapTest {
         assertEquals("hello 12\n3", WordWrap.from("hello 123").breakWords(false).maxWidth(8).wrap());
     }
     
+    @Test
+    public void testDontWrapDecimalNumber() {
+        assertEquals("hello 12.3", WordWrap.from("hello 12.3").extraWordChars("0123456789").breakWords(false).maxWidth(8).wrapOnDecimalSeparator(false).wrap());
+    }
+    
     ////////////////////////////////////////////
     // Novel wrapping tests
     ////////////////////////////////////////////
