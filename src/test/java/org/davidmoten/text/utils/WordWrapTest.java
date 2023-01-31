@@ -425,23 +425,68 @@ public class WordWrapTest {
     }
 
     @Test
-    public void testNumbersWrapByDefault() {
-        assertEquals("hello 12\n3", WordWrap.from("hello 123").breakWords(false).maxWidth(8).wrap());
+    public void testNumbersWrapOnDecimalSeparatorByDefault() {
+        // note that 2 goes to second line because of the rule that punctuation cannot start a line (not configurable ATM)
+        assertEquals("hello 1\n2.34", WordWrap.from("hello 12.34").breakWords(false).maxWidth(8).wrap());
     }
     
     @Test
     public void testDontWrapDecimalNumberDefaultSeparator() {
-        assertEquals("hello\n12.3", WordWrap.from("hello 12.3").includeDigitsAsExtraWordChars().breakWords(false).maxWidth(8).wrapDecimalSeparator(false).wrap());
+        assertEquals("hello\n12.3", WordWrap //
+                .from("hello 12.3") //
+                .includeDigitsAsExtraWordChars() //
+                .breakWords(false) //
+                .maxWidth(8) //
+                .wrapDecimalSeparator(false) //
+                .wrap());
     }
-    
+
     @Test
     public void testWrapDecimalNumber() {
-        assertEquals("hello 12\n.3", WordWrap.from("hello 12.3").includeDigitsAsExtraWordChars().breakWords(false).maxWidth(8).wrapDecimalSeparator(true).wrap());
+        assertEquals("hello\n12.3", WordWrap //
+                .from("hello 12.3") //
+                .includeDigitsAsExtraWordChars() //
+                .breakWords(false) //
+                .maxWidth(8) //
+                .wrapDecimalSeparator(false) //
+                .wrap());
+    }
+
+    @Test
+    public void testDontWrapDecimalNumberCommaSeparator() {
+        assertEquals("hello\n12,3", WordWrap //
+                .from("hello 12,3") //
+                .includeDigitsAsExtraWordChars() //
+                .breakWords(false) //
+                .maxWidth(8) //
+                .wrapDecimalSeparator(true) //
+                .decimalSeparatorComma() //
+                .wrap());
     }
     
     @Test
-    public void testDontWrapDecimalNumberCommaSeparator() {
-        assertEquals("hello\n12,3", WordWrap.from("hello 12,3").includeDigitsAsExtraWordChars().breakWords(false).maxWidth(8).wrapDecimalSeparator(true).wrap());
+    public void testWrapDecimalNumberCommaSeparator() {
+        assertEquals("hello\n1,23", WordWrap //
+                .from("hello 1,23") //
+                .includeDigitsAsExtraWordChars() //
+                .decimalSeparatorComma() //
+                .breakWords(false) //
+                .maxWidth(8) //
+                .wrapDecimalSeparator(true) //
+                .wrap());
+    }
+    
+    @Test
+    public void testIssue49() {
+        assertEquals("CELESTAN Depot\n2,7mg/ml", //
+                WordWrap //
+                .from("CELESTAN Depot 2,7mg/ml") //
+                .includeDigitsAsExtraWordChars() //
+                .breakWords(false) //
+                .maxWidth(17) //
+                .wrapDecimalSeparator(false) //
+                .decimalSeparatorComma() //
+                .wrap());
     }
     
     ////////////////////////////////////////////

@@ -32,8 +32,6 @@ public final class WordWrap {
 
     private static final String SPECIAL_WORD_CHARS = "\"\'\u2018\u2019\u201C\u201D?./!,;:_";
 
-    public static final Set<Character> SPECIAL_WORD_CHARS_SET_DEFAULT = toSet(SPECIAL_WORD_CHARS);
-
     private static final Function<CharSequence, Number> STRING_WIDTH_DEFAULT = s -> s.length();
 
     private static final String PUNCTUATION = "!\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~";
@@ -144,7 +142,7 @@ public final class WordWrap {
         private final boolean closeReader;
         private Number maxWidth = 80;
         private Function<? super CharSequence, ? extends Number> stringWidth = STRING_WIDTH_DEFAULT;
-        private Set<Character> extraWordChars = SPECIAL_WORD_CHARS_SET_DEFAULT;
+        private Set<Character> extraWordChars = toSet(SPECIAL_WORD_CHARS);
         private String newLine = "\n";
         private boolean insertHyphens = true;
         private boolean breakWords = true;
@@ -269,7 +267,7 @@ public final class WordWrap {
         /**
          * If a word is longer than {@code maxWidth} and {@code breakWords} is true then
          * such a word will be broken across two or more lines (with or without a hyphen
-         * according to {@link Builder#insertHyphens(boolean)}).
+         * according to {@link Builder#insertHyphens(boolean)}). Default value is true.
          * 
          * @param breakWords if true then break words across lines
          * @return this
@@ -483,6 +481,7 @@ public final class WordWrap {
 				isDecimalSeparator = isDigits(word) && ch == decimalSeparator && Character.isDigit(chNext);
 			}
             isWordCharacter = Character.isLetter(ch) || extraWordChars.contains(ch) || (isDecimalSeparator && !wrapDecimalSeparator);
+//            System.out.printf("word=%s, ch=%s, isDecimalSeparator=%s, isWordCharacter=%s\n", word, ch, isDecimalSeparator, isWordCharacter);
             if (ch == '\n') {
                 line.append(word);
                 if (tooLong(stringWidth, line, maxWidthDouble)) {
