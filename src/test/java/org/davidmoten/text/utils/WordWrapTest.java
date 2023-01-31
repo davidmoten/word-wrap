@@ -427,6 +427,13 @@ public class WordWrapTest {
     public void testNumbersWrapByDefault() {
         assertEquals("hello 12\n3", WordWrap.from("hello 123").breakWords(false).maxWidth(8).wrap());
     }
+
+    @Test
+    public void testStatelessness() {
+        assertEquals("hello super-\ncool", WordWrap.from("hello super-cool").breakWords(false).maxWidth(12).wrap());
+        assertEquals("hello\nsuper-cool", WordWrap.from("hello super-cool").breakWords(false).maxWidth(12).includeExtraWordChars("-").wrap());
+        assertEquals("hello super-\ncool", WordWrap.from("hello super-cool").breakWords(false).maxWidth(12).wrap());
+    }
     
     ////////////////////////////////////////////
     // Novel wrapping tests
