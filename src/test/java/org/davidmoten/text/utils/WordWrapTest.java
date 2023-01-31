@@ -430,7 +430,12 @@ public class WordWrapTest {
     
     @Test
     public void testDontWrapDecimalNumber() {
-        assertEquals("hello 12.3", WordWrap.from("hello 12.3").extraWordChars("0123456789").breakWords(false).maxWidth(8).wrapOnDecimalSeparator(false).wrap());
+        assertEquals("hello 12.3", WordWrap.from("hello 12.3").extraWordChars("0123456789").breakWords(false).maxWidth(8).wrapDecimalSeparator(false).wrap());
+    }
+    
+    @Test
+    public void testWrapDecimalNumber() {
+        assertEquals("hello 12\n.3", WordWrap.from("hello 12.3").extraWordChars("0123456789").breakWords(false).maxWidth(8).wrapDecimalSeparator(true).wrap());
     }
     
     ////////////////////////////////////////////

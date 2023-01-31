@@ -404,6 +404,7 @@ public final class WordWrap {
            wrap(out);
            return out.toString();
         }
+
     }
 
     @VisibleForTesting
