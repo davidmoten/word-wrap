@@ -435,6 +435,17 @@ public class WordWrapTest {
         assertEquals("hello super-\ncool", WordWrap.from("hello super-cool").breakWords(false).maxWidth(12).wrap());
     }
     
+    @Test
+    public void testIssue49() {
+        assertEquals("CELESTAN Depot\n2,7mg/ml", //
+                WordWrap //
+                .from("CELESTAN Depot 2,7mg/ml") //
+                .includeExtraWordChars("0123456789") //
+                .breakWords(false) //
+                .maxWidth(17) //
+                .wrap());
+    }
+    
     ////////////////////////////////////////////
     // Novel wrapping tests
     ////////////////////////////////////////////
