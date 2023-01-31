@@ -421,7 +421,7 @@ public class WordWrapTest {
     
     @Test
     public void testDontWrapNumbers() {
-        assertEquals("hello\n123", WordWrap.from("hello 123").extraWordChars("0123456789").breakWords(false).maxWidth(8).wrap());
+        assertEquals("hello\n123", WordWrap.from("hello 123").includeDigitsAsExtraWordChars().breakWords(false).maxWidth(8).wrap());
     }
 
     @Test
@@ -430,13 +430,18 @@ public class WordWrapTest {
     }
     
     @Test
-    public void testDontWrapDecimalNumber() {
-        assertEquals("hello\n12.3", WordWrap.from("hello 12.3").extraWordChars("0123456789").breakWords(false).maxWidth(8).wrapDecimalSeparator(false).wrap());
+    public void testDontWrapDecimalNumberDefaultSeparator() {
+        assertEquals("hello\n12.3", WordWrap.from("hello 12.3").includeDigitsAsExtraWordChars().breakWords(false).maxWidth(8).wrapDecimalSeparator(false).wrap());
     }
     
     @Test
     public void testWrapDecimalNumber() {
-        assertEquals("hello 12\n.3", WordWrap.from("hello 12.3").extraWordChars("0123456789").breakWords(false).maxWidth(8).wrapDecimalSeparator(true).wrap());
+        assertEquals("hello 12\n.3", WordWrap.from("hello 12.3").includeDigitsAsExtraWordChars().breakWords(false).maxWidth(8).wrapDecimalSeparator(true).wrap());
+    }
+    
+    @Test
+    public void testDontWrapDecimalNumberCommaSeparator() {
+        assertEquals("hello\n12,3", WordWrap.from("hello 12,3").includeDigitsAsExtraWordChars().breakWords(false).maxWidth(8).wrapDecimalSeparator(true).wrap());
     }
     
     ////////////////////////////////////////////

@@ -236,6 +236,10 @@ public final class WordWrap {
             this.extraWordChars.addAll(set);
             return this;
         }
+        
+        public Builder includeDigitsAsExtraWordChars() {
+             return includeExtraWordChars("0123456789");
+        }
 
         /**
          * Adds extra word characters to be excluded. Alphabetic characters are always
