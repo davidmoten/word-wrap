@@ -149,7 +149,7 @@ public final class WordWrap {
         private boolean insertHyphens = true;
         private boolean breakWords = true;
         private boolean wrapDecimalSeparator = true;
-        private char decimalSeparator = ',';
+        private char decimalSeparator = '.';
 
         Builder(Reader reader, boolean closeReader) {
             this.reader = pushback(reader);
@@ -469,7 +469,16 @@ public final class WordWrap {
                 break;
             }
             char ch = (char) c;
-            isWordCharacter = Character.isLetter(ch) || extraWordChars.contains(ch);
+			int cNext = in.read();
+			boolean isDecimalSeparator;
+			if (cNext == -1) {
+				isDecimalSeparator = false;
+			} else {
+				char chNext = (char) cNext;
+				in.unread(cNext);
+				isDecimalSeparator = isDigits(word) && ch == decimalSeparator && Character.isDigit(chNext);
+			}
+            isWordCharacter = Character.isLetter(ch) || extraWordChars.contains(ch) || (isDecimalSeparator && !wrapDecimalSeparator);
             if (ch == '\n') {
                 line.append(word);
                 if (tooLong(stringWidth, line, maxWidthDouble)) {
@@ -547,8 +556,31 @@ public final class WordWrap {
             }
         }
     }
+    
+    static boolean isDigits(CharSequence word) {
+        int len = word.length();
+        if (len == 0) {
+        	return false;
+        }
+        boolean skippingWhitespace = true;
+        for (int i = 0; i < len; i++) {
+			char ch = word.charAt(i);
+			if (Character.isWhitespace(ch)) {
+				if (skippingWhitespace) {
+					continue;
+				} else {
+					return false;
+				}
+			}
+			skippingWhitespace = false;
+			if (!Character.isDigit(ch)) {
+				return false;
+			}
+        }
+        return true;
+    }
 
-    private static CharSequence concatRightTrim(CharSequence a, CharSequence b) {
+	private static CharSequence concatRightTrim(CharSequence a, CharSequence b) {
         return new CharSequenceConcatRightTrim(a, b);
     }
 

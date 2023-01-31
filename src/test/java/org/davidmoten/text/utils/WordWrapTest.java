@@ -1,6 +1,7 @@
 package org.davidmoten.text.utils;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.io.ByteArrayInputStream;
@@ -430,7 +431,7 @@ public class WordWrapTest {
     
     @Test
     public void testDontWrapDecimalNumber() {
-        assertEquals("hello 12.3", WordWrap.from("hello 12.3").extraWordChars("0123456789").breakWords(false).maxWidth(8).wrapDecimalSeparator(false).wrap());
+        assertEquals("hello\n12.3", WordWrap.from("hello 12.3").extraWordChars("0123456789").breakWords(false).maxWidth(8).wrapDecimalSeparator(false).wrap());
     }
     
     @Test
@@ -461,6 +462,18 @@ public class WordWrapTest {
         WordWrap.fromClasspathUtf8("/treasure-island-fragment.txt") //
                 .maxWidth(80) //
                 .wrapUtf8("target/treasure-island-fragment.txt");
+    }
+    
+    @Test
+    public void testIsDigits() {
+    	assertFalse(WordWrap.isDigits("abc"));
+    	assertFalse(WordWrap.isDigits("abc1"));
+    	assertFalse(WordWrap.isDigits(" abc1"));
+    	assertTrue(WordWrap.isDigits("1"));
+    	assertTrue(WordWrap.isDigits("12"));
+    	assertTrue(WordWrap.isDigits(" 1"));
+    	assertTrue(WordWrap.isDigits(" 12"));
+    	assertFalse(WordWrap.isDigits(" 12 "));
     }
 
     @Test
