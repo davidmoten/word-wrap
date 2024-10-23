@@ -470,6 +470,21 @@ public class WordWrapTest {
                 .maxWidth(80) //
                 .wrapUtf8("target/treasure-island-fragment.txt");
     }
+    
+    @Test
+    public void testWrapWithAtLeastLineLongWhitespaceFollowedByParenthesis() {
+        int maxWidth = 25;
+        assertEquals("(abc", WordWrap.from(repeat(" ", maxWidth) + "(abc") //
+            .maxWidth(maxWidth).wrap());
+    }
+    
+    private static String repeat(String s, int n) {
+        StringBuilder b = new StringBuilder();
+        for (int i = 0; i < n; i++) {
+            b.append(s);
+        }
+        return b.toString();
+    }
 
     @Test
     public void testIsUtilityClass() {
