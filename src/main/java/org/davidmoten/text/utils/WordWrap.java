@@ -508,9 +508,6 @@ public final class WordWrap {
                 }
                 word.append(ch);
                 if (tooLong(stringWidth, lineAndWordRightTrim, maxWidthDouble)) {
-                    Preconditions.checkArgument(line.length() > 0,
-                            "line length was zero. If this happens please" //
-                                    + " contribute unit test that provokes this failure to the project!");
                     if (!isWhitespace(line)) {
                         writeLine(out, line);
                     } else {
