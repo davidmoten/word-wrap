@@ -565,4 +565,19 @@ public class WordWrapTest {
         }
     }
 
+
+    @Test
+    public void wideHyphenFitsCustomWidth() {
+        String result = WordWrap.from("abcdef").maxWidth(5)
+                .stringWidth(s -> s.toString().replace("-", "----").length()).wrap();
+        assertEquals("a-\nbcdef", result);
+    }
+
+    @Test
+    public void oversizedHyphenIsOmitted() {
+        String result = WordWrap.from("abcdef").maxWidth(5)
+                .stringWidth(s -> s.toString().replace("-", "------").length()).wrap();
+        assertEquals("abcde\nf", result);
+    }
+
 }

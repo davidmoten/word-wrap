@@ -484,7 +484,7 @@ public final class WordWrap {
                         leftTrim(word);
                         if (tooLong(stringWidth, word, maxWidthDouble)) {
                             if (breakWords) {
-                                writeBrokenWord(out, word, insertHyphens);
+                                writeBrokenWord(out, word, insertHyphens, stringWidth, maxWidthDouble);
                             } else {
                                 broken = true;
                             }
@@ -493,7 +493,7 @@ public final class WordWrap {
                         }
                     } else {
                         if (breakWords) {
-                            writeBrokenWord(out, word, insertHyphens);
+                            writeBrokenWord(out, word, insertHyphens, stringWidth, maxWidthDouble);
                         } else {
                             broken = true;
                         }
@@ -599,16 +599,21 @@ public final class WordWrap {
         word.setLength(0);
     }
 
-    private static void writeBrokenWord(LineConsumer out, StringBuilder2 word, boolean insertHyphens) throws IOException {
-        // to be really thorough we'd check the new stringWidth with '-' but let's not
-        // bother for now
-        String x;
-        if (insertHyphens && word.length() > 2
-                && !isWhitespace((x = word.substring(0, word.length() - 2)))) {
-            out.write(x);
+    private static void writeBrokenWord(LineConsumer out, StringBuilder2 word, boolean insertHyphens,
+            Function<? super CharSequence, ? extends Number> stringWidth, double maxWidth) throws IOException {
+        int prefixLength = word.length() - 2;
+        if (insertHyphens) {
+            while (prefixLength > 0 && tooLong(stringWidth,
+                    word.substring(0, prefixLength) + "-", maxWidth)) {
+                prefixLength--;
+            }
+        }
+        if (insertHyphens && prefixLength > 0
+                && !isWhitespace(word.substring(0, prefixLength))) {
+            out.write(word.substring(0, prefixLength));
             out.write("-");
             out.writeNewLine();
-            word.delete(0, word.length() - 2);
+            word.delete(0, prefixLength);
         } else {
             String prefix = word.substring(0, word.length() - 1);
             if (!isWhitespace(prefix)) {
